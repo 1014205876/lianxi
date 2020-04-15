@@ -1,0 +1,237 @@
+<template>
+  <view class="task">
+    <!-- <view class="adjust" wx:if='{{change}}' bindtap="change">任务调整</view>
+    <view class='adjust' wx:else bindtap='sure'>确定调整</view> -->
+    <block wx:for='{{ul}}' wx:key='ul' wx:for-index='findex'>
+      <view class="title">{{item.name}}</view>
+      <view class="li" wx:for="{{item.task}}" wx:key='task' wx:for-index='sindex' data-id='{{item.id}}' bindtap='totips'>
+        <view class="lititle">
+          <view style="display:flex;align-items:center;">
+            {{item.task}}
+            <block wx:if="{{item.type==0}}">
+            <image class="seximg" src="../images/man.png"></image>
+            <image class="seximg" src="../images/woman.png"></image>
+            </block>
+            <image class="seximg" wx:if="{{item.type==1}}" src="../images/man.png"></image>
+            <image class="seximg" wx:if="{{item.type==2}}" src="../images/woman.png"></image>
+          </view>
+          <view class="right" style="display:flex;align-items:center;">
+            <image wx:if='{{change}}' src="../images/xiangqing.png" style='width:36rpx;height:9rpx;'></image>
+            <block wx:else>
+              <image data-tid='{{item.t_id}}' data-findex='{{findex}}' data-sindex='{{sindex}}' wx:if='{{item.adjust}}' src="../images/queding.png" style='width:32rpx;height:32rpx;' catchtap='surechange'></image>
+              <view data-tid='{{item.t_id}}' data-findex='{{findex}}' data-sindex='{{sindex}}' wx:else style='width:28rpx;height:28rpx;border-radius:32rpx;border:2rpx solid #A87580' catchtap='surechange'></view>
+            </block>
+          </view>
+        </view>
+        <view class="lidata">{{item.desc}}</view>
+      </view>
+    </block>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Taskdetail extends wepy.page {
+  config = {
+    navigationBarBackgroundColor: '#F7D2DB'
+  };
+  data = {
+    s_id: 0,
+    p_id: 0,
+    t_ids: [],
+    change: true,
+    token: '',
+    ul: []
+  };
+  props = {};
+  watch = {};
+  methods = {
+    change() {
+      let that = this;
+      that.change = false;
+    },
+    sure() {
+      let that = this;
+      wx.showModal({
+        title: '提示',
+        content: '确认发送以上任务的调整信息吗？',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#B6B6B6', //取消颜色
+        confirmText: '确定',
+        confirmColor: '#A87580', //确定颜色
+        success: function(e) {
+          if (e.cancel) {
+            // console.log('点击取消');
+          } else {
+            // console.log('点击确定');
+            wepy
+              .request({
+                url:
+                  'https://m.tdamm.com/weapp/api/preg/adjust_task?token=' +
+                  that.token,
+                method: 'POST',
+                data: {
+                  s_id: that.s_id,
+                  p_id: that.p_id,
+                  t_ids: JSON.stringify(that.t_ids)
+                },
+                header: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                }
+              })
+              .then(res => {
+                if (res.data.code == 200) {
+                  that.change = true;
+                  that.$apply();
+                  wx.showToast({
+                    title: '发送成功,我们会尽快与您联系',
+                    icon: 'none',
+                    duration: 1000
+                  });
+                }
+              })
+              .catch(data => {
+                console.log(data);
+              });
+          }
+        },
+        fail: function(err) {
+          // console.log('调用失败');
+        },
+        complete: function() {
+          // console.log('调用成功');
+        }
+      });
+    },
+    surechange(e) {
+      let that = this;
+      that.ul[e.currentTarget.dataset.findex].task[
+        e.currentTarget.dataset.sindex
+      ].adjust = !that.ul[e.currentTarget.dataset.findex].task[
+        e.currentTarget.dataset.sindex
+      ].adjust;
+      if (that.t_ids.indexOf(e.currentTarget.dataset.tid) == -1) {
+        that.t_ids.push(e.currentTarget.dataset.tid);
+      } else {
+        that.t_ids.splice(that.t_ids.indexOf(e.currentTarget.dataset.tid), 1);
+      }
+      that.t_ids = that.t_ids.sort();
+    },
+    totips(e) {
+      wx.navigateTo({
+        url: 'tips?id='+e.currentTarget.dataset.id
+      });
+    }
+  };
+  onLoad(options) {
+    let that = this;
+    that.s_id = options.s_id;
+    that.p_id = options.p_id;
+    that.token = wepy.getStorageSync('token');
+    // console.log(that.token)
+    wepy
+      .request({
+        url:
+          'https://m.tdamm.com/weapp/api/preg/get_phase_task?token=' +
+          that.token,
+        method: 'POST',
+        data: {
+          s_id: that.s_id,
+          p_id: that.p_id
+        },
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        if (res.data.code == 200) {
+          that.ul = res.data.data;
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  onUnload() {}
+}
+</script>
+<style lang="less">
+page{
+  background: #f9f5f6;
+}
+.task {
+  background: #f9f5f6;
+  padding: 40rpx 0;
+  position: relative;
+  image {
+    display: block;
+  }
+  .adjust {
+    width: 140rpx;
+    height: 60rpx;
+    border-radius: 60rpx;
+    background: #a87580;
+    color: #fff;
+    font-size: 24rpx;
+    text-align: center;
+    line-height: 60rpx;
+    position: absolute;
+    top: 20rpx;
+    right: 20rpx;
+  }
+  .title {
+    margin: 40rpx 20rpx 0rpx;
+    border-bottom: 1px solid #c7c6c6;
+    padding: 0 30rpx 12rpx;
+    position: relative;
+    line-height: 40rpx;
+    font-size: 34rpx;
+    font-weight: 600;
+    color: #333333;
+  }
+  .title:before {
+    content: '';
+    width: 10rpx;
+    height: 40rpx;
+    background: #a87580;
+    position: absolute;
+    top: 0rpx;
+    left: 0rpx;
+  }
+  .title:first-child {
+    margin-top: 0;
+  }
+  .li {
+    margin: 20rpx 20rpx 0;
+    padding: 30rpx 30rpx 23rpx;
+    border-radius: 30rpx;
+    background: #fff;
+    .lititle {
+      line-height: 32rpx;
+      font-size: 32rpx;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .seximg {
+        width: 22rpx;
+        height: 32rpx;
+        margin-left: 30rpx;
+      }
+    }
+    .lidata {
+      margin-top: 13rpx;
+      line-height: 38rpx;
+      font-size: 24rpx;
+      color: #666;
+      display: -webkit-box;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+  }
+}
+</style>

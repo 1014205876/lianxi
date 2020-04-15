@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		.bgimg{
+		width: 100%;
+		height: 100%;
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class='bgimg' style='background-image:url("123.png")'></div>
+
+
+	<marquee behavior="alternate">我来回滚动</marquee>
+	<marquee behavior="scroll">我单方向循环滚动</marquee>
+	<marquee behavior="scroll" direction="up" height="30">我改单方向向上循环滚动</marquee>
+	<marquee behavior="slide">我只滚动一次</marquee>
+	<marquee behavior="slide" direction="up">我改向上只滚动一次了</marquee>
+	<div id="total">
+		下载量：<span class="t_num"></span>次
+	</div>
+	<script>
+		function show_num(n) {
+			var it = $(".t_num i");
+			var len = String(n).length;
+			for (var i = 0; i < len; i++) {
+				if (it.length <= i) {
+					$(".t_num").append("<i></i>");
+				}
+				var num = String(n).charAt(i);
+				var y = -parseInt(num) * 30; //y轴位置
+				var obj = $(".t_num i").eq(i);
+				obj.animate({ //滚动动画
+					backgroundPosition: '(0 ' + String(y) + 'px)'
+				}, 'slow', 'swing', function () { });
+			}
+		}
+
+		function getdata() {
+			show_num(Math.random() * 1000);
+			//				$.ajax({
+			//					url: 'data.php',
+			//					type: 'POST',
+			//					dataType: "json",
+			//					cache: false,
+			//					timeout: 10000,
+			//					error: function() {},
+			//					success: function(data) {
+			//						show_num(data.count);
+			//					}
+			//				});
+		}
+		$(function () {
+			getdata();
+			setInterval('getdata()', 3000); //每隔3秒执行一次
+		});
+	</script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/animateBackground-plugin.js"></script>
+</body>
+
+</html>

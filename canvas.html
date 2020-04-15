@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		.circle_process {
+			position: relative;
+			width: 199px;
+			height: 200px;
+		}
+
+		.circle_process .wrapper {
+			width: 100px;
+			height: 200px;
+			position: absolute;
+			top: 0;
+			overflow: hidden;
+		}
+
+		.circle_process .right {
+			right: 0;
+		}
+
+		.circle_process .left {
+			left: 0;
+		}
+
+		.circle_process .circle {
+			width: 160px;
+			height: 160px;
+			border: 20px solid transparent;
+			border-radius: 50%;
+			position: absolute;
+			top: 0;
+			transform: rotate(-135deg);
+		}
+
+		.circle_process .rightcircle {
+			border-top: 20px solid green;
+			border-right: 20px solid green;
+			right: 0;
+			-webkit-animation: circle_right 5s linear infinite;
+		}
+
+		.circle_process .leftcircle {
+			border-bottom: 20px solid green;
+			border-left: 20px solid green;
+			left: 0;
+			-webkit-animation: circle_left 5s linear infinite;
+		}
+
+		@-webkit-keyframes circle_right {
+			0% {
+				-webkit-transform: rotate(-135deg);
+			}
+
+			50%,
+			100% {
+				-webkit-transform: rotate(45deg);
+			}
+		}
+
+		@-webkit-keyframes circle_left {
+
+			0%,
+			50% {
+				-webkit-transform: rotate(-135deg);
+			}
+
+			100% {
+				-webkit-transform: rotate(45deg);
+			}
+		}
+	</style>
+	<style>
+		.wrapper2 {
+			width: 100px;
+			/* Set the size of the progress bar */
+			height: 100px;
+			position: absolute;
+			/* Enable clipping */
+			clip: rect(0px, 100px, 100px, 50px);
+			/* Hide half of the progress bar */
+		}
+
+		/* Set the sizes of the elements that make up the progress bar */
+		.circle2 {
+			width: 80px;
+			height: 80px;
+			border: 10px solid green;
+			border-radius: 50px;
+			position: absolute;
+			clip: rect(0px, 50px, 100px, 0px);
+		}
+
+		div[data-anim~=base] {
+			-webkit-animation-iteration-count: 1;
+			-webkit-animation-fill-mode: forwards;
+			-webkit-animation-timing-function: linear;
+		}
+
+		.wrapper2[data-anim~=wrapper2] {
+			-webkit-animation-duration: 0.01s;
+			-webkit-animation-delay: 3s;
+			-webkit-animation-name: close-wrapper;
+		}
+
+		.circle2[data-anim~=left] {
+			-webkit-animation-duration: 6s;
+			-webkit-animation-name: left-spin;
+		}
+
+		.circle2[data-anim~=right] {
+			-webkit-animation-duration: 3s;
+			-webkit-animation-name: right-spin;
+		}
+
+		div[data-anim~=base] {
+			-webkit-animation-iteration-count: 1;
+			-webkit-animation-fill-mode: forwards;
+			-webkit-animation-timing-function: linear;
+		}
+
+		.wrapper2[data-anim~=wrapper2] {
+			-webkit-animation-duration: 0.01s;
+			-webkit-animation-delay: 3s;
+			-webkit-animation-name: close-wrapper;
+		}
+
+		.circle2[data-anim~=left] {
+			-webkit-animation-duration: 6s;
+			-webkit-animation-name: left-spin;
+		}
+
+		.circle2[data-anim~=right] {
+			-webkit-animation-duration: 3s;
+			-webkit-animation-name: right-spin;
+		}
+
+		@-webkit-keyframes right-spin {
+			from {
+				-webkit-transform: rotate(0deg);
+			}
+
+			to {
+				-webkit-transform: rotate(180deg);
+			}
+		}
+
+		@-webkit-keyframes left-spin {
+			from {
+				-webkit-transform: rotate(0deg);
+			}
+
+			to {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+
+		@-webkit-keyframes close-wrapper {
+			to {
+				clip: rect(auto, auto, auto, auto);
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+
+
+
+
+	<div class="circle_process">
+		<div class="wrapper right">
+			<div class="circle rightcircle"></div>
+		</div>
+		<div class="wrapper left">
+			<div class="circle leftcircle" id="leftcircle"></div>
+		</div>
+	</div>
+
+
+
+
+	<div class="wrapper2" data-anim="base wrapper2">
+		<div class="circle2" data-anim="base left"></div>
+		<div class="circle2" data-anim="base right"></div>
+	</div>
+
+	<canvas id='canvas'></canvas>
+	<script>
+		let canvas = document.getElementById('canvas');
+		let context = canvas.getContext('2d');
+		context.stroke
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="icon" th:href="${T(com.masspick.Env).getInstance().getIcon()}" type="image/x-icon"/>
+    <title th:text="#{cas.login.pagetitle}"></title>
+</head>
+
+<body id="cas" class="login">
+<div layout:fragment="content">
+    <!--<div class=loginBg></div>-->
+    <!--<canvas id="stars" class="stars"></canvas>-->
+    <!--<div class="loginBgC"></div>-->
+    <div class="loginCon">
+        <div th:replace="fragments/loginform" />
+    </div>
+    <!--<script th:src="@{js/canvas.js}"></script>-->
+    <script th:src="@{js/peak_login.js}"></script>
+</div>
+</body>
+</html>

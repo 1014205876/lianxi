@@ -1,0 +1,138 @@
+（只有一个）超级用户 root
+（可以有多个）普通用户
+
+1
+pwd             显示当前路径（当前文件夹路径）
+ls              查看当前目录下的所有文件
+{
+    -l          查看详细信息
+    -a          查看所有文件（包括隐藏文件）
+}
+cd              跳转到指定文件路径（以/开头的为绝对路径）
+passwd          修改密码
+useradd -m xxx  创建新用户
+userdel xxx     删除用户
+rm -rf xxx      需要删除的文件夹
+su xxx          切换用户（切换到root不需带名字）ls
+su - xxx        切换用户
+（ctrl+d)       退出用户（一般用于删除前退出）
+
+2
+mkdir xxx       新建文件夹xxx
+cp xxx yyy      把xxx的内容复制到yyy
+echo $PATH      查看所有环境ex变量
+export PATH=$PATH:xxxxx     把xxx添加到path的环境变量里面（重启后失效）
+
+3
+ls -l xxx       查看文件的详细信息
+{
+    第一个文件
+    当为[ d ]则是目录（文件夹）
+    当为[ - ]则是文件；
+    若是[ l ]则表示为链接文档(link file)；
+    若是[ b ]则表示为装置文件里面的可供储存的接口设备(可随机存取装置)；
+    若是[ c ]则表示为装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)。
+
+    rwxr-xr-x.(文件的权限位)   
+    owner（属主权限；可读，可写，可执行/访问，111=7）   
+    group（属组权限；可读，不可写，可执行/访问，101=5） 
+    other（其它用户权限；可读，不可写，可执行/访问，101=5）
+    1 user user (文件的用户) 
+    62200（文件的大小） 
+    apr 16 04:10（文件最后一次修改的时间） 
+    xxx（文件或文件夹的名字（若是以.开头的则为隐藏文件，需用ls -la查看））
+}
+man ls          查看ls命令的所有后缀的作用
+chmod 644 xxx   修改xxx文件的所有执行权限
+
+4
+touch xxx       创建一个新文件
+cp xxx yyy      复制xxx文件到yyy
+mv xxx yyy      重命名xxx文件为yyy
+rm（rmdir） xxx 删除这个文件
+vi xxx          查看这个文件（a，i都可以编辑这个文件，按esc，:wq保存）
+cat xxx         显示这个文件的文本内容
+file xxx        查看文件类型
+
+5
+.               当前目录
+..              父级目录
+~               home/user目录（）
+/               根目录（home父级）
+cd -            跳转到上个目录
+权限字母意
+    r       可以使用ls查看到这个文件
+    w       可以使用touch在内部新建文件
+    x       可以使用cd进入这个文件
+}
+rm（rmdir） -rf xxx 删除这个文件夹以及内部所有文件
+{
+    -r      向下递归
+    -f       不做提示
+}
+
+6
+tar cf xxx yyy zzz  将yyy和zzz打包成xxx
+tar cjf xxx yyy zzz 将yyy和zzz压缩打包成xxx
+tar tvf xxx         查看压缩文件xxx
+tar xf xxx -C yyy   将xxx解压到yyy
+{
+    tar     打包命令
+    c       创建文件
+    j       使用bz2压缩文件
+    f       打包文件
+}
+diff -r xxx yyy     将xxx和yyy作比较（完全相同则无事发生，有不同会把不同的文件放在下面显示）
+
+7
+find xxx -name "yyy"    在文件路径xxx中查找所有名为yyy的文件
+{
+    ?yy表示长度为三结尾为yy的文件
+    *yy表示长度不限结尾为yy的文件
+}
+find xxx -type f -name "yyy"    查找所有名为yyy的文件
+find xxx -type d -name "yyy"    查找所有名为yyy的文件夹
+
+8
+find xxx -name "yyy" -exec wc -l {} \;      查找所有文件并显示行数
+{
+    -exec
+    wc -l   计算行数
+    {}
+    \;      反斜杠";"用于转义";"本来的含义
+}
+find xxx -name "yyy" -exec cp {} yyy \;     查找所有文件并且复制
+find xxx -name "yyy" >> yyy                 将查找结果写入文件yyy（没有则会新建一个文件）
+find xxx -name "yyy" | wc -l                将查找的结果用|和后面的指令连接起来
+
+9
+vi（vim） xxx       编辑xxx文件（如果没有则新建一个）
+a(i)                开始编辑这个文件
+esc                 退出编辑
+:                   转到末行
+wq                  保存
+q!                  不保存强制退出
+
+10
+在文件编辑页面
+{
+    :set number     在左侧显示行数
+    1G              光标跳转到指定行（末尾加上^表示跳到这行的开始，$表示跳到这行的末尾，GG为末行）
+    dd              删除这一行
+    dG              删除这一行及后面所有
+    yy              复制这一行
+    p               粘贴
+    x               剪切
+
+    u               撤销上一步
+    v               开始选中
+    /x              按下回车搜索（按n跳转到下一个搜索结果）
+    vd              删除选中
+    vy              复制选中
+
+    在某一行停留，输入100==，表示从这行到100行自动缩进
+    ctil+passwd     开启代码补全
+}
+
+11
+shell教程

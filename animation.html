@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>animation-demo</title>
+</head>
+<style>
+    .click-me {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        -mz-border-radius: 10px;
+        background-color: blue;
+        color: #fff;
+        line-height: 200px;
+        text-align: center;
+    }
+    .click-me.animation-target {
+        background-color: gray;
+        transform: translateX(500%);
+        -webkit-transform: translateX(500%);
+    }
+    .click-me.animation-target.active {
+        animation: fadeIn 1s linear both;
+        -webkit-animation: fadeIn 1s linear both;
+        -moz-animation: fadeIn 1s linear both;
+        -ms-animation: fadeIn 1s linear both;
+    }
+
+    .click-me.animation-target.hidden {
+        animation: fadeOut 1s linear both;
+        -webkit-animation: fadeOut 1s linear both;
+        -moz-animation: fadeOut 1s linear both;
+        -ms-animation: fadeOut 1s linear both;
+    }
+    
+    @keyframes fadeIn {
+        form {
+            transform: translateX(500%);
+            -webkit-transform: translateX(500%);
+            -moz-transform: translateX(500%);
+            -ms-transform: translateX(500%);
+        }
+        to {
+            transform: translateX(100%);
+            -webkit-transform: translateX(100%);
+            -moz-transform: translateX(100%);
+            -ms-transform: translateX(100%);
+        }
+    }
+
+    @keyframes fadeOut {
+        form {
+            transform: translateX(100%);
+            -webkit-transform: translateX(100%);
+            -moz-transform: translateX(100%);
+            -ms-transform: translateX(100%);
+        }
+        to {
+            transform: translateX(500%);
+            -webkit-transform: translateX(500%);
+            -moz-transform: translateX(500%);
+            -ms-transform: translateX(500%);
+        }
+    }
+
+</style>
+<body>
+    <a href="javascript:;" class="click-me" id="clickMe" data-click='false'>点我执行动画</a>
+    <a href="javascript:;" class="click-me animation-target"></a>
+    <script>
+        document.getElementById('clickMe').addEventListener('click', function () {
+            console.log(typeof document.getElementById('clickMe').dataset.click)
+            if (document.getElementById('clickMe').dataset.click === 'false') {
+                document.querySelector('.animation-target').setAttribute('class', ('click-me animation-target' + ' active'));
+                document.getElementById('clickMe').setAttribute('data-click', 'true');
+            } else {
+                document.querySelector('.animation-target').setAttribute('class', ('click-me animation-target' + ' hidden'));
+                document.getElementById('clickMe').setAttribute('data-click', 'false');
+            }
+        });
+    </script>
+</body>
+</html>

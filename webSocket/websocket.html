@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>websocket</title>
+    <style type="text/css">
+
+    </style>
+</head>
+
+<body>
+    <input type="text" id="speak">
+    <button id="sub">说话</button>
+    <button id="duanxian">断线</button>
+    <button id="shuaxin">重连</button>
+    <ul id="see">
+
+    </ul>
+
+
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+
+        let speak = document.getElementById('speak');
+        let see = document.getElementById('see');
+        let sub = document.getElementById('sub');
+        let duanxian = document.getElementById('duanxian');
+        let shuaxin = document.getElementById('shuaxin');
+var head;
+        var socket = new WebSocket("ws://localhost:3002/");
+
+        duanxian.onclick = function () {
+            // socket = new WebSocket("ws://localhost:3003/");
+            socket.close();
+        }
+        shuaxin.onclick = function () {
+            socket = new WebSocket("ws://localhost:3002/");
+        }
+
+        sub.onclick = function () {
+            console.log('发送给后台的数据');
+            console.log(speak.value);
+            socket.send(speak.value);
+        }
+
+        var onOpen = function (data) {//网页端与服务端建立连接时在网页端触发
+            console.log('服务开启')
+            console.log(data)
+        }
+
+        var onClose = function (data) {//服务端与网页端断开连接时由服务端触发
+            console.log('服务关闭')
+            console.log(data)
+        }
+
+        var onMessage = function (data) {
+            console.log('服务运行中3')
+             head=JSON.parse(data.data);
+            console.log(head)
+            // $('#see').append($('<li>').text(data.data));
+        }
+
+        var onError = function (data) {
+            console.log('服务报错3')
+            console.log(data)
+        }
+
+        function add(data) {
+            console.log(data)
+            $('#see').append($('<li>').text(data));
+        }
+
+        socket.onopen = onOpen;
+        socket.onclose = onClose;
+        socket.onerror = onError;
+        socket.onmessage = onMessage;
+    </script>
+</body>
+
+</html>

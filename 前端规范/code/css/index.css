@@ -1,0 +1,13 @@
+/**
+ * [测试样式]
+ * @Author   zhanggongze
+ * @DateTime 2017-12-12
+ */
+
+ body{
+       padding: 50px;
+ }
+
+ ul>li{
+       float: left;
+ }

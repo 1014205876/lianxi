@@ -1,0 +1,645 @@
+<!-- 女的任务列表 -->
+<template>
+    <view class="lists">
+        <swiper vertical="true" display-multiple-items="2" class="card-swiper">
+            <block wx:for="{{ taskLists }}" wx:key="item.index" wx:for-item="task">
+                <swiper-item class="card-items">
+                    <block wx:for="{{task}}" wx:key="timer">
+                        <block wx:if="{{ismen}}">
+                            <!-- 暂停任务 -->
+                            <block wx:if="{{ifStop == 1}}">
+                                <view class="card-item {{ item.finish === 1 ? 'completed2' : 'card-item2' }}">
+                                    <view class="item-state">
+                                        <view class="item-time">{{ item.timer }}</view>
+                                        <!-- <view>
+                                            <block wx:if="{{item.clock}}">
+                                                <image
+                                                    class="item-icon icon-clock" 
+                                                    hidden="{{ item.finish === 1 }}" 
+                                                    wx:if="{{isme && clock}}"
+                                                    src="../images/icon-clock.png"
+                                                    data-id="{{item.id}}"
+                                                    catchtap="cancelClock">
+                                                </image>
+                                            </block>
+                                            <block wx:else> 
+                                                
+                                            </block> 
+                                        </view> -->
+                                        <view class="mes" wx:if="{{ item.diary_num % 10 === 0 && item.finish == 1}}">
+                                            <image 
+                                                class="item-icon icon-mes" 
+                                                src="../images/icon-mes.png"
+                                                data-days="{{item.diary_num}}"
+                                                
+                                                data-id="{{item.id}}"
+                                                catchtap="getShareImg">
+                                            </image>
+                                        </view>
+                                       
+                                             <block wx:if="{{isme}}">
+                                                <view class="share">
+                                                    <image 
+                                                        class="item-icon icon-share" 
+                                                        src="../images/icon-share.png"
+                                                        data-name="{{item.task}}"
+                                                        wx:if="{{ item.finish === 1}}"
+                                                        data-finish="{{item.finish}}"
+                                                        catchtap="share">
+                                                    </image>
+                                                </view>
+                                            </block>
+                                            <block wx:if="{{iswomen}}">
+                                                <view class="share">
+                                                    <image 
+                                                        class="item-icon icon-share" 
+                                                        src="../images/icon-share.png"
+                                                        data-name="{{item.task}}"
+                                                        wx:if="{{ item.finish !== 1}}"
+                                                        data-finish="{{item.finish}}"
+                                                        catchtap="share">
+                                                    </image>
+                                                </view>
+                                            </block>
+                                        <view class="success" wx:if="{{isme && item.finish !== 1}}" data-id="{{item.id}}" catchtap="complete">
+                                            <image
+                                                class="item-icon icon-success" 
+                                                src="../images/icon-success2.png">
+                                            </image>
+                                        </view>
+                                    </view>
+                                    <view class="stop_stage"></view>
+                                    
+                                    <image class="item-bg" wx:if="{{item.finish === 1}}" src="../images/icon-complete.png"></image>
+                                    <image class="item-bg2" wx:else src="../images/icon-noc.png"></image>
+                                    <view class="item-name">{{item.task}}</view>
+                                    <!-- <view class="task-state" wx:if="{{item.state === 2}}">已完成</view>
+                                    <view class="task-state" wx:if="{{item.state === 0}}">未开启</view> -->
+                                </view>
+                            </block>
+                            <!-- 正常任务 -->
+                            <block wx:else>
+                                <view class="card-item {{ item.finish === 1 ? 'completed2' : 'card-item2' }}" data-finish="{{item.finish}}" data-id="{{item.id}}" @tap="goTo">
+                                    <view class="item-state">
+                                        <view class="item-time">{{ item.timer }}</view>
+                                        <!-- <view>
+                                            <block wx:if="{{item.clock}}">
+                                                <image
+                                                    class="item-icon icon-clock" 
+                                                    hidden="{{ item.finish === 1 }}" 
+                                                    wx:if="{{isme && clock}}"
+                                                    src="../images/icon-clock.png"
+                                                    data-id="{{item.id}}"
+                                                    catchtap="cancelClock">
+                                                </image>
+                                            </block>
+                                            <block wx:else> 
+                                                
+                                            </block> 
+                                        </view> -->
+                                        <view class="mes" wx:if="{{ item.diary_num % 10 === 0 && item.finish == 1}}">
+                                            <image 
+                                                class="item-icon icon-mes" 
+                                                src="../images/icon-mes.png"
+                                                data-days="{{item.diary_num}}"
+                                                
+                                                data-id="{{item.id}}"
+                                                catchtap="getShareImg">
+                                            </image>
+                                        </view>
+                                       
+                                             <block wx:if="{{isme}}">
+                                                <view class="share">
+                                                    <image 
+                                                        class="item-icon icon-share" 
+                                                        src="../images/icon-share.png"
+                                                        data-name="{{item.task}}"
+                                                        wx:if="{{ item.finish === 1}}"
+                                                        data-finish="{{item.finish}}"
+                                                        catchtap="share">
+                                                    </image>
+                                                </view>
+                                            </block>
+                                            <block wx:if="{{iswomen}}">
+                                                <view class="share">
+                                                    <image 
+                                                        class="item-icon icon-share" 
+                                                        src="../images/icon-share.png"
+                                                        data-name="{{item.task}}"
+                                                        wx:if="{{ item.finish !== 1}}"
+                                                        data-finish="{{item.finish}}"
+                                                        catchtap="share">
+                                                    </image>
+                                                </view>
+                                            </block>
+                                        <view class="success" wx:if="{{isme && item.finish !== 1}}" data-id="{{item.id}}" catchtap="complete">
+                                            <image
+                                                class="item-icon icon-success" 
+                                                src="../images/icon-success2.png">
+                                            </image>
+                                        </view>
+                                    </view>
+                                    <view class="lx" wx:if="{{item.diary_num >= 2 && item.finish == 1}}">
+                                        <!-- <image style="width: 141rpx; height: 141rpx; " src="../images/icon-lx.png"></image> -->
+                                        <view class="lx-txt">
+                                            <text>已连续
+                                                完成{{item.diary_num}}天
+                                            </text>
+                                        </view>
+                                    </view>
+                                    <image class="item-bg" wx:if="{{item.finish === 1}}" src="../images/icon-complete.png"></image>
+                                    <image class="item-bg2" wx:else src="../images/icon-noc.png"></image>
+                                    <view class="item-name">{{item.task}}</view>
+                                    <!-- <view class="task-state" wx:if="{{item.state === 2}}">已完成</view>
+                                    <view class="task-state" wx:if="{{item.state === 0}}">未开启</view> -->
+                                </view>
+                            </block>
+                            
+                        </block>
+                        <block wx:else>
+                            <block wx:if="{{ifStop == 1}}">
+                                <view class="card-item {{ item.finish === 1 ? 'completed' : '' }}">
+                                    <view class="item-state">
+                                        <view class="item-time">{{ item.timer }}</view>
+                                        <!-- <view>
+                                            <block wx:if="{{item.clock}}">
+                                                <image
+                                                    class="item-icon icon-clock" 
+                                                    hidden="{{ item.finish === 1 }}" 
+                                                    wx:if="{{iswomen && clock}}"
+                                                    src="../images/icon-clock.png"
+                                                    data-id="{{item.id}}"
+                                                    catchtap="cancelClock">
+                                                </image>
+                                            </block>
+                                            <block wx:else> 
+                                                
+                                            </block>                           
+                                        </view> -->
+                                        <view class="mes" wx:if="{{ item.diary_num % 10 === 0 && item.finish == 1}}">
+                                            <image 
+                                                class="item-icon icon-share" 
+                                                src="../images/icon-mes.png"
+                                                data-name="{{item.task}}"
+                                                wx:if="{{ item.diary_num >= 10 && item.finish == 1}}"
+                                                data-finish="{{item.finish}}"
+                                                
+                                                catchtap="share">
+                                            </image>
+                                        </view>
+                                        <block wx:if="{{isme}}">
+                                            <view class="share">
+                                                <image 
+                                                    class="item-icon icon-share" 
+                                                    src="../images/icon-share.png"
+                                                    data-name="{{item.task}}"
+                                                    wx:if="{{ item.finish !== 1}}"
+                                                    data-finish="{{item.finish}}"
+                                                    catchtap="share">
+                                                </image>
+                                            </view>   
+                                        </block>
+                                        <block wx:if="{{iswomen}}">
+                                            <view class="share">
+                                                <image 
+                                                    class="item-icon icon-share" 
+                                                    src="../images/icon-share.png"
+                                                    data-name="{{item.task}}"
+                                                    wx:if="{{ item.finish === 1}}"
+                                                    data-finish="{{item.finish}}"
+                                                    catchtap="share">
+                                                </image>
+                                            </view>   
+                                        </block> 
+                                        
+                                        <view class="success" wx:if="{{iswomen && item.finish !== 1}}" data-id="{{item.id}}" catchtap="complete">
+                                            <image 
+                                                class="item-icon icon-success"
+                                                src="../images/icon-success2.png">
+                                            </image>
+                                        </view>
+                                    </view>
+                                    <view class="stop_stage"></view>
+                                   
+                                    <image class="item-bg" wx:if="{{item.finish === 1}}" src="../images/icon-complete.png"></image>
+                                    <image class="item-bg2" wx:else src="../images/icon-noc.png"></image>
+                                    <view class="item-name">{{item.task}}</view>
+                                    <!-- <view class="task-state" wx:if="{{item.state === 2}}">已完成</view>
+                                    <view class="task-state" wx:if="{{item.state === 0}}">未开启</view> -->
+                                </view>
+                            </block>
+                            <block wx:else>
+                                <view class="card-item {{ item.finish === 1 ? 'completed' : '' }}" data-finish="{{item.finish}}"  data-id="{{item.id}}" @tap="goTo">
+                                    <view class="item-state">
+                                        <view class="item-time">{{ item.timer }}</view>
+                                        <!-- <view>
+                                            <block wx:if="{{item.clock}}">
+                                                <image
+                                                    class="item-icon icon-clock" 
+                                                    hidden="{{ item.finish === 1 }}" 
+                                                    wx:if="{{iswomen && clock}}"
+                                                    src="../images/icon-clock.png"
+                                                    data-id="{{item.id}}"
+                                                    catchtap="cancelClock">
+                                                </image>
+                                            </block>
+                                            <block wx:else> 
+                                                
+                                            </block>                           
+                                        </view> -->
+                                        <view class="mes" wx:if="{{ item.diary_num % 10 === 0 && item.finish == 1}}">
+                                            <image 
+                                                class="item-icon icon-share" 
+                                                src="../images/icon-mes.png"
+                                                data-name="{{item.task}}"
+                                                wx:if="{{ item.diary_num >= 10 && item.finish == 1}}"
+                                                data-finish="{{item.finish}}"
+                                                
+                                                catchtap="share">
+                                            </image>
+                                        </view>
+                                        <block wx:if="{{isme}}">
+                                            <view class="share">
+                                                <image 
+                                                    class="item-icon icon-share" 
+                                                    src="../images/icon-share.png"
+                                                    data-name="{{item.task}}"
+                                                    wx:if="{{ item.finish !== 1}}"
+                                                    data-finish="{{item.finish}}"
+                                                    catchtap="share">
+                                                </image>
+                                            </view>   
+                                        </block>
+                                        <block wx:if="{{iswomen}}">
+                                            <view class="share">
+                                                <image 
+                                                    class="item-icon icon-share" 
+                                                    src="../images/icon-share.png"
+                                                    data-name="{{item.task}}"
+                                                    wx:if="{{ item.finish === 1}}"
+                                                    data-finish="{{item.finish}}"
+                                                    catchtap="share">
+                                                </image>
+                                            </view>   
+                                        </block> 
+                                        <view class="success" wx:if="{{iswomen && item.finish !== 1}}" data-id="{{item.id}}" catchtap="complete">
+                                            <image 
+                                                class="item-icon icon-success" 
+                                                src="../images/icon-success2.png">
+                                            </image>
+                                        </view>
+                                    </view>
+                                    <view class="lx" wx:if="{{item.diary_num >= 2 && item.finish == 1}}">
+                                        <!-- <image style="width: 141rpx; height: 141rpx; " src="../images/icon-lx.png"></image> -->
+                                        <view class="lx-txt">
+                                            <text>已连续
+                                                完成{{item.diary_num}}天
+                                            </text>
+                                        </view>
+                                    </view>
+                                    <image class="item-bg" wx:if="{{item.finish === 1}}" src="../images/icon-complete.png"></image>
+                                    <image class="item-bg2" wx:else src="../images/icon-noc.png"></image>
+                                    <view class="item-name">{{item.task}}</view>
+                                    <!-- <view class="task-state" wx:if="{{item.state === 2}}">已完成</view>
+                                    <view class="task-state" wx:if="{{item.state === 0}}">未开启</view> -->
+                                </view>
+                            </block>   
+                        </block>           
+                    </block>
+                </swiper-item>
+
+            </block>
+        </swiper>
+    </view> 
+</template>
+
+<script>
+import wepy from 'wepy'
+import tip from '../util/tip'
+
+export default class wLists extends wepy.component {
+	data = {
+        token: '',
+        clock: true
+	}
+    props = {
+        taskLists: {
+            type: Array,
+            default: []
+        },
+        ismen: {
+            type: Boolean,
+            default: false
+        },
+        isme: {
+            type: Boolean,
+            default: false
+        },
+        iswomen: {
+            type: Boolean,
+            default: false
+        },
+        close: {
+            type: Boolean,
+            default: false,
+            twoWay: true
+        },
+        state: {
+            type: Number,
+            default: 0,
+            twoWay: true
+        },
+        ifStop: {
+            type: String,
+            default: null,
+            twoWay: true
+        }
+    }
+
+    async onLoad() {
+        let token = wepy.getStorageSync('token')
+        this.token = token
+        
+        // let taskLists = chunk(this.taskLists, 2)
+        // this.taskLists = taskLists
+    }
+    methods = {
+        share(e) {
+            let txt = e.currentTarget.dataset.name
+            let finish = e.currentTarget.dataset.finish
+            this.close = !this.close
+            this.$apply()
+            this.$emit('share', txt, finish)
+        },
+        cancelClock(e) {
+            let that = this
+            let id = e.currentTarget.dataset.id
+            wx.showModal({
+                title: '提示',
+                content: '确定要取消提醒吗？',
+                success: function(res) {
+                    if (res.confirm) {
+                        
+                        wepy.request({
+                            url: `https://m.tdamm.com/weapp/api/preg/cancle_task_clock?token=${that.token}`,
+                            method: 'POST',
+                            header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            data: {
+                                id: id
+                            }
+                        }).then(res => {
+                            console.log(res)
+                            that.clock = false
+                            that.$apply()
+                        }).catch(res =>{
+                            console.log(res)
+                        })
+                    }
+                }
+            })
+            
+        },
+        getShareImg(e) {
+            let that = this
+            let id = e.currentTarget.dataset.id
+            let days = e.currentTarget.dataset.days
+            if (days)
+            wepy.request({
+                url: `https://m.tdamm.com/weapp/api/preg/share_continue_task?token=${that.token}`,
+                method: 'POST',
+                data: {
+                    id: id,
+                    days: days
+                },
+                header: {
+                   'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(res => {
+                if (res.data.code === 200) {
+                    let imgurl = res.data.imgurl
+                    that.$emit('getImg', imgurl)
+                }
+            }).catch(res => {
+                console.log(res)
+                tip.error('获取失败')
+            })
+        },
+        goTo(e) {
+            let id = e.currentTarget.dataset.id
+            let finish = e.currentTarget.dataset.finish
+            wx.navigateTo({
+               url: `../pages/tips?id=${id}&finish=${finish}&state=${this.state}`
+            })
+        },
+        complete(e) {
+            let that = this
+            let diarym = wepy.getStorageSync('diarym')
+            let diarywm = wepy.getStorageSync('diarywm')
+            let id = e.currentTarget.dataset.id
+            let data
+            if (this.iswomen) {
+               data = diarywm
+               diarywm[id] = 1
+               wepy.setStorageSync('diarywm', diarywm)
+            }
+            if (this.isme) {
+                data = diarym
+                diarym[id] = 1
+                wepy.setStorageSync('diarym', diarym)
+            }
+            wepy.request({
+                url: `https://m.tdamm.com/weapp/api/preg/diary?token=${this.token}`,
+                method: 'POST',
+                data: {
+                    data: JSON.stringify(data)
+                },
+                header: {
+                   'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(res => {
+                console.log(res)
+                tip.success('已完成')
+                this.$emit('childFn', true)
+            }).catch(res => {
+                console.log(res)
+            })
+        }
+    }
+}
+</script>
+
+<style lang='less' scoped>
+    .card-swiper {
+        width: 100%;
+        min-height: 660rpx;
+        // overflow: hidden;
+    }
+    .card-items {
+        width: 100%;
+        height: 240rpx !important;
+        // height: 50% !important;
+        // padding: 0 10rpx;
+        display: flex;
+        box-sizing: border-box;
+        flex-flow: row wrap;
+        .card-item {
+            margin: 0 10rpx 15rpx;
+            padding: 30rpx 20rpx;
+            box-sizing: border-box;
+            border-radius: 10rpx;
+            // flex: 1;
+            width: 355rpx;
+            height: 220rpx;
+            position: relative;      
+            background: linear-gradient(to right, #ff79bb 0%, #ff828a 100%);
+
+            .stop_stage {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: rgba(0, 0, 0, 0.5)
+            }
+            &.card-item2 {
+                background: linear-gradient(to right, #79b0ff 0%, #ba90fe 100%);
+            }
+
+            &.completed2  {
+                background: linear-gradient(to right, #a1c8ff 0%, #cfb0fe 100%);
+            }
+            &.completed {
+                background: linear-gradient(to right, #fea1ce 0%, #ffa8ae 100%);
+            }
+
+            .lx {
+                position: absolute;
+                left: -60rpx;
+                top: 12rpx;
+                width: 200rpx;
+                height: 70rpx;
+                transform: rotateZ(-45deg);
+                background: #f85562;
+                border-top: 1rpx solid #fff;
+                border-bottom: 1rpx solid #fff;
+                
+                .lx-txt {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 150rpx;
+                    text-align: center;
+                    text {
+                        display: block;
+                        font-size: 20rpx;
+                        color: #fff;
+                        // transform: rotateZ(-45deg);
+                    }
+                    
+                }
+            }
+            .item-state {
+                display: flex;
+                align-items: center;
+                position: relative;
+                min-height: 34rpx;
+
+                
+                .item-time {
+                    font-size: 26rpx;
+                    min-width: 70rpx;
+                    color: #fff;
+                }
+
+                .item-icon {
+                    display: block;
+                    width: 34rpx;
+                    height: 34rpx;
+                    position: absolute;
+                    left: 50%;
+                    right: 50%;
+                    
+                }
+
+                .icon-success {
+                    width: 33rpx;
+                    height: 32rpx;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    margin-left: 0;
+                }
+                .icon-share {
+                    width: 40rpx;
+                    height: 32rpx;
+                    left: 5rpx;
+                    top: 9rpx;
+                    // transform: translate(-50%, -50%);
+                }
+                .icon-mes {
+                   left: 8rpx;
+                   top: 8rpx;
+                }
+            }
+            .success {
+                width: 80rpx;
+                height: 80rpx;
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%);
+            }
+            .share {
+                width: 50rpx;
+                height: 50rpx;
+                position: absolute;
+                top: 50%;
+                right: 4rpx;
+                 transform: translateY(-50%);
+            }
+            .mes {
+                width: 50rpx;
+                height: 50rpx;
+                position: absolute;
+                top: 50%;
+                right: 70rpx;
+                transform: translateY(-50%);
+            }
+            .item-name {
+                font-size: 28rpx;
+                color: #fff;
+                margin-top: 40rpx;
+                width: 280rpx;
+                line-height: 1.5;
+            }
+            .item-bg {
+                display: block;
+                width: 114rpx;
+                height: 114rpx;
+                position: absolute;
+                bottom: 0rpx;
+                right: 0rpx;
+            }
+            .item-bg2 {
+                display: block;
+                width: 96rpx;
+                height: 92rpx;
+                position: absolute;
+                bottom: 0rpx;
+                right: 0rpx;
+            }
+            .task-state {
+                font-size: 24rpx;
+                color: #fff;
+                position: absolute;
+                bottom: 20rpx;
+                left: 20rpx;
+            }
+        }
+    }
+    
+</style>

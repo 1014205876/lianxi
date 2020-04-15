@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .father>li {
+            display: none;
+        }
+
+        .father>.active {
+            display: block;
+        }
+
+        .children>li {
+
+            display: none;
+        }
+
+        .children>.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fatherbtn">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+    </div>
+    <ul class='father'>
+        <li class='active'>
+            <div class="childrenbtn">
+                <button>1</button>
+                <button>2</button>
+            </div>
+            <ul class="children">
+                <li class='active'>11</li>
+                <li>12</li>
+            </ul>
+        </li>
+        <li>
+            <div class="childrenbtn">
+                <button>1</button>
+                <button>2</button>
+            </div>
+            <ul class="children">
+                <li class='active'>21</li>
+                <li>22</li>
+            </ul>
+        </li>
+        <li>
+            <div class="childrenbtn">
+                <button>1</button>
+                <button>2</button>
+            </div>
+            <ul class="children">
+                <li class='active'>31</li>
+                <li>32</li>
+            </ul>
+        </li>
+    </ul>
+    <div id="page1"></div>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script>
+        $(function () {
+
+
+            https://jinritb.oss-cn-hangzhou.aliyuncs.com/2019-08-14/66da42d9-d5f4-4bfc-9996-f50e85370d48.png
+            https://jinritb.oss-cn-hangzhou.aliyuncs.com/2019-09-06/insuranceBill.html
+
+            $("#page1").load("https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik");
+            var index = 0;
+            $('.fatherbtn button').click(function () {
+                $('.father>li').removeClass('active')
+                $('.father>li').eq($(this).index()).addClass('active')
+                index = $(this).index()
+            })
+            $('.childrenbtn button').click(function () {
+                $('.children>li').removeClass('active')
+                console.log($(this).index())
+                $('.children').eq(index).find('li').eq($(this).index()).addClass('active')
+            })
+        })
+    </script>
+</body>
+
+</html>

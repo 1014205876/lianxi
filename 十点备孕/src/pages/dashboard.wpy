@@ -1,0 +1,151 @@
+<template>
+  <view>
+    <view class="yibaipan">
+      <view wx:for="{{deg}}" class="li {{index<=over?'over':''}}" data-index="{{index}}" style="{{item}}"></view>
+      <view class="ballwrp" style="{{ball}}">
+        <view class="ball"></view>
+        <view class="text" style="{{text}}">{{over}}%</view>
+      </view>
+    </view>
+    <slider bindchanging="sliderchange" value="{{over}}" min="0" max="100" show-value></slider>
+    <button bindtap="shuaxin">刷新</button>
+    <view>
+      <swiper>
+        <swiper-item>
+          <view style='width:100%;height:100%'>
+            <swiper vertical='true'>
+              <swiper-item>
+                  <view style='background: linear-gradient(to bottom right, red , blue);width:100%;height:100%'></view>
+              </swiper-item>
+              <swiper-item>
+                  <view style='background: linear-gradient(to bottom right, red , blue);width:100%;height:100%'></view>
+              </swiper-item>
+            </swiper>
+          </view>
+        </swiper-item>
+        <swiper-item>
+          <view style='width:100%;height:100%'>
+            <swiper vertical='true'>
+              <swiper-item>
+                  <view style='background:yellow;width:100%;height:100%'></view>
+              </swiper-item>
+              <swiper-item>
+                  <view style='background:green;width:100%;height:100%'></view>
+              </swiper-item>
+            </swiper>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Dashboard extends wepy.page {
+  config = {
+    navigationBarTitleText: '仪表盘'
+  };
+  data = {
+    deg: [],
+    ball: '',
+    text: '',
+    over: 0,
+    over02: 100
+  };
+  props = {};
+  watch = {};
+  methods = {
+    //slide进度条
+    sliderchange(e) {
+      // console.log(e.detail.value);
+      this.over = e.detail.value;
+      let that = this;
+      that.rotate(that);
+    },
+    //点击刷新
+    shuaxin() {
+      wx.reLaunch({
+        url: 'dashboard'
+      });
+    }
+  };
+  onLoad() {
+    //生成圆弧
+    for (let i = 0; i <= 100; i++) {
+      let deg = 'transform: rotate(' + i * 3.6 + 'deg)';
+      this.deg.push(deg);
+    }
+    //圆弧动画
+    for (let i = 0; i <= 100; i++) {
+      this.over = i;
+      let that = this;
+      that.rotate(that);
+      if (this.over >= this.over02) {
+        break;
+      }
+    }
+
+    // this.over = this.over02;
+    // let that = this;
+    // that.rotate(that);
+  }
+  //原点旋转
+  rotate(that) {
+    let ball = 'transform: rotate(' + that.over * 3.6 + 'deg)';
+    that.ball = ball;
+    let text = 'transform: rotate(' + that.over * -3.6 + 'deg)';
+    that.text = text;
+    that.$apply();
+  }
+}
+</script>
+<style lang="less">
+.yibaipan {
+  width: 500rpx;
+  height: 500rpx;
+  margin: 0 auto;
+  position: relative;
+
+  .li {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 300rpx;
+    width: 6px;
+    border-top: 20rpx solid transparent;
+    border-bottom: 20rpx solid transparent;
+  }
+  .li.over {
+    border-top: 20rpx solid red;
+  }
+  .ballwrp {
+    width: 30rpx;
+    height: 350rpx;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0rpx;
+    bottom: 0;
+    margin: auto;
+    .ball {
+      width: 30rpx;
+      height: 30rpx;
+      border-radius: 30rpx;
+      background: blue;
+    }
+    .text {
+      width: 120rpx;
+      height: 80rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: -90rpx;
+      left: -50rpx;
+    }
+  }
+}
+</style>

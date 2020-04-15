@@ -1,0 +1,8 @@
+{
+    "registry-mirrors": [
+        "https://v16stybc.mirror.aliyuncs.com"
+    ],
+    "exec-opts": [
+        "native.cgroupdriver=systemd"
+    ]
+}

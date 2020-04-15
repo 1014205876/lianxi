@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+    <title>中国地图</title>
+    <!-- 引入jq -->
+    <script src='js/jquery-1.9.1.min.js'></script>
+    <!-- 引入echarts -->
+    <script src='js/echarts.min.js'></script>
+    <!-- 引入地图js -->
+    <script src="mapjs/china-contour.js"></script>
+    <script src="mapjs/anhui.js"></script>
+    <script src="mapjs/aomen.js"></script>
+    <script src="mapjs/beijing.js"></script>
+    <script src="mapjs/china.js"></script>
+    <script src="mapjs/chongqing.js"></script>
+    <script src="mapjs/fujian.js"></script>
+    <script src="mapjs/gansu.js"></script>
+    <script src="mapjs/guangdong.js"></script>
+    <script src="mapjs/guangxi.js"></script>
+    <script src="mapjs/guizhou.js"></script>
+    <script src="mapjs/hainan.js"></script>
+    <script src="mapjs/hebei.js"></script>
+    <script src="mapjs/heilongjiang.js"></script>
+    <script src="mapjs/henan.js"></script>
+    <script src="mapjs/hubei.js"></script>
+    <script src="mapjs/hunan.js"></script>
+    <script src="mapjs/jiangsu.js"></script>
+    <script src="mapjs/jiangxi.js"></script>
+    <script src="mapjs/jilin.js"></script>
+    <script src="mapjs/liaoning.js"></script>
+    <script src="mapjs/neimenggu.js"></script>
+    <script src="mapjs/ningxia.js"></script>
+    <script src="mapjs/qinghai.js"></script>
+    <script src="mapjs/shandong.js"></script>
+    <script src="mapjs/shanghai.js"></script>
+    <script src="mapjs/shanxi.js"></script>
+    <script src="mapjs/shanxi1.js"></script>
+    <script src="mapjs/sichuan.js"></script>
+    <script src="mapjs/taiwan.js"></script>
+    <script src="mapjs/tianjin.js"></script>
+    <script src="mapjs/world.js"></script>
+    <script src="mapjs/xianggang.js"></script>
+    <script src="mapjs/xinjiang.js"></script>
+    <script src="mapjs/xizang.js"></script>
+    <script src="mapjs/yunnan.js"></script>
+    <script src="mapjs/zhejiang.js"></script>
+    <style>
+        #china-map {
+            width: 100%;
+            height: 600px;
+            margin: auto;
+        }
+
+        #back {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="china-map"></div>
+    <div id='back'>回到上级</div>
+    <script>
+        $(function () {
+            // 自定义数据
+            var chinaData = [//中国地图数据
+                { name: '北京', value: Math.round(Math.random() * 2000) },
+                { name: '天津', value: Math.round(Math.random() * 2000) },
+                { name: '上海', value: Math.round(Math.random() * 2000) },
+                { name: '重庆', value: Math.round(Math.random() * 2000) },
+                { name: '河北', value: Math.round(Math.random() * 2000) },
+                { name: '河南', value: Math.round(Math.random() * 2000) },
+                { name: '云南', value: Math.round(Math.random() * 2000) },
+                { name: '辽宁', value: Math.round(Math.random() * 2000) },
+                { name: '黑龙江', value: Math.round(Math.random() * 2000) },
+                { name: '湖南', value: Math.round(Math.random() * 2000) },
+                { name: '安徽', value: Math.round(Math.random() * 2000) },
+                { name: '山东', value: Math.round(Math.random() * 2000) },
+                { name: '新疆', value: Math.round(Math.random() * 2000) },
+                { name: '江苏', value: Math.round(Math.random() * 2000) },
+                { name: '浙江', value: Math.round(Math.random() * 2000) },
+                { name: '江西', value: Math.round(Math.random() * 2000) },
+                { name: '湖北', value: Math.round(Math.random() * 2000) },
+                { name: '广西', value: Math.round(Math.random() * 2000) },
+                { name: '甘肃', value: Math.round(Math.random() * 2000) },
+                { name: '山西', value: Math.round(Math.random() * 2000) },
+                { name: '内蒙古', value: Math.round(Math.random() * 2000) },
+                { name: '陕西', value: Math.round(Math.random() * 2000) },
+                { name: '吉林', value: Math.round(Math.random() * 2000) },
+                { name: '福建', value: Math.round(Math.random() * 2000) },
+                { name: '贵州', value: Math.round(Math.random() * 2000) },
+                { name: '广东', value: Math.round(Math.random() * 2000) },
+                { name: '青海', value: Math.round(Math.random() * 2000) },
+                { name: '西藏', value: Math.round(Math.random() * 2000) },
+                { name: '四川', value: Math.round(Math.random() * 2000) },
+                { name: '宁夏', value: Math.round(Math.random() * 2000) },
+                { name: '海南', value: Math.round(Math.random() * 2000) },
+                { name: '台湾', value: Math.round(Math.random() * 2000) },
+                { name: '香港', value: Math.round(Math.random() * 2000) },
+                { name: '澳门', value: Math.round(Math.random() * 2000) },
+                { name: '南海诸岛', value: Math.round(Math.random() * 2000) }
+            ]
+            var beijingData = [//北京地图数据
+                { name: '密云区', value: Math.round(Math.random() * 2000) },
+                { name: '昌平区', value: Math.round(Math.random() * 2000) },
+                { name: '延庆区', value: Math.round(Math.random() * 2000) },
+                { name: '顺义区', value: Math.round(Math.random() * 2000) },
+                { name: '香港', value: Math.round(Math.random() * 2000) },
+                { name: '澳门', value: Math.round(Math.random() * 2000) }
+            ]
+            // $.get('json/china.json', function (mapJson) {
+            //         echarts.registerMap('china', mapJson);
+            //         var chart = echarts.init(document.getElementById('china_map'));//在id为mainMap的dom元素中显示地图
+            // }
+            var option = {
+                title: {
+                    text: '中国地图',
+                    subtext: '人口密度',
+                    x: 'center'
+                },
+                tooltip: {//鼠标移入显示。
+                    trigger: 'item',//数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+                    formatter: function (result) {//hover时显示的内容
+                        return result.name + ':' + result.value;
+                    }
+                },
+                visualMap: {//左下方进度条
+                    min: 0,
+                    max: 2500,
+                    text: ['高', '低'],
+                    calculable: true,//进度条是否可拖动
+                    realtime: true,//是否在拖动进度条的时候实时刷新
+                    inRange: {
+                        color: ['lightskyblue', 'yellow', 'orangered']//进度条颜色渐变
+                    }
+                },
+                series: [
+                    {
+                        type: 'map',
+                        mapType: 'china',//调取的地图名字
+                        roam: false,//是否开启鼠标缩放和平移漫游
+                        itemStyle: {//地图区域的多边形 图形样式
+                            normal: {//是图形在默认状态下的样式
+                                label: {
+                                    show: true,//是否显示标签
+                                    textStyle: {//对字体的修饰
+                                        color: "rgb(0, 0, 0)",//默认状态下字体颜色
+                                    },
+                                }
+                            },
+                            emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                                areaColor: 'blue',//hover事件下图形的背景颜色
+                                label: {
+                                    show: true,
+                                    textStyle: {
+                                        color: "rgb(255, 255, 255)",//hover状态下字体颜色
+                                    }
+                                }
+                            }
+                        },
+                        data: chinaData,//载入后台数据
+                    }
+                ],
+            };
+            //生成地图
+            var myChart = echarts.init(document.getElementById('china-map'));
+            myChart.setOption(option);
+            //设置点击事件  
+            myChart.on('click', function (params) {
+                option.title.text = params.name + '地图'//换标题
+                option.series[0].mapType = params.name//换地图
+                option.series[0].data = beijingData//换数据
+                myChart.setOption(option);//重新载入新地图
+                console.log(params);
+            });
+            //返回事件
+            $('#back').click(function () {
+                option.title.text = '中国' + '地图'//换标题
+                option.series[0].mapType = 'china'//换地图
+                option.series[0].data = chinaData//换数据
+                myChart.setOption(option);//重新载入新地图
+            })
+        })
+    </script>
+</body>
+
+</html>

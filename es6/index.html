@@ -1,0 +1,51 @@
+<script>
+    const point = [10, 25, -34];
+    const [x, y, z] = point;
+    console.log(x, y, z);//10,25,-34
+
+    const gemstone = {
+        type: 'quartz',
+        color: 'rose',
+        karat: 21.29
+    };
+    const { type, color, karat } = gemstone;
+    console.log(type, color, karat);//quartz rose 21.29
+
+    const digit = [1, 2, 3];
+    const digits = { a: 1, b: 2, c: 3 };
+    for (const index in digit) {
+        console.log(index);
+    }
+    for (const digits of digit) {
+        console.log(digits);
+    }
+
+    const books = ["Don Quixote", "The Hobbit", "Alice in Wonderland", "Tale of Two Cities"];
+    console.log(books);
+    console.log(...books);
+
+    const fruits = ["apples", "bananas", "pears"];
+    const vegetables = ["corn", "potatoes", "carrots"];
+    const produce = fruits.concat(vegetables);
+    console.log(produce);
+
+    const order = [20.17, 18.67, 1.50, "cheese", "eggs", "milk", "bread"];
+    const [total, subtotal, tax, ...items] = order;
+    console.log(total, subtotal, tax, items);
+    fun2()
+    function fun1() {
+        let time1 = setTimeout(function () {
+            console.log(this)
+        }, 10)
+        let time2 = setTimeout(() => {
+            console.log(this)
+        }, 10)
+    }
+    function fun2() {
+        fun1()
+    }
+
+
+
+
+</script>

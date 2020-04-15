@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #00903f;
+            min-height: 1000px;
+            width: 100%;
+        }
+
+        p {
+            color: #fff;
+            font-size: 26px;
+            font-family: "微软雅黑";
+            margin: 10px;
+            line-height: 2;
+            text-shadow: 5px 5px 5px #222;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="inner"></div>
+    <script type="text/javascript">
+        var content = "<p>马云说过：“傻傻的信，傻傻的干，傻傻的挣了数百万!精明的算，精明的看，最后成了穷光蛋！生命靠运动，成功靠行动！”<br/>前行的路，不怕万人阻挡，只怕自己投降，人生的帆，不怕狂风巨浪，只怕自己没胆量！有路，就大胆去走，有梦，就大胆飞翔。大胆，才应该是我们的信仰，梦想，永远只会是梦里空想，要知道，逆风的方向，更适合飞翔，才是人生奋斗的方向！</p>";
+        var n = 1;
+        setInterval(function () {
+            document.getElementById('inner').innerHTML = content.substring(0, n);
+            n = n + 1;
+        }, 150)
+    </script>
+</body>
+
+</html>

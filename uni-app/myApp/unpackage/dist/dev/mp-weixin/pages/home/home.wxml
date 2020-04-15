@@ -1,0 +1,1 @@
+<view class="header"><view class="address">{{city}}</view><view class="input"><input type="text" value=""/></view><view class="find"><button type="primary">查询</button></view></view>

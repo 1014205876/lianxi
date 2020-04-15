@@ -1,0 +1,81 @@
+<head>
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+            border: none;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .box {
+            width: 100%;
+            height: 50px;
+            text-align: center;
+        }
+
+        input {
+            display: none;
+        }
+
+        label {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            position: relative;
+            line-height: 50px;
+            color: #999;
+        }
+
+        label:active {
+            background: #EEEEEE;
+        }
+
+        label:after {
+            content: "";
+            /*必须设置*/
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid green;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            border-radius: 20px;
+        }
+
+        input:checked+label:after {
+            background-color: green;
+        }
+
+        .line {
+            width: 100%;
+            height: 1px;
+            background: #ccc;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <input type="radio" id="radio1" name="radio" checked="checked" /><label for="radio1">选项一</label>
+    </div>
+    <div class="line"></div>
+    <div class="box">
+        <input type="radio" id="radio2" name="radio" /><label for="radio2">选项二</label>
+    </div>
+    <div class="line"></div>
+    <div class="box">
+        <input type="radio" id="radio3" name="radio" /><label for="radio3">选项三</label>
+    </div>
+    <div class="line"></div>
+    <div class="box">
+        <input type="radio" id="radio4" name="radio" /><label for="radio4">选项四</label>
+    </div>
+    <div class="line"></div>
+    <div class="box">
+        <input type="radio" id="radio5" name="radio" /><label for="radio5">选项五</label>
+    </div>
+    <div class="line"></div>
+</body>

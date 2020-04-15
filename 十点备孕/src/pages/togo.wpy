@@ -1,0 +1,160 @@
+<!-- welcome -->
+<template>
+<view class='welcome' bindtap='dianji'>
+  <image class='bgimg' src='//m.tdamm.com/static/images/phone/welcomebgimg.png'></image>
+  <image class='logo' src='../images/logo.png'></image>
+  <view class='title'>十点备孕</view>
+  <view class='describe'>让每个家庭都拥有健康宝宝</view>
+  <view class='getUserInfo'>
+    <image src='../images/redbtn.png'></image>
+    <button open-type="getUserInfo" plain="{{true}}">自动跳转中，请稍后</button>
+  </view>
+  <!-- <view style='text-align:center;font-size:24rpx;line-height:54rpx;'>点击按钮进入小程序</view> -->
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../util/tip';
+export default class Guanlian extends wepy.page {
+  config = {};
+  data = {
+    theuid: ''
+  };
+  methods = {
+    dianji() {
+      let that = this;
+      that.needgo(that);
+    }
+  };
+  needgo(that) {
+    if (that.theuid) {
+      wx.redirectTo({
+        url: 'togo?scene=' + that.theuid
+      });
+    } else {
+      wx.redirectTo({
+        url: 'togo'
+      });
+    }
+  }
+  onShow() {}
+  onLoad(options) {
+    console.log('onload');
+    let that = this;
+    let token = wepy.getStorageSync('token');
+    let mobile = wepy.getStorageSync('mobile');
+    let theuid = decodeURIComponent(options.scene);
+    console.log(theuid);
+    if (theuid) {
+      that.theuid = theuid;
+      that.$apply();
+    }
+    setTimeout(() => {
+      if (!token) {
+        wepy.reLaunch({
+          url: 'welcome?theuid=' + theuid
+        });
+      } else {
+        if (theuid && theuid != 'undefined') {
+          wepy.reLaunch({
+            url: 'guanlian?theuid=' + theuid
+          });
+        } else {
+          if (!mobile) {
+            wepy.reLaunch({
+              url: 'index'
+            });
+          } else {
+            wepy
+              .request({
+                url: `https://m.tdamm.com/weapp/api/preg/user_status?token=${token}`,
+                method: 'POST',
+                header: {
+                  'Content-Type': 'application/x-www-form-urlencoded'
+                }
+              })
+              .then(res => {
+                if (res.data.code == 200) {
+                  let type = res.data.type;
+                  wepy.setStorageSync('type', type);
+                  if (res.data.type == 0) {
+                    wx.reLaunch({
+                      url: 'pay'
+                    });
+                  } else if (res.data.type == 3 || res.data.type == 2) {
+                    wx.reLaunch({
+                      url: 'wait'
+                    });
+                  } else {
+                    wx.reLaunch({
+                      url: 'task'
+                    });
+                  }
+                }
+              })
+              .catch(e => {
+                console.log(e);
+              });
+          }
+        }
+      }
+    }, 500);
+  }
+}
+</script>
+
+<style lang='less'>
+.welcome {
+  text-align: center;
+  position: relative;
+  .bgimg {
+    width: 750rpx;
+    height: 525rpx;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .logo {
+    width: 224rpx;
+    height: 225rpx;
+    border: 7rpx solid #fff;
+    border-radius: 230rpx;
+    margin: 240rpx auto 0;
+  }
+  .title {
+    margin-top: 30rpx;
+    line-height: 60rpx;
+    font-size: 60rpx;
+    font-weight: 300;
+  }
+  .describe {
+    line-height: 64rpx;
+    font-size: 34rpx;
+    font-weight: 600;
+  }
+  .getUserInfo {
+    margin: 230rpx auto 0;
+    width: 501rpx;
+    height: 80rpx;
+    position: relative;
+    image {
+      width: 501rpx;
+      height: 80rpx;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    button {
+      width: 501rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 34rpx;
+      color: #fff;
+    }
+  }
+}
+</style>

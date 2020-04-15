@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--get方式的请求  数据到获取-->
+		<!--
+			action:提交到的地址
+			method :提交的方式
+			假设请求方式		请求地址		预期结果
+			   get	 		/get   	      字段 userName 
+		-->
+		<form action="/get" method="get">
+			<input type="text" name="userName"/>
+			<!--name上面的值 不要重复-->
+			<input type="submit" value="提交" />
+		</form>
+	</body>
+</html>

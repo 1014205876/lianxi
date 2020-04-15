@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+            background: url("./img/table.jpg") no-repeat center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .table {
+            width: 1100px;
+            background: #fff;
+            margin: 100px auto;
+            border-top: 1px solid #e8e8e8;
+            border-left: 1px solid #e8e8e8;
+        }
+
+        .table .header {
+            border-bottom: 1px solid #e8e8e8;
+            border-right: 1px solid #e8e8e8;
+            transition: all .3s, border 0s;
+            padding: 16px 0;
+            font-weight: 600;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .table .nodata {
+            border-bottom: 1px solid #e8e8e8;
+            border-right: 1px solid #e8e8e8;
+            transition: all .3s, border 0s;
+            padding: 16px 0;
+            text-align: center;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.45);
+        }
+
+        .table table {
+            width: 100%;
+        }
+
+        .table tr {
+            transition: all .3s, height 0s;
+        }
+
+        .table thead {
+            background: rgb(250, 250, 250);
+        }
+
+        .table thead tr th,
+        .table thead tr td {
+            border-top-left-radius: 4px;
+            padding: 16px;
+            background: rgba(250, 250, 250, 0.1);
+            transition: background .3s ease;
+            text-align: left;
+            color: rgba(0, 0, 0, .85);
+            font-weight: 500;
+            border-bottom: 1px solid #e8e8e8;
+            border-right: 1px solid #e8e8e8;
+        }
+
+        .table tbody tr:hover {
+            background: #e6f7ff;
+        }
+
+        .table tbody tr th,
+        .table tbody tr td {
+            border-bottom: 1px solid #e8e8e8;
+            border-right: 1px solid #e8e8e8;
+            transition: all .3s, border 0s;
+            padding: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>value</td>
+                    <td>value</td>
+                    <td>value</td>
+                    <td>value</td>
+                </tr>
+                <tr>
+                    <td>value</td>
+                    <td>value</td>
+                    <td>value</td>
+                    <td>value</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="nodata header">暂无数据</div>
+    </div>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="nodata header">暂无数据</div>
+    </div>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div class="nodata header">暂无数据</div>
+    </div>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="nodata header">暂无数据</div>
+    </div>
+    <div class="table">
+        <div class="header">表格标题</div>
+        <table border="0" cellpadding="10" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>key</th>
+                    <th>key</th>
+                    <th>key</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="nodata header">暂无数据</div>
+    </div>
+</body>
+
+</html>

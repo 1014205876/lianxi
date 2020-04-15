@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>医疗</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <!-- 引入清除默认样式 -->
+    <link rel="stylesheet" href="css/reset.css">
+    <!-- 引入自定义css文件 -->
+    <link rel="stylesheet" href="css/index.css">
+    <style></style>
+</head>
+
+<body>
+    <div class="medical">
+        <div class="banner">
+            <img src="img/banner.png" alt="">
+        </div>
+        <div class="task">
+            <div class='flex'>
+                <img src="img/banner.png" alt="" class='headimg'><!-- 头像 -->
+                <div class="invitation">
+                    已邀请亲密好友数<span><strong>7</strong>人</span>
+                </div>
+            </div>
+            <div class='btn no'>任务未完成</div>
+        </div>
+        <div class="explain">
+            <div class="title">使用说明</div>
+            <ul>
+                <li>
+                    每人限领3张，每完成10个邀请任务清零
+                </li>
+                <li>
+                    清零后未及时领取的体验券，可点击下方“立即领取”按钮完
+                    成领取
+                </li>
+                <li>
+                    首次领取时需填写电话信息，以便客服致电为您预约体验时间
+                </li>
+                <li>
+                    体验券自领取后1个月内有效，过期作废
+                </li>
+                <li>
+                    每次体验仅限一项
+                </li>
+            </ul>
+        </div>
+        <div class="bottom">
+            <div class="btn">立即邀请</div>
+            <div class="btn receive">立即领取</div>
+        </div>
+        <div class="mengban">
+            <div class="alert">
+                <div class="title">验证手机号码</div>
+                <ul class='form'>
+                    <li>
+                        <input type="text" placeholder='请输入姓氏' class='name'>
+                        <div class='radio woman'>女士</div>
+                        <div class='radio man'>先生</div>
+                    </li>
+                    <li>
+                        <input type="text" placeholder='请输入手机号码' class='tel'>
+                    </li>
+                    <li>
+                        <input type="text" placeholder='请输入验证码' class='code'>
+                        <button>获取验证码</button>
+                    </li>
+                </ul>
+                <div class="btn">
+                    <div class="no">关闭</div>
+                    <div class="yes">确认</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 引入jq -->
+    <script src='js/jquery-3.2.1.min.js'></script>
+    <!-- 引入rem（1rem=100px） -->
+    <script src='js/rem750.js'></script>
+    <script>
+        $(function () {
+            var name = '';
+            var sex = '';
+            var tel = '';
+            var code = '';
+            // 点击底部2个按钮
+            $('.medical .bottom .btn').click(function () {
+                $('.medical .mengban').addClass('active');
+            })
+            //点击性别
+            $('.medical .mengban .alert .form li .radio.woman').click(function () {
+                sex = '女';
+                $('.medical .mengban .alert .form li .radio.man').removeClass('active');
+                $(this).addClass('active');
+            })
+            $('.medical .mengban .alert .form li .radio.man').click(function () {
+                sex = '男';
+                $('.medical .mengban .alert .form li .radio.woman').removeClass('active');
+                $(this).addClass('active');
+            })
+            // 点击获取验证码
+            $('.medical .mengban .alert .form li button').click(function () {
+                tel=$('.medical .mengban .alert .form li input.tel').val();
+                if (tel) {
+                    console.log('获取验证码')
+                } else {
+                    alert('请输入电话')
+                }
+            })
+
+            //点击关闭按钮
+            $('.medical .mengban .alert .btn .no').click(function () {
+                $('.medical .mengban').removeClass('active');
+            })
+            //点击确定按钮
+            $('.medical .mengban .alert .btn .yes').click(function () {
+                name=$('.medical .mengban .alert .form li input.name').val();
+                tel=$('.medical .mengban .alert .form li input.tel').val();
+                code=$('.medical .mengban .alert .form li input.code').val();
+                if (name) {
+                    if (sex) {
+                        if (tel) {
+                            if (code == '') {
+                                alert('提交成功')
+                                $('.medical .mengban').removeClass('active');
+                            } else {
+                                alert('验证码错误')
+                                return
+                            }
+                        } else {
+                            alert('请输入电话')
+                            return
+                        }
+                    } else {
+                        alert('请选择性别')
+                        return
+                    }
+                } else {
+                    alert('请输入名字')
+                    return
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

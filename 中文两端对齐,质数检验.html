@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        div {
+            width: 400px;
+            font-size: 30px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        div.justify {
+            text-align: justify;
+            width: 200px;
+            font-size: 15px;
+            color: red;
+            border: 1px solid blue;
+            height: 18px;
+        }
+
+        div.justify>span {
+            display: inline-block
+                /* Opera */
+            ;
+            padding-left: 100%;
+        }
+
+        div span {
+            display: inline-block;
+            padding-left: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div>爱豆世纪回访<span></span></div>
+    <div>爱豆世纪回<span></span></div>
+    <div>爱豆世纪<span></span></div>
+    <div>爱豆世<span></span></div>
+    <div>爱豆<span></span></div>
+    <input type="number" id='num01'>
+    <button id='btn01'>校验</button>
+    <script>
+        let num = document.getElementById('num01')
+        let btn = document.getElementById('btn01')
+        btn.onclick = function () {
+            let number = num.value;
+            console.log(isPrime(number) ? '是质数' : '不是质数')
+        }
+        function isPrime(n) {
+            if (n <= 3) { return n > 1; }
+            if (n % 2 == 0 || n % 3 == 0) { return false; }
+            for (let i = 5; i * i <= n; i += 2) {
+                if (n % i == 0 || n % (i + 2) == 0) { return false; }
+            }
+            return true;
+        }
+
+        let arr = [];
+        for (let n = 1; n < 100; n++) {
+            if (isPrime(n)) {
+                arr.push(n)
+            }
+        } console.log(arr)
+
+    </script>
+</body>
+
+</html>

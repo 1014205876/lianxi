@@ -1,0 +1,334 @@
+<template>
+  <view class="tips">
+    <view class='title' wx:if='{{tittle}}'>{{tittle}}</view>
+    <view class="article">
+      <import src="../wxParse/wxParse.wxml" />
+      <template is="wxParse" data="{{wxParseData:desc.nodes}}" />
+    </view>
+    <view class="nav">
+      <view class="btn" @tap="complete" wx:if="{{state === 0 && finish === 0}}">
+        <button class="complete" plain="{{true}}">完成</button>
+      </view>
+      <view style="width: 650rpx; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <view class="btn" style="width: 49%;">
+          <button open-type="share" plain="{{true}}">分享</button>
+        </view>
+        <view class="btn" style="width: 49%;">
+          <button bindtap="erweima" plain="{{true}}">生成二维码图</button>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{mengban}}" class="mengban">
+      <view class="guanlianbg">
+        <!-- <image class="guanlianbgimg" src="//m.tdamm.com/static/images/phone/guanlianbg.jpg"></image> -->
+        <!-- <view class="saomaguanlian">扫码即可关联另一半</view> -->
+        <image class="guanlianbgimg" src="{{ewm}}"></image>
+        <view class="saveerweima close" bindtap="close">取消</view>
+        <view class="saveerweima" bindtap="saveerweima">保存图片</view>
+        <!-- <image class="close" bindtap="close" src="../images/close.png"></image> -->
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  var WxParse = require('../wxParse/wxParse.js')
+  import tip from '../util/tip'
+  export default class Tips extends wepy.page {
+    config = {};
+    data = {
+      token: '',
+      id: 0,
+      desc: '',
+      tittle: '',
+      mengban: false,
+      ewm: '',
+      state: null,
+      finish: null,
+    };
+    props = {};
+    watch = {};
+    methods = {
+      erweima() {
+        let that = this;
+
+        that.mengban = true;
+      },
+      complete() {
+        let that = this
+        let diarym = wepy.getStorageSync('diarym')
+        let diarywm = wepy.getStorageSync('diarywm')
+        let iswomen = wepy.getStorageSync('iswomen')
+        let isme = wepy.getStorageSync('isme')
+        let id = this.id
+        let data
+        if (iswomen) {
+          data = diarywm
+          diarywm[id] = 1
+          wepy.setStorageSync('diarywm', diarywm)
+        }
+        if (isme) {
+          data = diarym
+          diarym[id] = 1
+          wepy.setStorageSync('diarym', diarym)
+        }
+        wepy.request({
+          url: `https://m.tdamm.com/weapp/api/preg/diary?token=${this.token}`,
+          method: 'POST',
+          data: {
+            data: JSON.stringify(data)
+          },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }).then(res => {
+          console.log(res)
+          tip.success('已完成')
+          that.finish = 1
+          that.$apply()
+        }).catch(res => {
+          console.log(res)
+        })
+      },
+      saveerweima() {
+        let that = this;
+        wx.downloadFile({
+          url: that.ewm,
+          success: function (res) {
+            let path = res.tempFilePath;
+            wx.saveImageToPhotosAlbum({
+              filePath: path,
+              success(res) {
+                console.log('保存成功');
+                that.mengban = false;
+                that.$apply();
+              },
+              fail(res) {
+                that.mengban = false;
+                that.$apply();
+              },
+              complete(res) {
+                console.log(res);
+              }
+            });
+          },
+          fail: function (res) {
+            that.mengban = false;
+            that.$apply();
+          }
+        });
+      },
+      close() {
+        this.mengban = false;
+      }
+    };
+    onLoad(options) {
+      var WxParse = require('../wxParse/wxParse.js');
+      let that = this;
+      that.token = wepy.getStorageSync('token');
+      that.id = options.id - 0;
+      that.finish = +options.finish
+      that.state = +options.state
+      wepy
+        .request({
+          url:
+            'https://m.tdamm.com/weapp/api/preg/get_task_desc?token=' +
+            that.token,
+          method: 'POST',
+          data: {
+            id: that.id
+          },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            that.desc = res.data.desc;
+            that.tittle = res.data.tittle;
+            var temp = WxParse.wxParse('desc', 'html', res.data.desc, that, 0);
+            that.desc = temp;
+            that.$apply();
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+      wepy
+        .request({
+          url:
+            'https://m.tdamm.com/weapp/api/preg/task_wxacode?token=' + that.token,
+          method: 'POST',
+          data: {
+            id: that.id
+          },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            that.ewm = res.data.ewm;
+            that.$apply();
+          }
+        })
+        .catch(data => {
+          console.log(data);
+        });
+    }
+    onShareAppMessage() {
+      return {
+        title: '十点备孕',
+        // desc: '最具人气的小程序开发联盟!',
+        path: '/pages/togo'
+      };
+    }
+    onUnload() { }
+  }
+</script>
+<style lang="less">
+  @import '../wxParse/wxParse.wxss';
+  .tips {
+    color: #a87580;
+    padding-bottom: 240rpx;
+    .article {
+      font-size: 28rpx;
+      padding: 0 50rpx;
+      /*view:first-child {
+      text-indent: 0;
+    }*/
+      view {
+        text-indent: 2em;
+        line-height: 40rpx;
+        margin-top: 10rpx;
+      }
+      image {
+        width: 630rpx;
+        display: block;
+        margin: 0 auto;
+        border: 10rpx solid #f7d2db;
+        border-radius: 50rpx;
+      }
+    }
+    .title {
+      margin: 40rpx 20rpx 0;
+      padding: 0 30rpx 30rpx;
+      border-bottom: 1px solid #d4d4d4;
+      line-height: 40rpx;
+      position: relative;
+    }
+    .title:before {
+      content: '';
+      width: 10rpx;
+      height: 40rpx;
+      background: #a87580;
+      position: absolute;
+      left: 0rpx;
+      top: 0rpx;
+    }
+    .data {
+      margin: 20rpx 50rpx;
+      line-height: 46rpx;
+      font-size: 28rpx;
+      text {
+        display: block;
+      }
+    }
+    .tipimg {
+      display: block;
+      width: 690rpx;
+      height: 380rpx;
+      border: 10rpx solid #f9f5f6;
+      border-radius: 10rpx;
+      margin: 0 auto;
+    }
+    .nav {
+      width: 100%;
+      height: 160rpx;
+      padding: 40rpx 0rpx;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      background: #fff;
+      .btn {
+        width: 650rpx;
+        height: 70rpx;
+        border-radius: 70rpx;
+        margin: 20rpx auto;
+        background: #f7d2db;
+        button {
+          width: 100%;
+          height: 100%;
+          border-radius: 70rpx;
+          padding: 0;
+          color: #333;
+          font-size: 30rpx;
+          line-height: 70rpx;
+          border: 0px solid transparent;
+        }
+      }
+      .btn:first-child {
+        margin: 0rpx auto;
+      }
+    }
+    .mengban {
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      .guanlianbg {
+        width: 640rpx;
+        position: absolute;
+        left: 55rpx;
+        top: 40rpx;
+        border-radius: 20rpx;
+        .guanlianbgimg {
+          width: 100%;
+          height: 960rpx;
+          border-radius: 20rpx;
+          /* position: absolute; */
+          /* z-index: -1; */
+        }
+        .saomaguanlian {
+          margin-top: 50rpx;
+          text-align: center;
+          font-size: 28rpx;
+          line-height: 30rpx;
+          color: #666666;
+        }
+        .gerenerweima {
+          width: 220rpx;
+          height: 220rpx;
+          position: absolute;
+          top: 0rpx;
+          left: 0rpx;
+          bottom: 0rpx;
+          right: 0rpx;
+          margin: auto;
+        }
+        .saveerweima {
+          float: right;
+          width: 310rpx;
+          height: 60rpx;
+        margin-top:20rpx;
+          line-height:60rpx;
+          border-radius: 60rpx;
+          text-align:center;
+          background:#F7D2DB;
+          color:#333333;
+          font-size:30rpx;
+        }
+        .close {
+          float: left;
+          background:#A87580;
+          color:#fff;
+        }
+      }
+    }
+  }
+</style>

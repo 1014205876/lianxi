@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <h2>新建文件</h2>
+            <input type="text" id="addFileName" />
+            <textarea name="" id="addFileMain" cols="30" rows="10"></textarea>
+            <button id="addFileBtn">新建</button>
+        </li>
+        <li>
+            读取文件：<input type="text" id="readFileInput" />
+            <button id="readFileInput">读取</button>
+        </li>
+        <li>
+            删除文件：<input type="text" id="removeFileInput" />
+            <button id="removeFileBtn">删除</button>
+        </li>
+    </ul>
+</body>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="./file.js"></script>
+<script>
+    $(function () {
+        $('#addFileBtn').click(() => {
+            addFile({
+                name: $('#addFileName').val(),
+                main: $('#addFileMain').val(),
+                callback: () => {
+                    console.log(123)
+                }
+            })
+        })
+    })
+</script>
+
+</html>

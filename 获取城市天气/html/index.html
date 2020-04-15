@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>天气查询</title>
+</head>
+
+<body>
+<script src='../../js/jquery-3.2.1.min.js'></script>
+<script>
+    $(function () {
+        //获取天气
+        $.ajax({
+            url: "http://api.map.baidu.com/telematics/v3/weather?location=北京&output=json&ak=EGgzZ22dsboWQEcPQ6KDQLknQd3YkkkP",
+            type: "get",
+            dataType: "jsonp",
+            scriptCharset: "gbk",
+            success: function (res) {
+                console.log(res)
+                console.log(res.results[0].weather_data[0].temperature)
+                console.log(res.results[0].weather_data[0].weather)
+            }
+        });
+    });
+</script>
+
+
+</body>
+
+</html>

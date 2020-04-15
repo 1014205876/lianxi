@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>jquery计数器动画特效</title>
+
+		<link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+		<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" type="text/css" href="css/demo.css">
+
+		<style type="text/css">
+			.demo {
+				padding: 2em 0;
+			}
+			
+			.counter {
+				background: #7a7fb6;
+				text-align: center;
+				position: relative;
+			}
+			
+			.counter .counter-content {
+				padding: 30px 20px 50px;
+				color: #fff;
+				position: relative;
+			}
+			
+			.counter:before,
+			.counter:after,
+			.counter .counter-content:before,
+			.counter .counter-content:after {
+				content: "";
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background: #fff;
+				position: absolute;
+				box-shadow: inset 0 2px 2px #000;
+				top: 15px;
+				left: 15px;
+			}
+			
+			.counter:after {
+				left: auto;
+				right: 15px;
+			}
+			
+			.counter .counter-content:before,
+			.counter .counter-content:after {
+				box-shadow: inset 0 -2px 2px #000;
+				top: auto;
+				bottom: 15px;
+			}
+			
+			.counter .counter-content:after {
+				left: auto;
+				bottom: 15px;
+				right: 15px;
+			}
+			
+			.counter .counter-icon {
+				display: inline-block;
+				font-size: 40px;
+				margin-bottom: 15px;
+			}
+			
+			.counter .counter-value {
+				display: block;
+				font-size: 50px;
+				margin-bottom: 15px;
+			}
+			
+			.counter .title {
+				font-size: 20px;
+				text-transform: uppercase;
+				text-shadow: 3px 3px 2px rgba(0, 0, 0, 0.71);
+			}
+			
+			@media only screen and (max-width: 990px) {
+				.counter {
+					margin-bottom: 20px;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="demo">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-3 col-sm-6">
+						<div class="counter">
+							<div class="counter-content">
+								<i class="counter-icon fa fa-globe"></i>
+								<span class="counter-value">1530</span>
+								<h3 class="title">Web Design</h3>
+							</div>
+						</div>
+					</div>
+<!--
+					<div class="col-md-3 col-sm-6">
+						<div class="counter">
+							<div class="counter-content">
+								<i class="counter-icon fa fa-rocket"></i>
+								<span class="counter-value">60</span>
+								<h3 class="title">Web Development</h3>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3 col-sm-6">
+						<div class="counter">
+							<div class="counter-content">
+								<i class="counter-icon fa fa-briefcase"></i>
+								<span class="counter-value">380</span>
+								<h3 class="title">Brand Building</h3>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3 col-sm-6">
+						<div class="counter">
+							<div class="counter-content">
+								<i class="counter-icon fa fa-mobile"></i>
+								<span class="counter-value">750</span>
+								<h3 class="title">Responsive Design</h3>
+							</div>
+						</div>
+					</div>-->
+				</div>
+
+				<div class="row">
+					<div class="btn-container" style="width:150px;margin:0 auto;padding:2em 0;">
+						<button id="btn" class="btn btn-success btn-block">重新开始计数器动画</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
+		<script>
+			window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#btn").click(function() {
+					$('.counter-value').each(function() {
+						$(this).prop('Counter', 0).animate({
+							Counter: $(this).text()
+						}, {
+							duration: 3500,
+							easing: 'swing',
+							step: function(now) {
+								$(this).text(Math.ceil(now));
+							}
+						});
+					});
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

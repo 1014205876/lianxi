@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>照片旋转111</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <style>
+        body {
+            -webkit-perspective: 1000px;
+            background-color: black;
+        }
+
+        /* body{-webkit-perspective:10px;} */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .list {
+            list-style: none;
+            position: relative;
+            width: 105px;
+            height: 150px;
+            margin: 200px auto;
+            -webkit-transform-style: preserve-3d;
+            -webkit-transform: rotateX(-24deg);
+        }
+
+        li {
+            width: 105px;
+            height: 150px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            -webkit-box-reflect: below 20px -webkit-linear-gradient(rgba(0, 0, 0, 1)) rgba(0, 0, 0, 1);
+            box-reflect: below 20px -webkit-linear-gradient(rgba(0, 0, 0, 1)) rgba(0, 0, 0, 1);
+        }
+
+        img {
+            width: 105px;
+            height: 150px;
+            display: block;
+
+
+        }
+
+        li:nth-child(1) {
+            -webkit-transform: rotateY(30deg) translateZ(250px);
+        }
+
+        li:nth-child(2) {
+            -webkit-transform: rotateY(60deg) translateZ(250px);
+        }
+
+        li:nth-child(3) {
+            -webkit-transform: rotateY(90deg) translateZ(250px);
+        }
+
+        li:nth-child(4) {
+            -webkit-transform: rotateY(120deg) translateZ(250px);
+        }
+
+        li:nth-child(5) {
+            -webkit-transform: rotateY(150deg) translateZ(250px);
+        }
+
+        li:nth-child(6) {
+            -webkit-transform: rotateY(180deg) translateZ(250px);
+        }
+
+        li:nth-child(7) {
+            -webkit-transform: rotateY(210deg) translateZ(250px);
+        }
+
+        li:nth-child(8) {
+            -webkit-transform: rotateY(240deg) translateZ(250px);
+        }
+
+        li:nth-child(9) {
+            -webkit-transform: rotateY(270deg) translateZ(250px);
+        }
+
+        li:nth-child(10) {
+            -webkit-transform: rotateY(300deg) translateZ(250px);
+        }
+
+        li:nth-child(11) {
+            -webkit-transform: rotateY(330deg) translateZ(250px);
+        }
+
+        li:nth-child(12) {
+            -webkit-transform: rotateY(360deg) translateZ(250px);
+        }
+
+        .list {
+            -webkit-animation: move 20s linear infinite;
+        }
+
+        @-webkit-keyframes move {
+            0% {
+                -webkit-transform: rotateY(0deg) rotateX(-24deg)
+            }
+
+            50% {
+                -webkit-transform: rotateY(180deg) rotateX(24deg)
+            }
+
+            100% {
+                -webkit-transform: rotateY(360deg) rotateX(-24deg)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="list">
+        <li><img src="images/01.jpg" alt=""></li>
+        <li><img src="images/02.jpg" alt=""></li>
+        <li><img src="images/03.jpg" alt=""></li>
+        <li><img src="images/04.jpg" alt=""></li>
+        <li><img src="images/05.jpg" alt=""></li>
+        <li><img src="images/06.jpg" alt=""></li>
+        <li><img src="images/07.jpg" alt=""></li>
+        <li><img src="images/08.jpg" alt=""></li>
+        <li><img src="images/09.jpg" alt=""></li>
+        <li><img src="images/10.jpg" alt=""></li>
+        <li><img src="images/11.jpg" alt=""></li>
+        <li><img src="images/12.jpg" alt=""></li>
+    </ul>
+</body>
+
+</html>

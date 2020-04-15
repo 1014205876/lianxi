@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>查询管理员数据</h1>
+		<form action="/VueHandler/AdminHandler?action=show" method="get">
+			<!-- get的数据  直接放在地址上   会把以前地址上的数据干掉-->
+			<!-- 怎么解决???  干掉    那就在添加一个就好了-->
+			
+			<input type="text" name="action" value="show"/>
+			<p>姓名:<input type="text" name="searchText"/></p>
+			<p>页数:<input type="text" name="pageStart"/></p>
+			
+			<input type="submit" value="查询"/>
+		</form>
+	</body>
+</html>

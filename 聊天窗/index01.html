@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style:none;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+
+        .button ul{
+            display:flex;
+        }
+        .button ul>li {
+            border: 1px solid #000;
+            padding: 5px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="button">
+        <ul class='user'>
+            <li>使用客户01</li>
+            <li>使用客户02</li>
+            <li>使用客户03</li>
+        </ul>
+        <ul class='join'>
+            <li>加入房间01</li>
+            <li>加入房间02</li>
+            <li>加入房间03</li>
+        </ul>
+        <ul class='out'>
+            <li>退出房间01</li>
+            <li>退出房间02</li>
+            <li>退出房间03</li>
+        </ul>
+        <ul class='send'>
+            <li>发给房间01</li>
+            <li>发给房间02</li>
+            <li>发给房间03</li>
+        </ul>
+    </div>
+    <ul id="messages"></ul>
+    <form action="">
+        <input id="m" name="input" autocomplete="off" />
+        <button type="submit">Send</button>
+    </form>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            let user;//绑定用户
+
+            roomArr = ['01', '02', '03', '04', '05', '06', '07'];
+            name = '01';
+            userArr = [];
+
+
+            $('.user li').click(function () {
+                name = roomArr[$(this).index()]
+                console.log(name)
+            })
+
+            $('.join li').click(function () {
+                room = roomArr[$(this).index()]
+                socket.emit(
+                    'join',
+                    {
+                        name: name,
+                        room: room,
+                    }
+                );
+            })
+
+            $('.out li').click(function () {
+                room = roomArr[$(this).index()]
+                socket.emit(
+                    'leave',
+                    {
+                        name: name,
+                        room: room,
+                    }
+                );
+            })
+
+            $('.send li').click(function () {
+                room = roomArr[$(this).index()]
+            })
+
+
+            socket.on('message', function (msg) {
+                $('#messages').append($('<li>').text(msg));
+            });
+
+            socket.on('alert', function (msg) {
+                $('#messages').append($('<li>').text(msg));
+            });
+
+            $('form').submit(function () {
+
+                let data = {
+                    key: user,
+                    name: name,
+                    room: room,
+                    value: $('#m').val()
+                }
+
+                socket.emit(
+                    'message',
+                    data
+                );
+                $('#m').val('');
+                return false;
+            });
+        })
+
+    </script>
+</body>
+
+</html>

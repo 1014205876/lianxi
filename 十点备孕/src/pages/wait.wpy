@@ -1,0 +1,60 @@
+<template>
+  <view class="wait">
+    <image src="../images/wait.png"></image>
+    <view class="fangan">方案定制中...</view>
+    <view class="lianxi">我们将在24小时内联系您</view>
+    <view class="button">
+      <button open-type="contact" bindtap="talk" plain="{{true}}">了解进度</button>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Wait extends wepy.page {
+  config = {};
+  data = {};
+  props = {};
+  watch = {};
+  methods = {};
+  onLoad() {}
+  onUnload() {}
+}
+</script>
+<style lang="less">
+.wait {
+  text-align: center;
+  image {
+    display: block;
+    width: 588rpx;
+    height: 312rpx;
+    margin: 100rpx auto 70rpx;
+  }
+  .fangan {
+    font-size: 42rpx;
+    line-height: 50rpx;
+  }
+  .lianxi {
+    font-size: 22rpx;
+    line-height: 80rpx;
+    color: #666666;
+  }
+  .button {
+    width: 270rpx;
+    height: 80rpx;
+    border-radius: 80rpx;
+    margin: 90rpx auto 0;
+    background: #f7d2db;
+    button {
+      width: 100%;
+      height: 100%;
+      line-height: 80rpx;
+      font-size: 38rpx;
+      font-weight: 600;
+      color: #9f6a75;
+      border-radius: 80rpx;
+      background: transparent;
+      border: 0rpx solid transparent;
+    }
+  }
+}
+</style>

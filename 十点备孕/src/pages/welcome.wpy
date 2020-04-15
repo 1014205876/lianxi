@@ -1,0 +1,227 @@
+<!-- welcome -->
+<template>
+<view class='welcome'>
+  <image class='bgimg' src='//m.tdamm.com/static/images/phone/welcomebgimg.png'></image>
+  <image class='logo' src='../images/logo.png'></image>
+  <view class='title'>十点备孕</view>
+  <view class='describe'>让每个家庭都拥有健康宝宝</view>
+  <view class='getUserInfo'>
+    <image src='../images/redbtn.png'></image>
+    <button open-type="getUserInfo" @getuserinfo="getUserInfo" plain="{{true}}">点击进入</button>
+  </view>
+  <view style='text-align:center;font-size:24rpx;line-height:54rpx;'>点击按钮进入小程序</view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../util/tip';
+export default class Welcome extends wepy.page {
+  config = {};
+  data = {
+    theuid: null,
+    code: null
+  };
+  methods = {
+    async getUserInfo(e) {
+      let that = this;
+      let token = wepy.getStorageSync('token');
+      let mobile = wepy.getStorageSync('mobile');
+      wepy.setStorageSync('userInfo', e.detail.userInfo);
+      let iv = e.detail.iv;
+      let encryptedData = e.detail.encryptedData;
+      let code = that.code;
+      if (!token) {
+        tip.loading();
+        wepy
+          .request({
+            url: 'https://m.tdamm.com/weapp/member/login',
+            method: 'POST',
+            data: {
+              code: code,
+              encryptedData: encryptedData,
+              iv: iv,
+              type: 'preg'
+            },
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+          .then(res => {
+            console.log(res);
+            if (res.data.code == 200) {
+              if (res.data.token) {
+                let token = encodeURIComponent(res.data.token);
+                let uid = res.data.uid;
+                let uuid = res.data.uuid;
+                let mobile = res.data.mobile;
+                wepy.setStorageSync('mobile', mobile);
+                wepy.setStorageSync('token', token);
+                wepy.setStorageSync('uid', uid);
+                wepy.setStorageSync('uuid', uuid);
+                //如果是扫码进来的
+                if (that.theuid != 'undefined' && that.theuid) {
+                  wx.showModal({
+                    content: '是否同意和他（她）关联',
+                    showCancel: true,
+                    cancelText: '否',
+                    confirmText: '是',
+                    success: function(e) {
+                      if (e.cancel) {
+                        //点击否
+                        wx.reLaunch({
+                          url: 'togo'
+                        });
+                      } else {
+                        //点击是
+                        wepy
+                          .request({
+                            url:
+                              'https://m.tdamm.com/weapp/api/xia/make_pair?token=' +
+                              token,
+                            method: 'POST',
+                            data: {
+                              uid: that.theuid
+                            },
+                            header: {
+                              'Content-Type':
+                                'application/x-www-form-urlencoded'
+                            }
+                          })
+                          .then(res => {
+                            if (res.data.code == 200) {
+                              tip.alert('关联成功');
+                              wx.reLaunch({
+                                url: 'togo'
+                              });
+                            } else {
+                              tip.alert('关联失败' + res.data.msg);
+                              setTimeout(() => {
+                                wx.reLaunch({
+                                  url: 'togo'
+                                });
+                              }, 500);
+                            }
+                          })
+                          .catch(data => {
+                            console.log(data);
+                          });
+                      }
+                    },
+                    fail: function(err) {
+                      console.log(err);
+                    },
+                    complete: function() {
+                      console.log('调用完成');
+                    }
+                  });
+                } 
+                //如果不是扫码进来的
+                else {
+                  wx.reLaunch({
+                    url: 'togo'
+                  });
+                }
+              }
+            }
+          })
+          .catch(data => {
+            console.log(data);
+          });
+        tip.loaded();
+      } else {
+        tip.error('登录失败！');
+      }
+    }
+  };
+
+  getCode() {
+    let that = this;
+    wx.checkSession({
+      success: function(res) {
+        //session_key 未过期，并且在本生命周期一直有效
+        wx.login({
+          success: function(res) {
+            if (res.code) {
+              that.code = res.code;
+            } else {
+              console.log('登录失败！' + res.errMsg);
+            }
+          }
+        });
+      },
+      fail: function() {
+        // session_key 已经失效，需要重新执行登录流程
+        wx.login({
+          success: function(res) {
+            if (res.code) {
+              that.code = res.code;
+            } else {
+              console.log('登录失败！' + res.errMsg);
+            }
+          }
+        });
+      }
+    });
+  }
+  onLoad(options) {
+    this.theuid = options.theuid;
+    this.getCode();
+  }
+}
+</script>
+
+<style lang='less'>
+.welcome {
+  text-align: center;
+  position: relative;
+  .bgimg {
+    width: 750rpx;
+    height: 525rpx;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .logo {
+    width: 224rpx;
+    height: 225rpx;
+    border: 7rpx solid #fff;
+    border-radius: 230rpx;
+    margin: 240rpx auto 0;
+  }
+  .title {
+    margin-top: 30rpx;
+    line-height: 60rpx;
+    font-size: 60rpx;
+    font-weight: 300;
+  }
+  .describe {
+    line-height: 64rpx;
+    font-size: 34rpx;
+    font-weight: 600;
+  }
+  .getUserInfo {
+    margin: 230rpx auto 0;
+    width: 501rpx;
+    height: 80rpx;
+    position: relative;
+    image {
+      width: 501rpx;
+      height: 80rpx;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    button {
+      width: 501rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 34rpx;
+      color: #fff;
+    }
+  }
+}
+</style>

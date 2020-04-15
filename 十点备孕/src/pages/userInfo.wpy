@@ -1,0 +1,407 @@
+<template>
+  <view class="user">
+    <view class="userInfo">
+      <image class="userImg" src="{{userInfo.avatarUrl}}"></image>
+      <!-- <block wx:if='{{pay_type!=0}}'> -->
+        <image class="relationImg" wx:if="{{headimg}}" src="{{headimg}}"></image>
+        <view class="guanlian" wx:if="{{headimg}}">
+          <image src="../images/guanlian.png"></image>已关联
+        </view>
+        <view class="guanlian" wx:if="{{!headimg}}" style="background:#a87580" bindtap="guanlian">
+          <image src="../images/guanlian.png"></image>未关联
+        </view>
+      <!-- </block> -->
+    </view>
+    <view class="userName">
+      <block wx:if='{{pay_type==2}}'><image src="../images/vip.png"></image></block>
+      {{userInfo.nickName}}
+    </view>
+    <view class="fuwu">
+      <block wx:if="{{pay_type==1}}">体验用户(服务剩余{{day}}天)</block>
+      <block wx:if="{{pay_type==2}}">VIP(服务剩余{{day}}天)</block>
+      <block wx:if="{{pay_type==0}}">普通用户</block>
+    </view>
+    <block wx:if='{{btn}}'>
+    <block wx:if="{{buy_type==0}}">
+      <view class="renew xufei" @tap="goTo('pay-intro?type=2')">成为VIP</view>
+      <view class="renew tiyan" @tap="goTo('pay-intro?type=1')">29元体验</view>
+    </block>
+    <block wx:else>
+      <block wx:if='{{buy_type==1||buy_type==2&&stage!=1}}'>
+        <view class="renew" bindtap="xufei" data-index='1'  data-charge='{{charge.one_month}}'>购买第一阶段方案</view>
+        <view class="renew mtop" bindtap="xufei" data-index='3'  data-charge='{{charge.three_month}}'>购买整体方案</view>
+      </block>
+      <block wx:else>
+        <view class="renew" bindtap="xufei" data-index='2' data-charge='{{charge.renew}}'>续费</view>
+      </block>
+    </block>
+    </block>
+    <view wx:if="{{erweima}}" class="mengban">
+      <view class="guanlianbg">
+        <image class="guanlianbgimg" src="//m.tdamm.com/static/images/phone/guanlianbg.jpg"></image>
+        <view class="lianxikefu">
+          <button bindtap="kefu" plain="{{true}}" open-type="contact">联系客服</button>
+        </view>
+        <view class="saomaguanlian">扫码即可关联另一半</view>
+        <image class="gerenerweima" src="{{gerenerweima}}"></image>
+        <view class="saveerweima" bindtap='saveerweima'>保存二维码</view>
+        <image class='close' bindtap='close' src='../images/close.png'></image>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '../util/tip';
+export default class UserInfo extends wepy.page {
+  config = {
+    navigationBarTitleText: '个人中心'
+  };
+  data = {
+    btn: false, //初始时候不显示按钮
+    uid: '', //个人uid
+    token: '', //个人token
+    userInfo: {}, //个人信息
+    pay_type: 0, //用户类型
+    stage: 0, //上次交钱
+    buy_type: 0,
+    charge: {}, //续费金额
+    isShow: true, //是否需要显示关联信息
+    erweima: false, //二维码蒙版显示或隐藏,
+    headimg: '', //被关联的人的头像
+    day: 1,
+    gerenerweima: '', //后台生成的个人二维码
+    share_img: '' //保存到手机的二维码
+  };
+  props = {};
+  watch = {};
+  methods = {
+    goTo(url) {
+      wx.navigateTo({
+        url: url
+      });
+    },
+    xufei(e) {
+      let that = this;
+      let data = {
+        money: e.currentTarget.dataset.charge,
+        type: 2,
+        stage: e.currentTarget.dataset.index
+      };
+      wepy
+        .request({
+          url: `https://m.tdamm.com/weapp/api/preg/pay?token=` + that.token,
+          method: 'POST',
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: data
+        })
+        .then(res => {
+          console.log(res);
+          if (res.data.code == 200) {
+            let payInfo = res.data.pay_info;
+            wx.requestPayment({
+              timeStamp: payInfo.timeStamp,
+              nonceStr: payInfo.nonceStr,
+              package: payInfo.package,
+              signType: 'MD5',
+              paySign: payInfo.paySign,
+              success: function(res) {
+                console.log(res);
+                tip.success('续费成功！');
+                that.stage = e.currentTarget.dataset.index;
+                that.pay_type = 2;
+                if (that.pay_type == 0) {
+                  wx.reLaunch({
+                    url: 'wait'
+                  });
+                }
+                that.$apply();
+              },
+              fail: function(res) {
+                tip.error('续费失败');
+              }
+            });
+          } else {
+            tip.confirmT(res.data.msg);
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    },
+    guanlian() {
+      this.erweima = true;
+    },
+    saveerweima() {
+      let that = this;
+      wx.downloadFile({
+        url: that.share_img,
+        success: function(res) {
+          let path = res.tempFilePath;
+          wx.saveImageToPhotosAlbum({
+            filePath: path,
+            success(res) {
+              console.log('保存成功');
+              that.erweima = false;
+            },
+            fail(res) {
+              console.log(res);
+              that.erweima = false;
+            },
+            complete(res) {
+              console.log(res);
+            }
+          });
+        },
+        fail: function(res) {
+          console.log(res);
+        }
+      });
+    },
+    close() {
+      let that = this;
+      that.erweima = false;
+    }
+  };
+  onLoad() {
+    let that = this;
+    // that.uid = wepy.getStorageSync('uid');
+    that.token = wepy.getStorageSync('token');
+    that.userInfo = wepy.getStorageSync('userInfo');
+    wepy
+      .request({
+        url: 'https://m.tdamm.com/weapp/api/xia/userinfo?token=' + that.token,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.headimg = res.data.data.headimg;
+          that.day = res.data.day; //VIP剩余天数
+          that.stage = res.data.stage; //上次购买阶段（体验用户为1）
+          that.isShow = res.data.isShow; //是否需要显示关联信息
+          that.buy_type = res.data.buy_type; //曾经购买过什么阶段
+          that.pay_type = res.data.pay_type; //当前属于什么阶段
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    wepy
+      .request({
+        url:
+          'https://m.tdamm.com/weapp/api/xia/share_wacode?token=' + that.token,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.share_img = res.data.share_img;
+          that.gerenerweima = res.data.wxacode;
+          console.log(that.share_img);
+          console.log(that.gerenerweima);
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    wepy
+      .request({
+        url:
+          'https://m.tdamm.com/weapp/api/preg/preg_charge?token=' + that.token,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.charge = res.data.charge;
+          that.btn = true;
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+}
+</script>
+<style lang="less">
+.user {
+  .userInfo {
+    position: relative;
+    .userImg {
+      display: block;
+      width: 240rpx;
+      height: 240rpx;
+      border-radius: 400rpx;
+      border: 8rpx solid #fff;
+      box-shadow: 0rpx 10rpx 20rpx -10rpx #000;
+      margin: 40rpx auto 40rpx;
+      position: relative;
+      z-index: 2;
+    }
+    .relationImg {
+      width: 120rpx;
+      height: 120rpx;
+      border-radius: 120rpx;
+      border: 6rpx solid #fff;
+      box-shadow: 0rpx 10rpx 20rpx -10rpx #000;
+      position: absolute;
+      top: 60rpx;
+      left: 465rpx;
+      background: #fff;
+    }
+    .guanlian {
+      width: 70rpx;
+      height: 70rpx;
+      border-radius: 70rpx;
+      border: 5rpx solid #fff;
+      position: absolute;
+      z-index: 2;
+      left: 440rpx;
+      top: 180rpx;
+      background: #b6b6b6;
+      color: #fff;
+      font-size: 16rpx;
+      text-align: center;
+      image {
+        display: block;
+        width: 40rpx;
+        height: 13rpx;
+        margin: 18rpx auto 5rpx;
+      }
+    }
+  }
+  .userName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 34rpx;
+    line-height: 34rpx;
+    image {
+      width: 37rpx;
+      height: 37rpx;
+      margin-right: 4rpx;
+    }
+  }
+  .fuwu {
+    font-size: 24rpx;
+    line-height: 50rpx;
+    color: #666666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .renew {
+    width: 500rpx;
+    height: 74rpx;
+    line-height: 74rpx;
+    text-align: center;
+    background: #f7d2db;
+    color: #333;
+    font-size: 34rpx;
+    // font-weight: 600;
+    margin: 150rpx auto 0;
+    border-radius: 74rpx;
+  }
+  .renew.mtop {
+    margin-top: 60rpx;
+  }
+  .xufei {
+    width: 500rpx;
+  }
+  .tiyan {
+    width: 500rpx;
+    background: #f9f5f6;
+    margin: 60rpx auto 0;
+  }
+  .mengban {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    .guanlianbg {
+      width: 550rpx;
+      height: 560rpx;
+      position: absolute;
+      left: 100rpx;
+      top: 230rpx;
+      border-radius: 20rpx;
+      .guanlianbgimg {
+        width: 100%;
+        height: 560rpx;
+        border-radius: 20rpx;
+        position: absolute;
+        z-index: -1;
+      }
+      .lianxikefu {
+        width: 90rpx;
+        border-radius: 10rpx;
+        margin: 20rpx 20rpx 0rpx auto;
+        button {
+          width: 100%;
+          text-align: center;
+          padding: 0;
+          margin: 0;
+          border: 0rpx solid transparent;
+          line-height: 30rpx;
+          height: 30rpx;
+          font-size: 22rpx;
+          font-weight: 600;
+          color: #a87580;
+        }
+      }
+      .saomaguanlian {
+        margin-top: 50rpx;
+        text-align: center;
+        font-size: 28rpx;
+        line-height: 30rpx;
+        color: #666666;
+      }
+      .gerenerweima {
+        width: 220rpx;
+        height: 220rpx;
+        position: absolute;
+        top: 0rpx;
+        left: 0rpx;
+        bottom: 0rpx;
+        right: 0rpx;
+        margin: auto;
+      }
+      .saveerweima {
+        margin: 320rpx auto 0;
+        width: 450rpx;
+        height: 60rpx;
+        border-radius: 10rpx;
+        background: #a87580;
+        text-align: center;
+        color: #fff;
+        font-size: 34rpx;
+        font-weight: 600;
+        line-height: 60rpx;
+      }
+      .close {
+        display: block;
+        width: 60rpx;
+        height: 60rpx;
+        margin: 70rpx auto;
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,699 @@
+<template>
+	<view class="index">
+		<image class="img" lazy-load="true" src="//m.tdamm.com/static/images/phone/swiper.png?v=1"></image>
+		<view class="home-menu">
+			<view class="menu-tit">我们的服务流程</view>
+			<view class="menu-txt">私人医生为您订制专属备孕方案并全程陪护</view>
+			<view class="lists">
+				<view class="list">
+					<image class="list-img list-img1" src="../images/icon-2.png"></image>
+					<view class="list-tit">提供电话</view>
+					<view class="list-txt">
+						<text>60秒内</text>
+						<text>医生与您联系</text>
+					</view>
+				</view>
+				<view class="list">
+					<image class="list-img list-img2" src="../images/icon-3.png"></image>
+					<view class="list-tit">获得优孕方案</view>
+					<view class="list-txt">
+						<text>优孕小组</text>
+						<text>为您一对一定制</text>
+					</view>
+				</view>
+				<view class="list">
+					<image class="list-img list-img3" src="../images/icon-1.png"></image>
+					<view class="list-tit">开始备孕</view>
+					<view class="list-txt">
+						<text>24h管家式服务</text>
+						<text>备孕不孤单</text>
+					</view>
+				</view>
+				<view class="list">
+					<image class="list-img list-img4" src="../images/icon-4.png"></image>
+					<view class="list-tit">迎接好孕</view>
+					<view class="list-txt">
+						<text>提供专业档案对</text>
+						<text>接您的孕检医生</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="reason">
+			<view class="reason-tit">为什么选择我们</view>
+			<view class="lists">
+				<view class="list">
+					<view class="list-tit">强大的线下医疗资源</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/xx1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/xx2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/xx3.png?v=1"></image></swiper-item>
+					</swiper>
+					
+					<view class="list-txt">
+						<!-- <text style="color:#666666;font-size: 24rpx; font-weight: 600;">天德堂中医馆　</text> -->
+						天德堂中医馆以中医妇科、不孕不育为治疗核心，建立了强大的妇科名老中医团队，聚集了国家级专家顾问及省内外三十余位名老中医，广纳众多名家医派，成立了十多个名医工作室。我们的目标是：通过中医调理科学备孕，让更多的家庭摆脱不孕不育的烦恼。
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">“中医师+备孕管家+营养师”您的贴身备孕团队</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zy-1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zy-2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zy-3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt">
+						<text style="color:#666666;font-size: 24rpx; font-weight: 600;">中医师　</text>
+						从“天德堂中医馆”几十位老中医中精挑细选，每一位中医师都拥有30多年妇科或不孕不育领域诊治经验，人均接待10w+患者，部分医师有出国医疗援助经历，更有省级和国家级权威中医专家加盟。
+					</view>
+					<view class="list-txt">
+						<text style="color:#666666;font-size: 24rpx; font-weight: 600;">备孕管家　</text>
+						全部拥有医学院教育经历，以及大医院妇产科3-5年医助经验，具有专业的技能、强烈的主动服务意识和责任心。
+					</view>
+					<view class="list-txt">
+						<text style="color:#666666;font-size: 24rpx; font-weight: 600;">营养师	</text>
+						具备厨师、保健师、医务、中医、心理师、健身教练等职业技能，为你提供营养监测、营养强化、营养评估等服务，专心专业服务于您的健康。
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">什么才是科学的备孕方式？</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/kx1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/kx2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/kx3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt">
+						<text style="color:#666666;font-size: 24rpx; font-weight: 600;">科学的备孕：　</text>
+						请教医生并遵循科学的方法。我们有国内名老中医亲自对话指导，配合孕前体检，一人一方，夫妻二人同时中医调理备孕。
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">为您提供60秒极速响应服务</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/js1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/js2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/js3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt list-txt2">
+						<view>留下电话，60s极速响应</view>
+						<view>私人医生24h定制出备孕方案</view>
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">为你提供管家式服务，备孕0操心</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/gj1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/gj2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/gj3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt list-txt2">
+						<view>私人医生全程一对一定制备孕方案</view>
+						<view>全方位提供每日建议，跟踪备孕进度</view>
+						<view>定期人工回访，备孕效果追踪</view>
+						<view>专属管家&专属客服24h随时服务</view>
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">为你提供夫妻协同备孕服务</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/fq1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/fq2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/fq3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt list-txt2">
+						<view>夫妻同步身体调理</view>
+						<view>协同备孕互相监督</view>
+					</view>
+				</view>
+				<view class="list">
+					<view class="list-tit">为您提供智能提醒服务</view>
+					<swiper class="swiper" circular="true" previous-margin="30rpx" next-margin="30rpx" autoplay='{{true}}' interval='3000' circular='{{true}}'>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zn1.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zn2.png?v=1"></image></swiper-item>
+						<swiper-item class="image-ct"><image class="list-img" lazy-load="true" src="//m.tdamm.com/static/images/phone/zn3.png?v=1"></image></swiper-item>
+					</swiper>
+					<view class="list-txt list-txt2">
+						<view>提醒检测排卵</view>
+						<view>推荐同房时间</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="case">
+			<view class="case-name">客户案例</view>
+			<view class="lists">
+				<view class="case-list case-list1" catchtap="more(1)">
+					<view class="list-name">案例1</view>
+					<view class="list-tit">
+						<text>备孕无小事</text>
+						<text>高学历夫妻的科学备孕经历</text>
+					</view>
+					<view class="txt">
+						自己备孕7个月未果，用十点备孕3个月就坏孕了...
+						<text class="more">详情</text>
+					</view>
+					<view class="case-tip" wx:if="{{tipShow1}}">
+						<view class="tip-name">案例1</view>
+						<scroll-view scroll-y="true" class="tip-txt">
+							<view class="tip-tit">
+								<text>备孕无小事</text>
+								<text>高学历夫妻的曲折备孕经历</text>
+							</view>
+							<view>我和老公在大学恋爱的时候就约定结婚后要认真备孕。开始备孕后，上网搜索各种备孕知识，
+								从借助姨妈软件到备孕软件，我经历了快7个月的时间。这7个月说长不长，但对于年龄30+的我，
+								已经浪费了太多时间。后来接触了“十点备孕”，输入电话后60s就有医生打电话过来了解情况，付费后有专业的医生指导备孕，
+								提供24h管家式服务，医生和管家都特别主动，业务技能也超级专业，不到3个月我就成功怀上了，特别感谢这个平台~
+							</view>
+							<view style="margin-top: 20rpx;">
+								<text style="font-size:30rpx;color:#a87580;font-weight: 600;">私人医生：</text>
+								感谢对我们的认可。对于备孕的夫妻，上网了解备孕知识是没错的，但互联网上的信息良莠不齐，建议还是找专业的医生指导备孕提高效率。
+								我们会根据夫妻二人的身体状况，定制专属的备孕方案，夫妻二人共同完成备孕计划，我会主动提醒测排卵、主动告知同房时间，真正做到管家式服务。
+							</view>
+						</scroll-view>
+						<image class="icon-close" src="../images/icon-close.png" catchtap="closeTip(1)"></image>
+					</view>
+				</view>
+				<view class="case-list case-list2" catchtap="more(2)">
+					<view class="list-name">案例2</view>
+					<view class="list-tit">
+						<text>婚后3年未孕</text>
+						<text>原来是因为这些病！</text>
+					</view>
+					<view class="txt">
+						女性输卵管堵塞，男性精子畸形等都可以导致不孕...
+						<text class="more">详情</text>
+					</view>
+					<view class="case-tip" wx:if="{{tipShow2}}">
+						<view class="tip-name">案例2</view>
+						
+						<scroll-view scroll-y="true" class="tip-txt">
+							<view class="tip-tit">
+								<text>婚后3年未孕</text>
+								<text>原来是因为这些病！</text>
+							</view>
+							<view>结婚3年，一直有避孕，直到身边的人都有了小孩，双方家里催的急，这才想到赶紧要个孩子，可能是欲速则不达，3个月了一点动静都没有。
+								经朋友介绍认识了“十点备孕”，私人医生建议我们先做个体检，我身体没毛病，妻子输卵管有点不通畅。
+								医生给了两个治疗建议：通过平台中医调理或者去医院治疗。
+								我选择了中医调理，医生精心给我们制定了调理方案和备孕方案，涉及到饮食、运动、睡眠、夫妻沟通、情绪管理等等。
+								妻子的输卵管问题解决后后，医生安排妻子测排卵然后解读测试结果，根据排卵时间，建议我们同房时间，可以说很周到了。
+								同房2次后，妻子就怀上了，感觉太意外了，感谢我的私人医生。
+							</view>
+							<view style="margin-top: 20rpx;">
+								<text style="font-size:30rpx;color:#a87580;font-weight: 600;">私人医生：</text>
+								女方有过流产经历、有输卵管疾病、子宫疾病、炎症等问题，男方有精子畸形、弱精都会影响怀孕，在备孕之前我都会建议双方先做个身体检查，排除疾病因素后，
+								按照我们的备孕方案来操作，怀孕就指日可待了。。
+							</view>
+						</scroll-view>
+						<image class="icon-close" src="../images/icon-close.png" catchtap="closeTip(2)"></image>
+					</view>
+				</view>	
+			</view>
+			
+		</view>
+		<!-- <view class="company">江西泥土公社科技有限公司</view> -->
+		<view class="footer {{isA ? 'footer-a' : ''}}">
+			<view style="font-size: 20rpx;color:#666; text-align: center;">
+				<text style="font-size: 28rpx;">备孕医生将在60秒内与您电话联系</text>
+			</view>
+			<view class="collect-phone">
+				<input type="number" class="phone-ipt" bindinput="getPhone" placeholder="请填写正确号码并保持手机畅通" placeholder-style="font-size:28rpx;color:#999;" />
+				<button class="text {{disabled ? 'disable' : ''}}" disabled="{{disabled}}" @tap="getCode">{{text}}</button>
+			</view>
+			<view class="collect-phone" style='margin-top:30rpx'>
+				<input type="number" class="phone-ipt" bindinput="getCod" placeholder="请输入验证码" placeholder-style="font-size:28rpx;color:#999;"  />
+				<button class="text"  @tap="sendPhone">提交</button>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import tip from '../util/tip'
+import { isPhone } from '../util/util'
+
+export default class Index extends wepy.page {
+	config = {
+		navigationBarTitleText: '十点备孕',
+		navigationBarBackgroundColor: '#f9e3cc',
+		navigationBarTextStyle: 'black'
+	}
+	data = {
+		phoneNum: '',
+		tipShow1: false,
+		tipShow2: false,
+		isA: false,
+		text: '获取验证码',
+		disabled: false,
+		code: null
+	}
+	methods = {
+		getPhone(e) {
+			this.phoneNum = e.detail.value
+			// if (this.phoneNum) {
+			// 	wepy.setStorageSync('mobile', this.phoneNum)
+			// }
+		},
+		getCod(e) {
+			this.code = e.detail.value
+			console.log(this.code)
+		},
+		getCode() {
+			let that = this
+			let token = wepy.getStorageSync('token')
+			let num = 60
+	
+			if (isPhone(this.phoneNum)) {
+				that.disabled = true
+				
+				wepy.request({
+					url:'https://m.tdamm.com/weapp/api/preg/code?token=' + token,
+					data: {
+						phone: that.phoneNum
+					},
+					method:'POST',
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(res => {
+					console.log(res)
+					if (res.data.code === 200) {
+						that.isA = true	
+						that.numDecrease(num)
+					} else {
+						that.disabled = false
+						tip.confirmT(res.data.msg)
+					}
+					that.$apply()
+				}).catch(res => {
+					that.$apply()
+					tip.error('提交失败')
+				})
+			} else {
+				tip.confirmT('请输入正确的手机号')
+			}
+		},
+		sendPhone() {
+			let that = this
+			let token = wepy.getStorageSync('token')
+			if (isPhone(this.phoneNum)) {
+				wepy.request({
+					url: 'https://m.tdamm.com/weapp/api/preg/mobil?token=' + token,
+					data: {
+						mobile: that.phoneNum,
+						code: that.code
+					},
+					method: 'POST',
+					header: {
+						'Content-Type': 'application/x-www-form-urlencoded'
+					}
+				}).then(res => {
+					if (res.data.code === 200) {
+						wepy.setStorageSync('mobile', that.phoneNum)
+						tip.success('提交成功')
+						wepy.reLaunch({
+							url: 'togo'
+						})
+					} else {
+						tip.confirmT(res.data.msg)
+					}
+				}).catch(res => {
+					tip.error('提交失败')
+				})
+			} else {
+				tip.confirmT('请填写正确的手机号')
+			}
+		},
+		closeTip(n) {
+			let m = Number(n)
+			if (m === 1) {
+				this.tipShow1 = false
+			} else if (m === 2) {
+				this.tipShow2 = false
+			}
+		},
+		more(n) {
+			let m = Number(n)
+			if (m === 1) {
+				this.tipShow1 = true
+			} else if (m === 2) {
+				this.tipShow2 = true
+			}
+		}
+	}
+	onLoad() {}
+	numDecrease(num) {
+		let that = this
+		let timer
+		if (num === 0) {
+			that.disabled = false
+			that.text = '重新获取'
+			clearTimeout(timer)
+		} else {
+			timer = setTimeout(function() {
+				that.text = num + 's'
+				num = num - 1
+				that.numDecrease(num)
+				that.$apply()
+			}, 1000)	
+		}
+	}
+}
+</script>
+
+<style lang="less">
+	.index {
+		background: #f9f5f6;
+		padding-bottom: 208rpx;
+	}
+	.img {
+		display: block;
+		width: 100%;
+		height: 300rpx;
+	}
+	.home-menu {
+		margin-top: 10rpx;
+		background: #fff;
+		text-align: center;
+		padding: 40rpx 0;
+
+		.menu-tit {
+			font-size: 34rpx;
+			color: #333;
+			font-weight: 700;
+		}
+
+		.menu-txt {
+			font-size: 24rpx;
+			color: #666666;
+			margin-top: 25rpx;
+		}
+
+		.lists {
+			width: 100%;
+			background: #fff;
+			display: flex;
+			margin-top: 40rpx;
+
+			
+			.list {
+				width: 25%;
+				position: relative;
+				.list-img {
+					margin: 0 auto;
+					display: block;
+					text-align: center;
+
+					&.list-img1 {
+						width: 62rpx;
+						height: 108rpx;
+					}
+					&.list-img2 {
+						width: 134rpx;
+						height: 108rpx;
+					}
+					&.list-img3 {
+						width: 81rpx;
+						height: 108rpx;
+					}
+					&.list-img4 {
+						width: 106rpx;
+						height: 108rpx;
+					}
+				}
+				
+				.list-tit {
+					font-size: 24rpx;
+					color: #383838;
+					font-weight: 700;
+					text-align: center;
+					margin-top: 30rpx;
+				}
+
+				.list-txt {
+					margin-top: 14rpx;
+					text {
+						font-size: 20rpx;
+						color: #383838;
+						display: block;
+						line-height: 1.4;
+					}
+				}
+				&:after {
+					content: '';
+					display: block;
+					width: 0;
+					height: 0;
+					border-top: 12rpx solid transparent;
+					border-left: 20rpx solid #666666;
+					border-right: 12rpx solid transparent;
+					border-bottom: 12rpx solid transparent;
+					position: absolute;
+					right: -22rpx;
+					top: 53rpx; 
+				}
+				&:last-child {
+					&::after {
+						display: none;
+					}
+				}
+			}
+
+		}
+	}
+	.case {
+		margin-top: 10rpx;
+		background: #fff;
+		padding: 0 0 30rpx 30rpx;
+		.case-name {
+			font-size: 34rpx;
+			color: #333;
+			font-weight: 600;
+			text-align: center;
+			padding: 30rpx 0;
+		}
+		.lists {
+			display: flex;
+		}
+		.case-list {
+			width: 330rpx;
+			height: 450rpx;
+			padding: 15rpx;
+			box-sizing: border-box;
+			background-color: #f9f5f6;
+			
+			background-position: center center;
+			background-size: 300rpx 420rpx;
+			background-repeat: no-repeat;
+			border-radius: 15rpx;
+			margin-right: 10rpx;
+
+			&.case-list1 {
+				background-image: url('//m.tdamm.com/static/images/phone/al1.png?v=2');
+			}
+
+			&.case-list2 {
+				background-image: url('//m.tdamm.com/static/images/phone/al2.png?v=2');
+			}
+			.list-name {
+				width: 120rpx;
+				height: 50rpx;
+				background: rgba(79,72,72,0.8);
+				border-top-left-radius: 15rpx;
+				border-bottom-right-radius: 15rpx;
+				font-size: 28rpx;
+				color: #fff;
+				text-align: center;
+				line-height: 50rpx;
+				margin-top: 1rpx;
+			}
+			.more {
+				font-size: 24rpx;
+				color: #fff;
+				font-weight: 600;
+			}
+			.list-tit {
+				font-size: 22rpx;
+				color: #fff;
+				font-weight: 600;
+				margin-top: 210rpx ;
+				padding: 0 8rpx;
+				
+				text {
+					display: block;
+					line-height: 1.3;
+				}
+			}
+			.txt {
+				font-size: 20rpx;
+				color: #fff;
+				line-height: 1.5;
+				padding: 0 8rpx;
+				margin-top: 20rpx;
+			}
+		}
+
+		.case-tip {
+			position: fixed;
+			top: 126rpx;
+			left: 50%;
+			transform: translate(-50%);
+			width: 540rpx;
+			height: 826rpx;
+			z-index: 9;
+			background: #f9f5f6;
+			padding: 46rpx;
+			box-sizing: border-box;
+			box-shadow: 1rpx 4rpx 4rpx 4rpx rgba(168,117,128,0.3);
+			border-radius: 15rpx;
+
+			.tip-name {
+				font-size: 34rpx;
+				color:#a87580;
+				font-weight: 600;
+			}
+			.tip-tit {
+				margin-bottom: 20rpx;
+				text {
+					font-size: 30rpx;
+				color:#a87580;
+					display: block;
+					font-weight: 600;
+					line-height: 1.5;
+				}
+			}
+			.tip-txt {
+				height: 680rpx;
+				overflow: hidden;
+				font-size: 30rpx;
+				color:#a87580;
+				line-height: 1.3;
+				letter-spacing: 1rpx;
+				margin-top: 28rpx;
+			}
+			.icon-close {
+				display: block;
+				position: absolute;
+				width: 33rpx;
+				height: 33rpx;
+				top: 45rpx;
+				right: 55rpx;
+				z-index:999;
+			}
+		}
+	}
+	.reason {
+		background: #fff;
+		margin-top: 10rpx;
+		.reason-tit {
+			font-size: 34rpx;
+			color: #333333;
+			font-weight: 700;
+			text-align: center;
+			padding: 30rpx 0 24rpx;
+		}
+		.swiper {
+			width: 100%;
+			height: 400rpx;
+		}
+		.lists {
+			.list {
+				padding-bottom: 42rpx;
+				width: 100%;
+				.list-tit {
+					font-size: 28rpx;
+					color: #666666;
+					text-align: center;
+					font-weight: 700;
+					padding-bottom: 26rpx;
+				}
+				.image-ct {
+					width: 100%;
+					height: 400rpx !important;
+					border-radius: 10rpx;
+					position: relative;
+					display: flex;
+					justify-content: center;
+				}
+				.list-img {
+					display: block;
+					width: 640rpx;
+					height: 370rpx;
+					margin: 0 auto;
+					border: 20rpx solid #f9f5f6;
+					border-radius: 15rpx;
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+				.list-txt {
+					width: 690rpx;
+					margin: 0 auto;
+					font-size: 24rpx;
+					color: #666666;
+					padding: 0  10rpx;
+					box-sizing: border-box;
+					line-height: 1.4;
+					margin-top: 20rpx;
+				}
+				.list-txt2 {
+					text-align: center;
+				}
+			}
+		}
+	}
+	.company {
+		font-size: 24rpx;
+		color: #999999;
+		text-align: center;
+		padding: 30rpx 0;
+	}
+	.footer {
+		padding: 15rpx 0 30rpx;
+		border-top: 1rpx solid #b3afb0;
+		background: #f9e3cc;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 134rpx;
+		transition: all 0.3s ease;
+
+		&.footer-a {
+			height: 260rpx;
+		}
+
+		.collect-phone {
+			width: 690rpx;
+			margin: 25rpx auto 0;
+			display: flex;
+			.phone-ipt {
+				width: 540rpx;
+				height: 80rpx;
+				background: #fff;
+				border-top-left-radius: 50rpx;
+				border-bottom-left-radius: 50rpx;
+				padding: 0 30rpx;
+				box-sizing: border-box;
+				font-size: 28rpx;
+			}
+			.text {
+				display: block;
+				width: 150rpx;
+				height: 80rpx;
+				line-height: 80rpx;
+				text-align: center;
+				background: #ff7474;
+				font-size: 24rpx;
+				color: #fff;
+				border-top-right-radius: 50rpx;
+				border-bottom-right-radius: 50rpx;
+				padding: 0;
+
+				&.disable {
+					background: #999999;
+				}
+			}
+		}
+	}
+</style>

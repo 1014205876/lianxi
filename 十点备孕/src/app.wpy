@@ -1,0 +1,142 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy';
+import 'wepy-async-function';
+export default class extends wepy.app {
+  config = {
+    window: {
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTextStyle: 'black',
+      navigationBarTitleText: '十点备孕'
+    },
+    pages: [
+      'pages/togo', //判断需要进入哪个页面
+      'pages/task',
+      'pages/tips',
+      'pages/doctor', //私人医生
+      'pages/doctorinfo', //医生详情
+      'pages/taskdeatil', //任务详情页
+      'pages/userInfo', //个人信息页面
+      'pages/dashboard', //仪表盘
+      'pages/welcome', //欢迎页
+      'pages/wait', //方案等待页面
+      'pages/index',
+      // 'pages/taskStage',
+      'pages/guanlian', //他人扫码看到的页面
+      'pages/pay', // 支付页面
+      'pages/pay-intro' // 支付介绍
+    ],
+    tabBar: {
+      selectedColor: '#a87580',
+      color: '#333333',
+      list: [
+        {
+          pagePath: 'pages/task',
+          iconPath: './images/jl.png',
+          selectedIconPath: './images/jl-selected.png',
+          text: '专属服务'
+        },
+        {
+          pagePath: 'pages/doctor',
+          iconPath: './images/icon-doc.png',
+          selectedIconPath: './images/icon-doc-selected.png',
+          text: '优孕小组'
+        },
+        {
+          pagePath: 'pages/userInfo',
+          text: '个人中心',
+          iconPath: './images/icon-task.png',
+          selectedIconPath: './images/icon-task-selected.png'
+        }
+      ]
+    }
+  };
+
+  globalData = {
+    userInfo: null
+  };
+
+  constructor() {
+    super();
+    this.use('requestfix');
+    this.use('promisify');
+  }
+  // onShow(options) {
+  //   let token = wepy.getStorageSync('token');
+  //   console.log(options)
+  //   let theuid = options.query.theuid;
+  //   if (!token) {
+  //     wepy.reLaunch({
+  //       url: 'pages/welcome?theuid=' + theuid
+  //     });
+  //   } else {
+  //     if (theuid) {
+  //       wepy.reLaunch({
+  //         url: 'pages/guanlian?theuid=' + theuid
+  //       });
+  //     }
+  //   }
+  // }
+  // async onShow(options) {
+  //   let token = wepy.getStorageSync('token')
+  //   let mobile = wepy.getStorageSync('mobile')
+  //   // let type = wepy.getStorageSync('type')
+  //   let theuid = options.query.theuid
+  //   if (!token) {
+  //     wepy.reLaunch({
+  //       url: 'pages/welcome?theuid=' + theuid,
+  //     })
+  //   } else {
+  //     if(theuid){
+  //       wepy.reLaunch({
+  //           url: 'pages/guanlian?theuid=' + theuid,
+  //         })
+  //     }else{
+  //       if (!mobile) {
+  //         await wepy.reLaunch({
+  //           url: 'pages/index'
+  //         })
+  //       } else {
+  //         wepy.request({
+  //           url: `https://m.tdamm.com/weapp/api/preg/user_status?token=${token}`,
+  //           method: 'POST',
+  //           header: {
+  //             'Content-Type': 'application/x-www-form-urlencoded'
+  //           }
+  //         }).then(res => {
+  //           if (res.data.code == 200) {
+  //             let type = res.data.type
+  //             wepy.setStorageSync('type', type)
+  //             if (res.data.type == 0) {
+  //               wx.reLaunch({
+  //                 url: 'pay'
+  //               });
+  //             } else if (res.data.type == 3 || res.data.type == 2){
+  //               wx.reLaunch({
+  //                 url: 'wait'
+  //               })
+  //             } else {
+  //               wx.reLaunch({
+  //                 url: 'task'
+  //               })
+  //             }
+  //           }
+  //         }).catch(e => {
+  //           console.log(e)
+  //         })
+  //       }
+  //     }
+  //   }
+  // }
+}
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+
+<body style="background:green">
+    <div id="qrcode"></div>
+
+    <video width="320" height="240" controls autoplay muted>
+        <source src="https://v-cdn.zjol.com.cn/280443.mp4" type="video/mp4">
+        <source src="https://v-cdn.zjol.com.cn/280443.mp4" type="video/ogg">
+        您的浏览器不支持 video 标签。
+    </video>
+</body>
+<script type="text/javascript" src="./js/qrcode.js"></script> 
+<script> 
+    var qrcode = document.getElementById('qrcode')
+
+    /*直接生成二维码*/
+    new QRCode(qrcode, 'http://www.daqianduan.com')
+
+    /*也可以配置二维码的宽高等*/
+    var qrcodeObj = new QRCode('qrcode', {
+        text: 'http://www.daqianduan.com',
+        width: 500,
+        height: 400,
+        colorDark: 'red', //前景色
+        colorLight: 'yellow'  //背景色
+    }) 
+</script>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+    	#box{
+    		font-size:20px;
+    		font-family:'宋体';
+    		color:red;
+    	}
+    </style>
+</head>
+<body>
+	<div id="num"></div>
+    <div id="box"></div>
+    <script src="https://cdn.bootcss.com/countup.js/1.9.3/countUp.js"></script>
+    <script type="text/javascript">
+        var options = {
+            useEasing: true, 
+            useGrouping: true, 
+            separator: ',', 
+            decimal: '.', 
+        };
+        var demo = new CountUp(
+        	'box', //标签id
+        	0,//开始数字
+        	99999999.99999,//结束数字
+        	0,
+        	2.5,
+        	options
+        );
+        if (!demo.error) {
+            demo.start();
+        } else {
+            console.error(demo.error);
+        }
+        var num=document.getElementById('num');
+        var x=0;
+        var time1=setInterval(function(){
+        	x++;
+        	num.innerHTML=x;
+        	if(x>=999){
+        		clearInterval(time1)
+        	}
+        },0001)
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+1. git init
+
+2. git remote add origin http://gitlab.XXX.com/XXX/XXX.git 增加远程仓库
+
+3. git clone http: 克隆远程仓库到本地
+
+
+4. git pull 拉取代码
+
+5. 更改代码
+git status
+git add *
+git commit -m '备注'
+
+6.新建分支
+git branch 查看本地分支
+git branch -a 查看全部分支远程+本地
+
+git checkout 切换分支
+git checkout -b 分支名
+
+7.推送新分支到远程仓库
+git push origin 分支名
+
+8.合并分支
+
+太大无法clone时

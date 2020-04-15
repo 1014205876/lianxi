@@ -1,0 +1,279 @@
+<template>
+    <view class="pay-wrap"> 
+        <image class="pay-banner" src="//m.tdamm.com/static/images/phone/Banner.png"></image>
+        <view class="wrap-tit">VIP服务说明</view>
+        <view class="items">
+            <view class="item">
+                <image class="item-bg" mode="aspectFit" src="//m.tdamm.com/static/images/phone/item-pic.jpg"></image>
+                <view class="line"></view>
+                <view class="item-txt">医生&营养师&心理导师三合一优孕团队量身定制备孕方案</view>
+            </view>
+            <view class="item">
+                <image class="item-bg" mode="aspectFit" src="//m.tdamm.com/static/images/phone/item-pic2.jpg"></image>
+                <view class="line"></view>
+                <view class="item-txt">每日定制任务&私人管家在线指导助您科学安排备孕行为</view>
+            </view>
+            <view class="item">
+                <image class="item-bg" mode="aspectFit" src="//m.tdamm.com/static/images/phone/item-pic3.png"></image>
+                <view class="line"></view>
+                <view class="item-txt">深入协调夫妻双方需求 让备孕成为两人的情感调和剂</view>
+            </view>
+        </view>
+        <view class="btns">
+            <view class="join" @tap="goTo('pay-intro?type=2')">加入VIP</view>
+            <view class="experience" @tap="goTo('pay-intro?type=1')">29元体验VIP服务</view>
+        </view>
+        <view class="free" @tap="toggleDialog">使用免费方案</view>
+        <view class="dialog" hidden="{{dialogHide}}">
+            <view  class="check-box">
+                <view class="box-txt">请选择您的性别，我们会根据性别配置更科学的方案</view>
+                <radio-group class="radios" bindchange="radioChange">
+                    <label class="radio">
+                        <radio value="1" />男
+                    </label>
+                    <label class="radio">
+                        <radio value="2" /> 女
+                    </label>
+                </radio-group>
+                <view class="btns">
+                    <view class="cancel" @tap="toggleDialog">取消</view>
+                    <view class="confirm" catchtap="confirm">确认</view>
+                </view>    
+            </view> 
+        </view>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import tip from '../util/tip';
+
+export default class pay extends wepy.page {
+  config = {};
+
+  data = {
+    first: false,
+    dialogHide: true,
+    radioValue: null
+  };
+
+  onLoad() {
+    let first = wepy.getStorageSync('first') || this.first;
+    if (!first) {
+      tip.confirm('请稍后，备孕医生即将与您联系');
+      wepy.setStorageSync('first', true);
+    }
+  }
+  methods = {
+    goTo(url) {
+      wx.navigateTo({
+        url: url
+      });
+    },
+    radioChange(e) {
+      this.radioValue = e.detail.value;
+    },
+    confirm() {
+      let that = this;
+      let mobile = wepy.getStorageSync('mobile');
+      let token = wepy.getStorageSync('token');
+      if (this.radioValue) {
+        wepy
+          .request({
+            url: 'https://m.tdamm.com/weapp/api/preg/free_user?token=' + token,
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+              sex: this.radioValue
+            }
+          })
+          .then(res => {
+            wx.reLaunch({
+              url: 'togo'
+            });
+          })
+          .catch(res => {
+            console.log(res);
+          });
+      } else {
+        tip.alert('请选择性别');
+      }
+    },
+    toggleDialog() {
+      this.dialogHide = !this.dialogHide;
+    }
+    // imgLoad(e) {
+    //     console.log(e.detail)
+    // }
+  };
+
+  onShareAppMessage(res) {
+    return {
+      title: '支付',
+      path: 'pages/pay'
+    };
+  }
+}
+</script>
+
+ <style lang="less" scoped>
+.pay-wrap {
+  .pay-banner {
+    width: 100%;
+    height: 350rpx;
+  }
+  .wrap-tit {
+    font-size: 34rpx;
+    color: #a87580;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 30rpx;
+  }
+
+  .items {
+    width: 100%;
+    padding: 0 36rpx;
+    margin-top: 30rpx;
+    box-sizing: border-box;
+    .item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30rpx;
+
+      .item-bg {
+        display: block;
+        width: 240rpx;
+        height: 150rpx;
+        border-radius: 10rpx;
+      }
+      .line {
+        width: 3rpx;
+        height: 120rpx;
+        background: #a87580;
+        margin: 0 40rpx;
+      }
+      .item-txt {
+        font-size: 28rpx;
+        line-height: 1.5;
+        flex: 1;
+      }
+    }
+  }
+
+  .btns {
+    display: flex;
+    justify-content: center;
+    .join {
+      width: 240rpx;
+      height: 60rpx;
+      border-radius: 50rpx;
+      background: #a87580;
+      text-align: center;
+      font-size: 24rpx;
+      color: #fff;
+      line-height: 60rpx;
+      margin: 0 21rpx;
+    }
+    .experience {
+      width: 240rpx;
+      height: 60rpx;
+      border-radius: 50rpx;
+      background: #f9f5f6;
+      text-align: center;
+      font-size: 24rpx;
+      color: #a87580;
+      line-height: 60rpx;
+      margin: 0 21rpx;
+    }
+  }
+
+  .free {
+    font-size: 22rpx;
+    color: #a87580;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 30rpx auto 0;
+    line-height: 1;
+    width: 200rpx;
+    border: 1rpx solid #ccc;
+    border-radius: 30rpx;
+    padding: 10rpx 0;
+  }
+
+  .dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .check-box {
+    width: 540rpx;
+    position: absolute;
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50rpx 0 0;
+    border-radius: 15rpx;
+
+    .box-txt {
+      font-size: 28rpx;
+      color: #333;
+      text-align: center;
+      width: 420rpx;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .radios {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 60rpx 0;
+      .radio {
+        font-size: 34rpx;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+      }
+    }
+    .btns {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 60rpx;
+      border-top: 1rpx solid #b6b6b6;
+      background: #f9f5f6;
+      border-bottom-left-radius: 15rpx;
+      border-bottom-right-radius: 15rpx;
+      position: relative;
+    }
+    .cancel {
+      flex: 1;
+      height: 100%;
+      line-height: 60rpx;
+      font-size: 24rpx;
+      text-align: center;
+      color: #b6b6b6;
+      border-right: 1rpx solid #b6b6b6;
+    }
+    .confirm {
+      font-size: 24rpx;
+      color: #a87580;
+      text-align: center;
+      flex: 1;
+      height: 100%;
+      line-height: 60rpx;
+    }
+  }
+}
+</style>
+ 

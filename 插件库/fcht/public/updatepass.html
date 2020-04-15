@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>修改密码</h1>
+		<p>1.获取验证码  ==> </p>
+		
+		<form action="/VueHandler/AdminHandler?action=updatepass" method="post">
+			<p>旧密码:<input type="text" name="userPwd" /></p>
+			<p>新密码:<input type="text" name="newPwd" /></p>
+			<input type="submit" value="修改密码"/>
+		</form>
+	</body>
+</html>

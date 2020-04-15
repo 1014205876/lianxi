@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="logo">
+    <img th:src="${T(com.masspick.Env).getInstance().getLogo()}" alt="">
+    <div class="name">
+        <span th:text="${T(com.masspick.Env).getInstance().getTitle()}"></span>
+    </div>
+</div>
+<div class="box" id="login">
+    <form method="post" id="fm1" th:object="${credential}" action="login">
+        <ul class="form">
+            <p>欢迎登录</p>
+
+            <li class='form-item'>
+                <img th:src="@{/images/icon-user.png}" alt="用户名字体图标">
+                <input id="user" name="username" type="text" placeholder="请输入用户名"
+                       th:disabled="${guaEnabled}"
+                       th:field="*{username}"
+                       th:accesskey="#{screen.welcome.label.netid.accesskey}">
+            </li>
+            <li class='form-item'>
+                <img th:src="@{/images/icon-password.png}" alt="密码名字体图标">
+                <input id="password"  name="password" type="password" placeholder="请输入密码"
+                       th:accesskey="#{screen.welcome.label.password.accesskey}"
+                       th:field="*{password}"
+                       autocomplete="off">
+                <!--<img id="see" hiddden=true src="../images/icon-see.png" alt="点击密码可见">-->
+                <!--<img id="nosee" hidden=false src="../images/icon-nosee.png" alt="点击密码不可见">-->
+            </li>
+            <div class="error_txt" id="error" th:style="'text-align: right; font-size: 14px; margin-top: 5px; color: red;display:' + @{(${#fields.hasErrors('*')} ? 'block' : 'none')}">
+                <span class="error_tip" th:each="err : ${#fields.errors('*')}" th:utext="${err}"></span>
+            </div>
+            <li style="margin-top: 35px;">
+                <input id="submit" type="submit" value="登录">
+            </li>
+        </ul>
+        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+        <input type="hidden" name="_eventId" value="submit"/>
+        <input type="hidden" name="geolocation"/>
+    </form>
+</div>

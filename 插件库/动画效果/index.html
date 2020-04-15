@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>动画效果合集</title>
+		<link rel="stylesheet" href="https://unpkg.com/animate.css@3.5.2/animate.min.css" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			div {
+				width: 200px;
+				height: 120px;
+				float: left;
+				margin: 20px;
+				background: darkseagreen;
+				text-align: center;
+				line-height: 120px;
+				font-size: 20px;
+				color: #fff;
+				font-weight: 800;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h2>显示</h2>
+		<p>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<li style='clear:both'></li>
+		</p>
+		<h2>隐藏</h2>
+		<p>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+			<div class='animated'>动画</div>
+		</p>
+		<script src='../jquery-3.2.1/jquery-3.2.1.js'></script>
+		<script>
+			$(function() {
+				var amimateArr = [
+					//显示
+					'bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble',
+					'bounceIn', 'bounceInDown', 'bounceInLeft', 'bounceInRight', 'bounceInUp',
+					'fadeIn', 'fadeInDown', 'fadeInDownBig', 'fadeInLeft', 'fadeInLeftBig', 'fadeInRight', 'fadeInRightBig', 'fadeInUp', 'fadeInUpBig',
+					'flip', 'flipInX', 'flipInY',
+					'lightSpeedIn',
+					'rotateIn', 'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft', 'rotateInUpRight',
+					'slideInDown', 'slideInLeft', 'slideInRight',
+					'rollIn',
+					//隐藏
+					'bounceOut', 'bounceOutDown', 'bounceOutLeft', 'bounceOutRight', 'bounceOutUp',
+					'fadeOut', 'fadeOutDown', 'fadeOutDownBig', 'fadeOutLeft', 'fadeOutLeftBig', 'fadeOutRight', 'fadeOutRightBig', 'fadeOutUp', 'fadeOutUpBig',
+					'flipOutX', 'flipOutY',
+					'lightSpeedOut',
+					'rotateOut', 'rotateOutDownLeft', 'rotateOutDownRight', 'rotateOutUpLeft', 'rotateOutUpRight',
+					'slideOutLeft', 'slideOutRight', 'slideOutUp',
+					'hinge', 'rollOut',
+				];
+				var amimateArrIn = [
+					//显示
+					'bounce', 'flash', 'pulse', 'rubberBand', 'shake', 'swing', 'tada', 'wobble',
+					'bounceIn', 'bounceInDown', 'bounceInLeft', 'bounceInRight', 'bounceInUp',
+					'fadeIn', 'fadeInDown', 'fadeInDownBig', 'fadeInLeft', 'fadeInLeftBig', 'fadeInRight', 'fadeInRightBig', 'fadeInUp', 'fadeInUpBig',
+					'flip', 'flipInX', 'flipInY',
+					'lightSpeedIn',
+					'rotateIn', 'rotateInDownLeft', 'rotateInDownRight', 'rotateInUpLeft', 'rotateInUpRight',
+					'slideInDown', 'slideInLeft', 'slideInRight',
+					'rollIn',
+				];
+				var amimateArrOut = [
+					//隐藏
+					'bounceOut', 'bounceOutDown', 'bounceOutLeft', 'bounceOutRight', 'bounceOutUp',
+					'fadeOut', 'fadeOutDown', 'fadeOutDownBig', 'fadeOutLeft', 'fadeOutLeftBig', 'fadeOutRight', 'fadeOutRightBig', 'fadeOutUp', 'fadeOutUpBig',
+					'flipOutX', 'flipOutY',
+					'lightSpeedOut',
+					'rotateOut', 'rotateOutDownLeft', 'rotateOutDownRight', 'rotateOutUpLeft', 'rotateOutUpRight',
+					'slideOutLeft', 'slideOutRight', 'slideOutUp',
+					'hinge', 'rollOut',
+				];
+				for(var i = 0; i < amimateArr.length; i++) {
+					$('div').eq(i).text(amimateArrIn[i]);
+//					$('div').eq(i).addClass(amimateArrIn[i]);
+				}
+				$('div').hover(function() {
+					$(this).addClass(amimateArr[$(this).index()]);
+				}, function() {
+					$(this).removeClass(amimateArr[$(this).index()]);
+				})
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,1355 @@
+<template>
+    <view class="task {{isLong ? 'long' : ''}}">
+        <view class="index">
+            <view class="top-wrap" animation="{{topOut}}">
+                <button class="customer" plain="true" open-type="contact">
+                    <image class="icon-cus" style="width:71rpx; height:71rpx;" src="../images/icon-cus.png"></image>
+                </button>
+                <view class="special" wx:if="{{hasSpec}}" @tap="showSpec">
+                    <image style="width: 71rpx; height: 71rpx;" src="../images/task-2.png"></image>
+                    <view class="w">
+                        <view class="w1"></view>
+                        <view class="w2"></view>
+                    </view>
+                </view>
+                <view class="avatars">
+                    <image class="avatar" style="border: 2rpx solid #b6b6b6;" wx:if="{{!isAssociated}}" src="{{avatar}}"></image>
+                    <block>
+                        <image class="avatar" wx:if="{{isAssociated}}" src="{{wAvatar}}"></image>
+                        <image class="avatar" wx:if="{{isAssociated}}" src="{{mAvatar}}"></image>
+                        <image class="avatar" style="border: none;" wx:else src="../images/icon-add.png" @tap="goToInfo"></image>
+                    </block>
+                    <view class="txt" wx:if="{{pairs.length > 1}}">已关联</view>
+                    <view class="txt" wx:if="{{!isAssociated || pairs.length === 1}}">未关联</view>
+                </view>
+                <view class="wave-wrapper" id="waveWrap">
+                    <view class="wave-box"  animation="{{scaleOut}}" @tap="fadeOut">
+                        <view class="canvas-wrap" hidden="{{hide || showImg}}">
+                            <canvas class="progress" canvas-id="firstCanvas"></canvas>   
+                        </view>                 
+                        <view class="wave">
+                            <image class="wave-gif" src="../images/wave.gif" animation="{{waveData}}"></image>
+                        </view>
+                        <blcok wx:if="{{ bodyShow && hasTask}}">
+                            <view class="wave-text">
+                                <text>{{curTime}}</text>
+                                <text style="font-size: 40rpx;margin: 22rpx 0;">{{percent}}</text>
+                                <text>今日完成</text>
+                            </view>
+                        </blcok>
+                        <block wx:else>
+                            <view class="wave-text">
+                                <text>任务尚未开始</text>
+                                <text>点击查看完整计划</text>
+                            </view> 
+                        </block>
+                    </view>
+                    <blcok wx:if="{{isAssociated}}">
+                        <view class="wave-txt" wx:if="{{ bodyShow && hasTask}}">
+                            <!-- <text style="font-size: 24rpx;">{{userInfo.nickName}}</text>  -->
+                            <text style="font-size: 24rpx;">您</text>还有
+                            <text style="font-size: 24rpx;">{{iswomen ? yRemain : tRemain}}</text>
+                            个任务未完成；您的<text style="font-size: 24rpx;"> ta </text>还有
+                            <text style="font-size: 24rpx;">{{iswomen ? tRemain : yRemain}}</text>
+                            个任务未完成
+                        </view>
+                    </blcok>
+                    <block wx:else>
+                        <view class="wave-txt" wx:if="{{ bodyShow && hasTask}}">
+                            <!-- <text style="font-size: 24rpx;">{{userInfo.nickName}}</text>  -->
+                            <text style="font-size: 24rpx;">您</text>还有
+                            <text style="font-size: 24rpx;">{{iswomen ? yRemain : tRemain}}</text>
+                            个任务未完成；关联您的<text style="font-size: 24rpx;"> ta </text>一起
+                            完成全部任务
+                        </view>
+                    </block>
+                    <image class="wave-bg" src="../images/wave-bg.png"></image>
+                </view>
+            </view>
+            <block wx:if="{{bodyShow && !hasTask}}">
+                <view class="card-wrap" animation="{{bottomOut}}">
+                    <image class="no-task" style="width: 462rpx; height: 195rpx;" src="../images/no-task.png"></image>
+                    <view class="icon-txt" style="font-size: 24rpx; color: #666;">您的任务尚未开始，请查看完整任务，并联系管家开启</view>
+                </view>
+                
+            </block>
+            <block wx:if="{{bodyShow && hasTask}}">
+                <view class="card-wrap" animation="{{bottomOut}}">
+                    <view class="task-card">
+                        <view class="card-menu">
+                            <block wx:if="{{women.is_self === 1}}">
+                                <view class="menu-list {{current == 0 ? 'active' : ''}}" data-id="0" @tap="changeCurrent">
+                                    我的任务卡
+                                    <image  class="menu-icon" src="../images/icon-nv.png"></image>
+                                </view>
+                                <view class="menu-list {{current == 1 ? 'active' : ''}}" data-id="1" @tap="changeCurrent">
+                                    他的任务卡
+                                    <image  class="menu-icon" src="../images/icon-man.png"></image>
+                                </view>
+                            </block>
+                            <block wx:if="{{men.is_self === 1}}">
+                                <view class="menu-list {{current == 0 ? 'active' : ''}}" data-id="0" @touchstart="changeCurrent">
+                                    我的任务卡
+                                    <image  class="menu-icon" src="../images/icon-man.png"></image>
+                                </view>
+                                <view class="menu-list {{current == 1 ? 'active' : ''}}" data-id="1" @tap="changeCurrent">
+                                    她的任务卡
+                                    <image  class="menu-icon" src="../images/icon-nv.png"></image>
+                                </view>
+                            </block>
+                        </view>
+                        <swiper duration="700" class="task-swiper" current="{{current}}" bindchange="getCurrent">
+                            <block wx:if="{{iswomen}}">
+                                <swiper-item class="card-item">
+                                    <wLists :taskLists.sync="task0" @getImg.user="getImg" :ifStop.sync="ifStop" :state.sync="current" :close.sync="isClose" @share.user="share" @childFn.user="reload" :ismen.sync="!isMen" :isme.sync="isme" :iswomen.sync="iswomen"></wLists>
+                                </swiper-item>
+                                <block wx:if="{{isAssociated}}">
+                                    <swiper-item class="card-item">
+                                        <mLists :taskLists.sync="task1" :ifStop.sync="ifStop" :state.sync="current"  :close.sync="isClose" @share.user="share" @childFn.user="reload" :ismen.sync="isMen" :iswomen.sync="iswomen" :isme.sync="isme"></mLists>
+                                    </swiper-item>
+                                </block>
+                                <block wx:else>
+                                    <swiper-item class="card-item">
+                                        <view class="swiper-tips">请先关联才能查看Ta的任务</view>
+                                    </swiper-item>
+                                </block>
+                                
+                            </block>
+                            <block wx:if="{{isme}}">
+                                <swiper-item  class="card-item">
+                                    <mLists :taskLists.sync="task1" @getImg.user="getImg" :ifStop.sync="ifStop" :state.sync="current" :close.sync="isClose" @share.user="share" @childFn.user="reload" :isme.sync="isme" :ismen.sync="isMen" :iswomen.sync="iswomen"></mLists>
+                                </swiper-item>
+                                <block wx:if="{{isAssociated}}">
+                                    <swiper-item class="card-item">
+                                        <wLists :taskLists.sync="task0" :ifStop.sync="ifStop" :state.sync="current" :close.sync="isClose" @share.user="share" @childFn.user="reload" :ismen.sync="!isMen" :iswomen.sync="iswomen" :isme.sync="isme"></wLists>
+                                    </swiper-item>
+                                </block>
+                                <block wx:else>
+                                    <swiper-item class="card-item">
+                                        <view class="swiper-tips">请先关联才能查看Ta的任务</view>
+                                    </swiper-item>
+                                </block>
+                            </block>
+                        </swiper>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <!-- 任务 -->
+        <view class="taskstage" animation="{{fadeIn}}">
+            <taskStage @restore.user="restore" :stage.sync="stage_id" :stages.sync="stages" :plans.sync="plans" :nowList.sync="nowList" :num.sync="num"></taskStage>
+        </view>
+        <!-- 特殊任务弹窗 -->
+        <view class="special-mask" wx:if="{{specialShow}}" @tap="showSpec">
+            <block wx:for="{{specialTask1[0]}}" wx:key="{{item.id}}"  wx:if="{{ isme && item.finish === 0}}">
+                <view class="special-task" data-id="{{item.id}}" catchtap="goTo">
+                    <image class="special-bg" src="../images/special-bg.png"></image>
+                    <view class="task-state">
+                        <view class="task-time">{{item.timer}}</view>
+                        <!-- <image class="icon icon-clock" wx:if="{{clock || item.clock === 1}}" src="../images/icon-clock.png" data-id="{{item.id}}" catchtap="cancelClock"></image> -->
+                        <image class="icon icon-success" src="../images/icon-success.png" data-id="{{item.id}}" data-uspid="{{item.ussp_id}}" catchtap="complete1"></image>
+                    </view>
+                    <view class="task-name">{{item.task_info}}</view>
+                </view>
+            </block>
+            <block wx:for="{{specialTask0[0]}}" wx:key="{{item.id}}" wx:if="{{iswomen && item.finish === 0}}">
+                <view class="special-task" data-id="{{item.id}}" catchtap="goTo">
+                    <image class="special-bg" src="../images/special-bg.png"></image>
+                    <view class="task-state">
+                        <view class="task-time">{{item.timer}}</view>
+                        <!-- <image class="icon icon-clock" wx:if="{{clock || item.clock === 1}}" src="../images/icon-clock.png" data-id="{{item.id}}" catchtap="cancelClock"></image> -->
+                        <image class="icon icon-success" src="../images/icon-success.png" data-id="{{item.id}}" data-uspid="{{item.ussp_id}}" catchtap="complete1"></image>
+                    </view>
+                    <view class="task-name">{{item.task_info}}</view>
+                </view>
+            </block>
+        </view>
+        <!-- 分享任务弹窗 -->
+        <view class="share-dialog {{isClose ? 'show' : ''}}">
+            <text class="tit">任务分享</text>
+            <view class="txt">是否要将任务分享给ta</view>
+            <textarea class="ipt" type="text" bindinput="getInputTxt" placeholder="{{inputValue}}" placeholder-style="font-size: 24rpx; color: #b6b6b6;line-height:28rpx;" ></textarea>
+            <!-- <input class="ipt" type="text" bindinput="getInputTxt" placeholder="{{inputValue}}" placeholder-style="font-size: 24rpx; color: #b6b6b6;" /> -->
+            <view class="btns">
+                <view class="btn cancel" @tap="close">取消</view>
+                <view class="btn ok" @tap="shareInfo">确定</view>
+            </view>
+        </view>
+        <view class="mask  {{isClose ? 'show' : ''}}" @tap="close"></view>
+        <view class="share-img" wx:if="{{showImg}}">
+            <view class="content">
+                <image src="{{img_url}}" style="width: 640rpx; height: 960rpx;"></image>
+                <view class="btns">
+                    <view class="btn cancel" @tap="hideShareImg">取消</view>
+                    <view class="btn save"  @tap="saveImg">保存图片</view>
+                </view>
+            </view>
+            
+        </view>
+    </view>
+</template>
+<script>
+import wepy from 'wepy'
+import wLists from '../components/wmTaskList'
+import taskStage from '../components/taskStage'
+import {formatTime, formatNum, isEmpty} from '../util/util'
+import chunk from 'lodash/chunk'
+import round from 'lodash/round'
+import tip from '../util/tip'
+
+export default class Task extends wepy.page {
+    config = {
+        navigationBarBackgroundColor: '#f7d2db'
+    }
+    data = {
+        userInfo: null,
+        waveData: null,
+        fadeOut: null,
+        fadeIn: null,
+        topOut: null,
+        bottomOut: null,    
+        range: 10,
+        taskNum: 8, // 任务总数
+        nowNum: 2, // 现在完成的任务
+        token: null,
+        curTime: null, // 当前时间
+        percent: '0%', //百分比
+        current: 0, // 当前所在滑块
+        yRemain: 0,
+        tRemain: 0,
+        isMen: true,
+        iswomen: false,
+        isme: false,
+        progress: null,
+        hidden: false,
+        bodyShow: false,
+        stage_id: 0,
+        clock: true,
+        wAvatar: null, // 女头像
+        mAvatar: null, // 男头像
+        ifStop: null, // 暂停任务
+        isLong: false, // 全面屏
+        avatar: null, // 头像
+        hasSpec: false, //是否有特殊任务
+        specialTask0: [], // 女的特殊任务
+        specialTask1: [], // 男的特殊任务
+        specialShow: false, //显示特殊任务
+        men: {}, 
+        hasTask: null, // 是否有任务
+        inputValue: null, // 输入框value
+        isClose: false, // 关闭分享弹窗
+        inputTxt: '', // 留言文字
+        hide: false,  // 控制进度条
+        women: {},
+        isAssociated: false, // 是否关联
+        plans: [], //阶段
+        img_url: null,
+        showImg: false, // 显示图片
+        stages: [], // 阶段圆环
+        nowList: null, // 当前环节id
+        num: 0, // 阶段滑块数量
+        // phase: [], //
+		txt: null, // 分享的文字
+		finish: 0, // 完成任务情况
+        pairs: [], // 头像
+        task0: [],  // 女任务
+        task1: [] // 男任务
+    }
+    components = {
+        wLists: wLists,
+        mLists: wLists,
+        taskStage: taskStage
+    }
+    methods = {
+        showSpec() {
+            this.specialShow = !this.specialShow
+        },
+        goTo(e) {
+            let id = e.currentTarget.dataset.id
+            wx.navigateTo({
+               url: `../pages/tips?id=${id}`
+            })
+        },
+        goToInfo() {
+            wx.switchTab({
+                url: 'userInfo'
+            })
+        },
+        getImg(imgurl) {
+            this.showImg = true
+            this.img_url = imgurl
+
+        },
+        saveImg() {
+            let that = this
+            wx.downloadFile({
+                url: that.img_url,
+                success: function (res) {
+                    let path = res.tempFilePath
+                    wx.getSetting({
+                        success(res) {
+                            if (!res.authSetting['scope.writePhotosAlbum']) {
+                                wx.authorize({
+                                    scope: 'scope.writePhotosAlbum',
+                                    success() {
+                                        wx.saveImageToPhotosAlbum({
+                                        filePath: path,
+                                        success: function(result) {
+                                            tip.success('保存成功', 500)
+                                        },
+                                        fail: function(res) {
+                                            console.log(res)
+                                        }
+                                        })
+                                    }
+                                })
+                            } else {
+                                wx.saveImageToPhotosAlbum({
+                                    filePath: path,
+                                    success: function(result) {
+                                        tip.success('保存成功', 500)
+                                    },
+                                    fail: function(res) {
+                                        console.log(res)
+                                    },
+                                    complete: function(res) {
+                                        console.log(res)
+                                    }
+                                })
+                            }
+                        }
+                    })
+                },
+                fail: function(res) {
+                    console.log(res)
+                }
+            })
+        },
+        hideShareImg() {
+            this.showImg = false
+        },
+        cancelClock(e) {
+            let that = this
+            let id = e.currentTarget.dataset.id
+            wx.showModal({
+                title: '提示',
+                content: '确定要取消提醒吗？',
+                success: function(res) {
+                    if (res.confirm) {  
+                        wepy.request({
+                            url: `https://m.tdamm.com/weapp/api/preg/cancle_task_clock?token=${that.token}`,
+                            method: 'POST',
+                            header: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            data: {
+                                id: id
+                            }
+                        }).then(res => {
+                            that.clock = false
+                            that.$apply()
+                        }).catch(res =>{
+                            console.log(res)
+                        })
+                    }
+                }
+            })
+            
+        },
+        fadeOut() {
+            let that = this
+            that.hide = true
+            // that.drawCircle(0, 0)
+            let out = function() {
+                let animation = wx.createAnimation({
+                    duration: 1000,
+                    transformOrigin: '50% 50%',
+                    timingFunction: "ease",
+                    delay: 100
+                })
+                that.animation = animation
+                animation.top(-600 + 'rpx').opacity(0).step()
+                that.topOut = animation.export()
+                animation.top(1600 + 'rpx').opacity(0).step()
+                that.bottomOut = animation.export()
+                // animation.scale(0.5, 0.5).left(25 + '%').step()
+                // that.scaleOut = animation.export()
+            }
+            let fadeIn = function() {
+                 let animation2 = wx.createAnimation({
+                    duration: 1000,
+                    transformOrigin: '50% 50%',
+                    timingFunction: 'eade',
+                    delay: 100
+                })
+                that.animation2 = animation2
+                animation2.translateX(0).opacity(1).step()
+                that.fadeIn = animation2.export()
+            }
+            out()
+            fadeIn()
+        },
+        restore(e) {
+            if (e) {
+                let that = this
+                that.hide = false
+                // that.drawCircle(that.progress, 1)
+                let out = function() {
+                    let animation = wx.createAnimation({
+                        duration: 1000,
+                        transformOrigin: '50% 50%',
+                        timingFunction: "ease",
+                        delay: 100
+                    })
+                    that.animation = animation
+                    animation.top(0 + 'rpx').opacity(1).step()
+                    that.topOut = animation.export()
+                    animation.top(520 + 'rpx').opacity(1).step()
+                    that.bottomOut = animation.export()
+                }
+                let fadeIn = function() {
+                    let animation2 = wx.createAnimation({
+                        duration: 1000,
+                        transformOrigin: '50% 50%',
+                        timingFunction: 'eade',
+                        delay: 100
+                    })
+                    that.animation2 = animation2
+                    animation2.translateX(100 + '%').opacity(0).step()
+                    that.fadeIn = animation2.export()
+                }
+                out()
+                fadeIn()
+            }
+            
+        },
+        close() {
+            this.isClose = !this.isClose
+        },
+        getInputTxt(e) {
+			let value = e.detail.value
+            this.inputTxt = value
+        },
+        share(txt, finish) {
+            let userInfo = wepy.getStorageSync('userInfo')
+            let nickName = userInfo.nickName
+			this.txt = txt
+            this.finish = finish
+            if (this.current === 0) {
+                this.inputValue = nickName + '今天完成了' + this.txt + '任务,就等你了！'
+            } else {
+                this.inputValue = nickName + '正等着你完成' + this.txt + '任务'
+            }
+            this.$apply()
+        },
+		shareInfo() {   
+			// let userInfo = wepy.getStorageSync('userInfo')
+            // let nickName = userInfo.nickName
+            
+			let info = ''
+			if (this.inputTxt.replace(/(^\s*)|(\s*$)/g, "").length === 0) {
+				info = this.inputValue
+			} else {
+                if (this.isme) {
+                    if (this.current === 0) {
+                        info = this.inputValue + this.inputTxt
+                    } else {
+                        info = this.inputValue + this.inputTxt
+                    }
+                }
+                if (this.iswomen) {
+                    if (this.current === 0) {
+                        info = this.inputValue + this.inputTxt
+                    } else {
+                        info = this.inputValue + this.inputTxt
+                    }
+                }
+            }
+            wepy.request({
+                url: 'https://m.tdamm.com/weapp/api/preg/share_task_to_partner?token=' + this.token,
+                method: 'POST',
+                data: {
+                    info: info,
+                },
+                header: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(res => {
+                if (res.data.code === 200) {
+                    this.isClose = !this.isClose
+                    tip.success('分享成功')
+                    this.$apply()
+                } else {
+                    tip.confirmT(res.data.msg)
+                }
+            }).catch(res => {
+                tip.confirmT(res.data.msg)
+            })
+			
+		},
+        changeCurrent(e) {
+            this.current = e.currentTarget.dataset.id
+        },
+        getCurrent(e) {
+            if (e.detail.source == 'touch') {
+                this.current = e.detail.current
+            }  
+        },
+        complete1(e) {
+            let that = this
+            let diarym = wepy.getStorageSync('diarym')
+            let diarywm = wepy.getStorageSync('diarywm')
+            let id = e.currentTarget.dataset.id
+            let ussp_id = e.currentTarget.dataset.uspid
+            let data = {id, ussp_id}
+            
+            wepy.request({
+                url: `https://m.tdamm.com/weapp/api/preg/special_diary?token=${this.token}`,
+                method: 'POST',
+                data: {
+                    data: JSON.stringify(data)
+                },
+                header: {
+                   'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            }).then(res => {
+                tip.success('已完成')
+                that.todayScheme()
+                that.wave()
+                that.specialShow = false
+                that.hasSpec = false
+                that.$apply()
+            }).catch(res => {
+                console.log(res)
+            })
+        },
+        reload(e) { 
+            if (e) {
+                this.yRemain = 0
+                this.tRemain = 0
+                this.todayScheme()
+                this.wave()
+            }
+        }
+    }
+    wave() {
+        let diarywm = {}, diarym = {}, range2 = 0, range1 = 0, range = 0
+        diarywm =  wepy.getStorageSync('diarywm')
+        diarym =  wepy.getStorageSync('diarym')
+        let wmLen = Object.keys(diarywm).length
+        let mLen = Object.keys(diarym).length
+        let len = wmLen + mLen
+        for (let key in diarywm) {
+            if (diarywm[key] === 1) {
+                range2 += 1
+            }
+        }
+        for (let key in diarym) {
+            if (diarym[key] === 1) {
+                range1 += 1
+            }
+        }
+        range = formatNum((range2 + range1) / len * 100)
+        if (range) {
+            this.percent = range + '%'
+        } else {
+            this.percent = '0%'
+        }
+        
+        let animation = wx.createAnimation({
+            duration: 1000,
+            timingFunction: "ease",
+            delay: 0
+        })
+        if (range > 0) {
+            this.animation3 = animation
+            animation.top((100 - range) + '%').step()
+            this.waveData = animation.export()
+            this.$apply()
+        }
+        // if (range == 0) {
+        //     animation.top(110 + '%').step()
+        //     this.waveData = animation.export()
+        //     this.$apply()
+        // }
+        
+    }
+    async onShow() {
+        let token = wepy.getStorageSync('token')
+        let userInfo = wepy.getStorageSync('userInfo')
+        this.avatar = userInfo.avatarUrl
+        this.yRemain = 0
+        this.tRemain = 0
+        if (token) {
+            this.userInfo = wepy.getStorageSync('userInfo')
+            this.token = token
+            this.curTime = formatTime(new Date())
+            await this.todayScheme()
+            await this.getUserScheme()
+            await this.whichWay()
+            await this.wave()
+            this.drawCircle(this.progress, 1)
+        }
+    }
+    //  获取首页数据
+    async todayScheme() {
+        let that = this
+        const diarym = {}, diarywm = {}
+        tip.loading()
+        await wepy.request({
+            url: `https://m.tdamm.com/weapp/api/preg/get_user_today_scheme?token=${that.token}`,
+            method: 'POST',
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(res => {
+            if (res.data.code === 200) {
+                that.pairs = res.data.pairs
+                if (isEmpty(res.data.data)) {
+                    that.hasTask = false
+                    that.bodyShow = true
+                    that.$apply()
+                }
+                /*
+                * 长度大于 已经关联
+                */
+                if (!isEmpty(that.pairs) && that.pairs.length > 1) {
+                    that.isAssociated = true
+                    that.pairs.forEach(function(node, index) {
+                        if (node.preg_sex == 1) {
+                            that.mAvatar = node.headimg
+                        }
+                        if (node.preg_sex == 2) {
+                            that.wAvatar = node.headimg
+                        }
+                    })
+                }
+
+                that.men = res.data.men
+                that.women = res.data.women
+                
+                that.progress = res.data.data.progress
+                let task = res.data.data.task
+                that.ifStop = res.data.data.if_stop
+                console.log(that.ifStop)
+                let specialTask = res.data.data.special_task
+                if (isEmpty(task)) {
+                    that.hasTask = false
+                    that.bodyShow = true
+                    that.$apply()
+                } else {
+                    that.hasTask = true
+                    // 女生任务情况，点击完成改变对象 
+                    for (let i = 0; i < task[0].length; i++) {
+                        if (task[0][i].finish === 0) {
+                            that.yRemain += 1
+                        }
+                        diarywm[task[0][i].id] = task[0][i].finish
+                    }
+
+                    // 获得男生任务情况
+                    for (let j = 0; j < task[1].length; j++) {
+                        if (task[1][j].finish === 0) {
+                            that.tRemain += 1
+                        }
+                        diarym[task[1][j].id] = task[1][j].finish
+                    }
+                    
+                    // 特殊任务
+                    if (!isEmpty(specialTask)) {
+                        if (that.men.is_self === 1) {
+                            if (!isEmpty(specialTask[1])) {
+                                that.specialTask1 = chunk(specialTask[1], 1)
+                                if (specialTask[1].finish === 1) {
+                                    that.hasSpec = false
+                                }
+                                else {
+                                    that.hasSpec = true
+                                }
+                            }
+                        }
+                        if (that.women.is_self === 1) {
+                            if (!isEmpty(specialTask[0])) {
+                                that.specialTask0 = chunk(specialTask[0], 1)
+                                if (specialTask[0].finish === 1) {
+                                    that.hasSpec = false
+                                } else {
+                                    that.hasSpec = true
+                                }
+                            }
+                        }
+                    }
+                    wepy.setStorageSync('diarym', diarym)
+                    wepy.setStorageSync('diarywm', diarywm)
+                    if (task[0]) {
+                        that.task0 = chunk(task[0], 2)
+                    }
+                    that.stage_id = res.data.data.stage_id
+                    wepy.setStorageSync('nowStage', that.stage_id)
+                    if(task[1]) {
+                        that.task1 = chunk(task[1], 2)
+                    }
+                    that.$apply()
+                    that.bodyShow = true
+                }  
+                
+            } else {
+                tip.error(res.data.msg)
+            }
+        }).catch(res => {
+            console.log(res)
+        })
+        tip.loaded()
+    }
+
+    // 获取阶段数据
+    async getUserScheme() {
+        let that = this
+        let token = wepy.getStorageSync('token')
+        await wepy.request({
+            url: 'https://m.tdamm.com/weapp/api/preg/get_user_scheme?token=' + token,
+            method: 'POST',
+            header: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(res => {
+            if (res.data.code === 200) {
+                let data = res.data.data
+                that.plans = data
+                that.num = data.length
+                let id, stage_name, days, time, phase, nowList
+                data.forEach(function(n, index) {
+                    id = n.id
+                    stage_name = n.stage_name
+                    days = n.days
+                    time = n.time
+                    if (index === that.stage_id) {
+                        phase = data[index].phase 
+                        phase.forEach(function (p, idx) {
+                            if (p.in == 1) {
+                                nowList = 'list' + p.id
+                                that.nowList = nowList
+                            }
+                        })
+                    }
+                    // that.phase[index] = n.phase
+                    that.stages[index] = {id, stage_name, days, time}
+                })
+                that.$apply()
+            }
+        }).catch(res => {
+            console.log(res)
+        })
+    }
+    // 判断当前任务在哪个swiper
+    whichWay() {   
+        if (this.men && this.women) {
+            if (this.men.is_self === 1) {
+                this.isme = true
+                // this.current = 1
+            } else {
+                this.isme = false
+            }
+            if (this.women.is_self ===1) {
+                this.iswomen = true
+                // this.current = 0
+            } else {
+                this.iswomen = false
+            }
+            wepy.setStorageSync('isme', this.isme)
+            wepy.setStorageSync('iswomen', this.iswomen)
+        } else {
+            return false
+        } 
+        this.$apply()
+    }
+    // 进度条
+    drawCircle(n, c) {
+        let ctx = wx.createCanvasContext('firstCanvas')
+        let grd = ctx.createLinearGradient(0, 0, 300, 0)
+            grd.addColorStop(0, '#cd218d')
+            grd.addColorStop(1, '#f53f55')
+        let rad = Math.PI * 2
+        const RADIO = wx.getSystemInfoSync().screenWidth / 375
+        let m = 0
+        let speed = 0.05
+        if (c === 0) {
+            ctx.globalCompositeOperation =  "destination-out"
+            // console.log(11)
+            // let drawC = function(m) {
+            //     ctx.beginPath()
+            //     ctx.setStrokeStyle(grd)
+            //     ctx.setLineWidth(3)
+            //     ctx.arc(90 * RADIO, 90 * RADIO, 88 * RADIO, -Math.PI / 2 + n * rad, -Math.PI, true)
+            //     ctx.stroke()
+            //     ctx.restore()
+            //     ctx.closePath()
+            //     ctx.draw()
+            // }
+            // let timer = setInterval(function() {
+            //     if (n === 0) {
+            //         return
+            //     }
+            //     if (m <= n) {
+            //         drawC(m)
+            //         m += speed
+            //     } else {
+            //         clearInterval(timer)
+            //     }   
+            // }, 60)
+        } else {
+            // ctx.globalCompositeOperation =  "destination-out"
+            // console.log(22)
+            let drawC = function(m) {
+                ctx.beginPath()
+                ctx.setStrokeStyle(grd)
+                ctx.setLineWidth(3)
+                ctx.arc(90.5 * RADIO, 90.5 * RADIO, 88.5 * RADIO, -Math.PI / 2, -Math.PI / 2 + m * rad, false)
+                ctx.stroke()
+                ctx.restore()
+                ctx.closePath()
+                ctx.draw()
+            }
+            let timer = setInterval(function() {
+                if (n === 0) {
+                    return
+                }
+                if (m <= n) {
+                    drawC(m)
+                    m = round(m + speed, 2)
+                } else {
+                    clearInterval(timer)
+                }   
+            }, 60)
+        }
+        
+        
+    }
+}
+</script>
+
+<style lang="less">
+    page {
+        height: 100%;
+        overflow: hidden;
+    }
+    .task {
+        background: #fff;
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        .index {
+            position: relative;
+        }
+    }
+    @keyframes opac{
+        0% {opacity: 1;width:0;height:0;}
+        80% {opacity : 0.5;width:100%;height:100%;}
+        100% {opacity: 0; width: 90%; height: 90%;}
+    }
+    .special {
+        width: 80rpx;
+        height: 80rpx;
+        position: absolute;
+        top: 160rpx;
+        right: 20rpx;
+        z-index: 99;
+
+        image {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .w {
+            width: 80rpx;
+            height: 80rpx;
+            position: absolute;
+            z-index: 999;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            .w1, .w2, .w3{
+                border:2px solid #fff;
+                background: #fff;
+                border-radius:50%;
+                position:absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .w1 {
+                animation:opac 1.5s infinite;
+                animation-delay: .1s;
+            }
+            .w2 {
+                animation:opac 1.5s infinite;
+                animation-delay:.4s;
+            }
+        }
+
+    }
+    .show {
+        display: block !important;
+    }
+    .share-dialog {
+		display: none;
+        position: fixed;
+        top: 54%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fff;
+        text-align: center;
+        width: 470rpx;
+        border-radius: 10rpx;
+        padding-top: 44rpx;
+        z-index: 99;
+
+        .tit {
+            font-size: 34rpx;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .txt {
+            font-size: 28rpx;
+            color: #333;
+            margin: 30rpx 0 10rpx;
+        }
+        .ipt {
+            width: 380rpx;
+            height: 56rpx;
+            line-height:28rpx;
+            border: 1rpx solid #b6b6b6;
+            margin: 0 auto 20rpx;
+            text-align: left;
+            padding: 6rpx 10rpx;
+            font-size: 24rpx;
+        }
+        .btns {
+            display: flex;
+            width: 100%;
+            height: 70rpx;
+            background: #f9f5f6;
+            border-top: 1rpx solid #b6b6b6;
+            border-bottom-right-radius: 10rpx;
+            border-bottom-left-radius: 10rpx;
+            position: relative;
+            
+            .btn {
+                width: 50%;
+                flex: 1;
+                text-align: center;
+                line-height: 70rpx;
+                font-size: 30rpx;
+                color: #be9ba2;
+            }
+            
+            .cancel {
+                color: #b6b6b6;
+            }
+            &:after {
+                content: '';
+                display: block;
+                width: 1rpx;
+                background: #b6b6b6;
+                height: 100%;
+                position: absolute;
+                left: 50%;
+                top: 0;
+                transform: translateX(-50%);
+            }
+        }
+    }
+    .share-img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 99;
+        background: rgba(0, 0, 0, 0.5);
+
+        .content {
+            margin: 0 auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        image {
+            border-radius: 30rpx;
+        }
+        .btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10rpx;
+
+            .btn {
+                width: 310rpx;
+                padding: 16rpx 0;
+                font-size: 30rpx;
+                text-align: center;
+                border-radius: 50rpx;
+
+                &.cancel {
+                    color: #fff;
+                    background: #a87580;
+                }
+
+                &.save {
+                    color: #333;
+                    background: #f7d2db;
+                }
+            }
+        }
+
+    }
+    .mask {
+		display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 98;
+    }
+    .top-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .customer {
+        position: absolute;
+        top: 65rpx;
+        right: 20rpx;
+        width: 71rpx;
+        height: 71rpx;
+        border: none !important;
+        padding: 0;
+        z-index: 10;
+
+        .icon-cus {
+            // position: absolute;
+            // left: 0;
+            // top: 0;
+            width: 71rpx;
+            height: 71rpx;
+        }
+    }
+    .avatars {
+        width: 120rpx;
+        height: 250rpx;
+        background: #fff;
+        border-top-right-radius: 15rpx;
+        border-bottom-right-radius: 15rpx;
+        position: absolute;
+        top: 50rpx;
+        z-index: 10;
+        
+        .txt {
+            font-size: 28rpx;
+            color: #fff;
+            padding: 6rpx 0;
+            line-height: 1;
+            background: #c495a0;
+            margin-top: 20rpx;
+            text-align: center;
+            border-bottom-right-radius: 15rpx;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+        .avatar {
+            width: 71rpx;
+            height: 71rpx;
+            display: block;
+            border-radius: 50%; 
+            margin: 20rpx auto 0;
+
+            &:first-child {
+                border: 2rpx solid #f7749f;
+            }
+
+            &:nth-child(2) {
+                border: 2rpx solid #55b2ff;
+            }
+        }
+    }
+    .card-wrap {
+        position: absolute;
+        width: 100%;
+        top: 520rpx;
+        left: 0;
+    }
+    .task-card {
+        background: #fff;
+        
+        .card-menu {
+            display: flex;
+            padding: 25rpx 0;
+            .menu-list {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                font-size: 28rpx;
+                color: #333;
+                position: relative;
+                padding-bottom: 13rpx;
+
+                 &:after {
+                    content: '';
+                    display: block;
+                    height: 7rpx;
+                    width: 0rpx;
+                    background: #a87580;
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    opacity: 0;
+                    transition: all 0.2s ease;
+                }
+
+                &.active {
+                    color: #a87580;
+                    &:after {
+                        width: 184rpx;
+                        opacity: 1;
+                        transition-delay: 0.1s;
+                        margin-left: -92rpx;
+                    }
+                }
+                
+                .menu-icon {
+                    display: block;
+                    width: 18rpx;
+                    height: 27rpx;
+                    margin-left: 6rpx;
+                }
+            }
+        }
+    }
+    .wave-wrapper {
+        position: relative;
+        width: 100%;
+        height: 520rpx;
+        padding-top: 30rpx;
+        box-sizing: border-box;
+        background: #f7d2db;
+        z-index: 9;
+
+        
+       
+        .wave-bg {
+            display: block;
+            width: 100%;
+            height: 168rpx;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+
+        .wave-txt {
+            font-size: 20rpx;
+            color: #fff;
+            // width: 578rpx;
+            padding: 0 10rpx;
+            line-height: 24rpx;
+            padding: 10rpx;
+            box-sizing: border-box;
+            position: absolute;
+            border-radius: 6rpx;
+            left: 20rpx;
+            bottom: 44rpx;
+            background: #a87580;
+        }
+    }
+    .task-swiper {
+        width: 100%;
+        min-height: 660rpx;
+        // overflow: hidden;
+
+        .card-item {
+            overflow: auto !important;
+        }
+    }
+    .swiper-tips {
+        font-size: 30rpx;
+        text-align: center;
+        margin: 50rpx 0;
+        color: #333;
+    }
+    .wave-box {
+        width: 330rpx;
+        height: 330rpx;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 28rpx solid #fff;
+        box-shadow: 0rpx 0rpx 2rpx 5rpx rgba(168,117,128,0.8);
+        background: linear-gradient(to top, #ff79ba 0%, #ff838c 100%);
+        z-index: 6;
+        
+        .canvas-wrap {
+            width:370rpx;
+            height:370rpx;
+            overflow:hidden;
+            position:absolute;
+            border-radius:50%;
+            left:-15rpx;
+            top:-15rpx;
+            transition: all 1.5s ease;
+        }
+        .progress {
+            position: absolute;
+            top: 0rpx;
+            left: 0rpx;
+            width: 380rpx;
+            height: 380rpx;
+            z-index: 9;
+            opacity: 1; 
+            // border-radius: 50%;
+        }
+        .hide {
+            height: 0;
+            opacity: 0;
+        }
+        .wave-text {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            z-index: 99;
+
+            text {
+                display: block;
+                color: #333;
+                font-size: 27rpx;
+                text-align: center;
+                line-height: 40rpx;
+            }
+        }
+    }
+    .wave {
+        width: 335rpx;
+        height: 335rpx;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -165rpx;
+        border-radius: 50%;
+        background: rgba(249, 245, 246, .85);
+        // animation: wave 10s infinite linear;
+        z-index: 1;
+        overflow: hidden;
+
+        .wave-gif {
+            display: block;
+            width:780rpx;
+            height: 380rpx;
+            position: absolute;
+            left: 0;
+            top: 110%;
+            margin-top: -30rpx;
+        }
+    }
+    .no-task {
+        display: block;
+        margin: 168rpx auto 0;
+    }
+    .icon-txt {
+        font-size: 24rpx;
+        color: #666;
+        text-align: center;
+        margin-top: 24rpx;
+    }
+    .taskstage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transform: translateX(100%);
+        z-index: 99;
+    }
+    .special-mask {
+        z-index: 999;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.5);   
+    }
+    .special-task {
+       
+        width: 680rpx;
+        height: 220rpx;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        margin-left: -340rpx;
+        background: linear-gradient(to right, #9c6df9 0%, #ff8dc0 100%);
+        padding: 0 50rpx;
+        border-radius: 10rpx;
+        box-sizing: border-box;
+        overflow: hidden;
+
+        .special-bg {
+            width: 680rpx;
+            height: 220rpx;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1; 
+        }
+
+        .task-state {
+            position: absolute;
+            width: 100%;
+            top: 50rpx;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+        }
+        .task-time {
+            font-size: 46rpx;
+            color: #fff;
+            line-height: 1;
+            margin-right: 55rpx;
+        }
+        .icon {  
+            width: 34rpx;
+            height: 34rpx;
+            margin-right: 30rpx;
+
+            &.icon-success {
+                position: absolute;
+                top: 50%;
+                right: 80rpx;
+                transform: translateY(-50%);
+            }
+        }
+        .task-name {
+            margin-top: 124rpx;
+            text-align: left;
+            color: #fff;
+            font-size: 34rpx;
+        }
+    }
+    // @keyframes wave {
+    //     from { transform: rotate(0deg);}
+    //     from { transform: rotate(360deg);}
+    // }
+</style>
+
+

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>删除管理员</h1>
+		<form action="/VueHandler/AdminHandler?action=delete" method="get">
+			<!-- get的数据  直接放在地址上   会把以前地址上的数据干掉-->
+			<!-- 怎么解决???  干掉    那就在添加一个就好了-->
+			
+			<input type="text" name="action" value="delete"/>
+			<p>delete:<input type="text" name="tokenId"/></p>
+			
+			<input type="submit" value="删除"/>
+		</form>
+	</body>
+</html>

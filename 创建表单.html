@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style type="text/css">
+    .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 636px;
+    padding:20px;
+  }
+  .item{
+    height: 60px;
+    border:0px solid #333;
+    /*border-radius: 4px;
+    border-style: dashed;*/
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  .moveStyle{
+    border:1px solid #999;
+    border-radius: 4px;
+    background: #eee;
+  }
+  #removeBox{
+    height: 100px;
+    width: 100px;
+    border:2px dashed #999;
+    background: rgba(0,0,0,0,3);
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    background: url(deleteBox.png) no-repeat;
+    background-size: 90%;
+    background-position: center center;
+  }
+  #showCode{
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+  }
+  .flxed{
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="grid-content bg-purple">
+        <div id="ComponentFactory">
+          <div class="item" id="item1" draggable="true">
+            <!-- 输入框 -->
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-3 control-label">输入框</label>
+              <div class="col-sm-9">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+              </div>
+            </div>
+          </div>
+
+
+          <div class=" item " id="item3" draggable="true">
+            <!-- 复选框 -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">复选框</label>
+            <div class="col-sm-9">
+              <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 1
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
+              </label>
+            </div>
+          </div>
+        </div>
+
+          <div class=" item " id="item4" draggable="true">
+            <!-- 单选框 -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">单选框</label>
+            <div class="col-sm-9">
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
+              </label>
+            </div>
+          </div>
+        </div>
+          <!-- 下拉列表框 -->
+        <div class=" item " id="item5" draggable="true">
+          <!-- 下拉列表框 -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">下拉列表</label>
+            <div class="col-sm-9">
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+
+        <div class=" item " id="item7" draggable="true">
+          <!-- （一般信息）Info -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">按钮</label>
+            <div class="col-sm-9">
+              <button type="button" class="btn btn-info">（一般信息）Info</button>
+            </div>
+          </div>
+        </div>
+
+        <div class=" item " id="item8" draggable="true">
+          <!-- （成功）Success -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">按钮</label>
+            <div class="col-sm-9">
+              <button type="button" class="btn btn-success">（成功）Success</button>
+            </div>
+          </div>
+        </div>
+
+        <div class=" item " id="item9" draggable="true">
+          <!-- （危险）Danger-->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">按钮</label>
+            <div class="col-sm-9">
+              <button type="button" class="btn btn-danger">（危险）Danger</button>
+            </div>
+          </div>
+        </div>
+
+        <div class=" item " id="item11" draggable="true">
+          <!-- 按钮组 -->
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label">按钮组</label>
+            <div class="col-sm-9">
+              <button type="button" class="btn btn-success  btn-sm">（成功）Success</button>
+              <button type="button" class="btn btn-danger  btn-sm">（危险）Danger</button>
+            </div>
+          </div>
+        </div>
+
+      <!-- 文本域 -->
+        <div class=" item" id="item10" draggable="true">
+          <!-- 文本域 -->
+          <div class="form-group ">
+            <label for="inputEmail3" class="col-sm-3 control-label">文本域</label>
+            <div class="col-sm-9">
+              <textarea class="form-control " rows="2"></textarea>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+    <div class="col-md-4" class="flxed">
+      <div class="grid-content bg-purple-light" id="box"></div>
+      <div class="bg-purple-light" id="removeBox">
+      </div>
+    </div>
+    <div class="col-md-4" class="flxed">
+        <div class="grid-content bg-purple-light" id="codeBox"></div>
+        <el-button id="showCode">查看源码</el-button>
+    </div>
+  </div>
+
+  </div>
+  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="myModal">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="gridSystemModalLabel">修改名称</h4>
+      </div>
+      <div class="modal-body">
+          <input type="email" class="form-control" id="input" placeholder="请输入名称">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="save">保存修改</button>
+      </div>
+    </div><!-- /.modal-content -->
+    </div>
+  </div>
+</body>
+  <script
+  src="http://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"></script>
+
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <script>
+    $(function(){
+
+      //修改label的值
+      $(document).on('dblclick','#box label',function(){
+        $('#myModal').modal('show');
+        $("#input").val("");
+        var randId = parseInt(Math.random() * (1000000 - 1 + 1) + 1);
+        $(this).attr("id",randId);
+        $("#save").attr("saveId",randId);
+        console.log("id",randId);
+      })
+
+      //修改label的值
+      $(document).on('dblclick','#box button',function(){
+        $('#myModal').modal('show');
+        $("#input").val("");
+        var randId = parseInt(Math.random() * (1000000 - 1 + 1) + 1);
+        $(this).attr("id",randId);
+        $("#save").attr("saveId",randId);
+        console.log("id",randId);
+      })
+
+
+      //保存input框的值
+      $("#save").click(function(){
+        $('#myModal').modal('hide');
+        var value = $("#input").val();
+        var id = $(this).attr("saveId");
+        $("#"+id).text(value);
+      })
+
+
+      //开始拖动
+      $(".item").on("dragstart",function(e){  
+          console.log("SET -> addBuffer",e.target.id);
+          e.originalEvent.dataTransfer.setData("addBuffer",e.target.id);  
+          e.originalEvent.dataTransfer.effectAllowed = 'all'; 
+          e.originalEvent.dataTransfer.dropEffect = 'all'; 
+          e.originalEvent.dataTransfer.setDragImage(this,0,0); 
+          $("#"+e.target.id).addClass("moveStyle");
+
+      }); 
+      $("#box").on("dragover",function(e){  
+          e.originalEvent.preventDefault();  
+      }) 
+      $("#removeBox").on("dragover",function(e){  
+          e.originalEvent.preventDefault();  
+      }) 
+      //放下事件  
+      $("#box").on("drop",function(e){  
+
+          var id = e.originalEvent.dataTransfer.getData("addBuffer"); 
+          $("#"+id).removeClass("moveStyle");
+
+          var item = "item"+parseInt(Math.random() * (1000000 - 1 + 1) + 1);
+          //$("#"+id).attr("id",item);
+          console.log("GET-> addBuffer:",item);
+          $(this).append($("#"+id).clone().attr("id",item));  
+          //给新加入的元素添加拖放事件  
+          $("#"+item).on("dragstart",function(e){  
+              e.originalEvent.dataTransfer.setData("removeBuffer",e.target.id);  
+              console.log("TO -> removeBuffer",e.target.id);
+          });
+
+
+      })  
+      $("#removeBox").on("drop",function(e){  
+        e.originalEvent.preventDefault;               
+        var r = e.originalEvent.dataTransfer.getData("removeBuffer");  
+        /*console.log(r);*/
+        if(r == null || r == ''){
+          alert('error!');
+          return;
+        }
+        $("#"+r).remove();
+      }) ;
+
+
+      $("#showCode").click(function(){
+        $("#codeBox").text("");
+        var code = $("#box").clone().html();
+        if(code == null || code == ''){
+          alert("请先选择控件！");
+          return ;
+        }
+        $("#codeBox").text(code);
+      })
+    })
+  </script>
+</html>

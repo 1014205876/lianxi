@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<head>
+     <title>数字计时器</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .number {
+        float: left;
+        margin: 20px;
+    }
+
+    .border {
+        width: 100px;
+        height: 100px;
+        border: 20px solid red;
+        border-radius:10px;
+        margin:-5px 0;
+    }
+
+    .border.top {
+        border-bottom-width: 15px;
+    }
+
+    .border.bottom {
+        border-top-width: 15px;
+    }
+
+    .zerro .top {
+        border-bottom-color: transparent;
+    }
+
+    .zerro .bottom {
+        border-top-color: transparent;
+    }
+
+    .one .top {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .one .bottom {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .two .top {
+        border-left-color: transparent;
+    }
+
+    .two .bottom {
+        border-right-color: transparent;
+    }
+
+    .three .top {
+        border-left-color: transparent;
+    }
+
+    .three .bottom {
+        border-left-color: transparent;
+    }
+
+    .four .top {
+        border-top-color: transparent;
+    }
+
+    .four .bottom {
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .five .top {
+        border-right-color: transparent;
+    }
+
+    .five .bottom {
+        border-left-color: transparent;
+    }
+
+    .six .top {
+        border-right-color: transparent;
+    }
+
+    .six .bottom {}
+
+    .seven .top {
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .seven .bottom {
+        border-top-color: transparent;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+    .eight .top {}
+
+    .eight .bottom {}
+
+    .nine .top {}
+
+    .nine .bottom {
+        border-left-color: transparent;
+    }
+</style>
+
+<body>
+    <!-- <div class="number zerro">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number one">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number two">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number three">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number four">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number five">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number six">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number seven">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number eight">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div>
+        <div class="number nine">
+            <div class="border top"></div>
+            <div class="border bottom"></div>
+        </div> -->
+    <div class="number" id='hourOne'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <div class="number" id='hourTwo'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <div class="number" id='minuteOne'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <div class="number" id='minuteTwo'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <div class="number" id='secondOne'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <div class="number" id='secondTwo'>
+        <div class="border top"></div>
+        <div class="border bottom"></div>
+    </div>
+    <script>
+        // 绑定标签
+        let hourOne = document.getElementById('hourOne');
+        let hourTwo = document.getElementById('hourTwo');
+        let minuteOne = document.getElementById('minuteOne');
+        let minuteTwo = document.getElementById('minuteTwo');
+        let secondOne = document.getElementById('secondOne');
+        let secondTwo = document.getElementById('secondTwo');
+        // 获取当前时间
+        let nowTime = new Date();
+        let hour = nowTime.getHours();
+        let minute = nowTime.getMinutes();
+        let second = nowTime.getSeconds();
+        // 获取当前时间对应的数字
+        hourOneNum = 0;
+        hourTwoNum = 0;
+        minuteOneNum = 0;
+        minuteTwoNum = 0;
+        secondOneNum = 0;
+        secondTwoNum = 0;
+
+        let classArr = ["zerro", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];//class名对应的数组
+
+        getNumber();
+        addClass(hourOne, hourOneNum);
+        addClass(hourTwo, hourTwoNum);
+        addClass(minuteOne, minuteOneNum);
+        addClass(minuteTwo, minuteTwoNum);
+        addClass(secondOne, secondOneNum);
+        addClass(secondTwo, secondTwoNum);
+
+        let time1 = setInterval(function () {//定义定时器执行
+            getNumber();
+            addClass(hourOne, hourOneNum);
+            addClass(hourTwo, hourTwoNum);
+            addClass(minuteOne, minuteOneNum);
+            addClass(minuteTwo, minuteTwoNum);
+            addClass(secondOne, secondOneNum);
+            addClass(secondTwo, secondTwoNum);
+        }, 1000)
+
+        function getNumber() {//获取当前时间对应的6个数字
+            nowTime = new Date();
+            hour = nowTime.getHours();
+            minute = nowTime.getMinutes();
+            second = nowTime.getSeconds();
+            hourOneNum = parseInt(hour / 10)
+            hourTwoNum = hour % 10
+            minuteOneNum = parseInt(minute / 10)
+            minuteTwoNum = minute % 10
+            secondOneNum = parseInt(second / 10)
+            secondTwoNum = second % 10
+        }
+
+        function addClass(div, number) {//将正确的class名传给指定标签
+            div.classList.remove("zerro", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
+            div.classList.add(classArr[number]);
+        }
+
+        let arr = [3, 454, 645, 645, 7, 5];
+        arr.forEach((index, item) => {
+            console.log(index, item);
+        })
+    </script>
+</body>

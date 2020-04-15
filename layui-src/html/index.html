@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>layui</title>
+    <link rel="stylesheet" href="../css/layui.css">
+    <link rel="stylesheet" href="../css/layui.mobile.css">
+</head>
+
+<body>
+
+    <div class="layui-row">
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md4 layui-bg-red">
+            移动：6/12 | 平板：6/12 | 桌面：4/12
+        </div>
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md4 layui-bg-orange">
+            移动：6/12 | 平板：6/12 | 桌面：4/12
+        </div>
+        <div class="layui-col-xs4 layui-col-sm12 layui-col-md4 layui-bg-green">
+            移动：4/12 | 平板：12/12 | 桌面：4/12
+        </div>
+        <div class="layui-col-xs4 layui-col-sm7 layui-col-md8 layui-bg-cyan">
+            移动：4/12 | 平板：7/12 | 桌面：8/12
+        </div>
+        <div class="layui-col-xs4 layui-col-sm5 layui-col-md4 layui-bg-blue">
+            移动：4/12 | 平板：5/12 | 桌面：4/12
+        </div>
+    </div>
+
+    按钮
+    <button class="layui-btn">按钮</button>
+    <ul class="layui-nav" lay-filter="">
+        <li class="layui-nav-item"><a href="">最新活动</a></li>
+        <li class="layui-nav-item layui-this"><a href="">产品</a></li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">社区</a></li>
+    </ul>
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">输入框</label>
+            <div class="layui-input-block">
+                <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">下拉选择框</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao">
+                    <option value="0">写作</option>
+                    <option value="1">阅读</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">复选框</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="like[write]" title="写作">
+                <input type="checkbox" name="like[read]" title="阅读">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开关关</label>
+            <div class="layui-input-block">
+                <input type="checkbox" lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开关开</label>
+            <div class="layui-input-block">
+                <input type="checkbox" checked lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">单选框</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="0" title="男">
+                <input type="radio" name="sex" value="1" title="女" checked>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">请填写描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+    </form>
+
+
+    <table class="layui-table">
+        <colgroup>
+            <col width="150">
+            <col width="200">
+            <col>
+        </colgroup>
+        <thead>
+            <tr>
+                <th>昵称</th>
+                <th>加入时间</th>
+                <th>签名</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>贤心</td>
+                <td>2016-11-29</td>
+                <td>人生就像是一场修行</td>
+            </tr>
+            <tr>
+                <td>许闲心</td>
+                <td>2016-11-28</td>
+                <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+            </tr>
+        </tbody>
+    </table>
+    <script src='../js/layui.js'></script>
+    <script src='../js/layui.all.js'></script>
+    <script>
+    </script>
+</body>
+
+</html>

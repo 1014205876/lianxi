@@ -1,0 +1,45 @@
+%JAVA_HOME%\bin;
+%JAVA_HOME%\jre\bin;
+C:\Program Files (x86)\NetSarang\Xshell 6\;
+C:\Program Files (x86)\NetSarang\Xftp 6\;
+%SystemRoot%\system32;
+%SystemRoot%;
+%SystemRoot%\System32\Wbem;
+%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+E:\软件开发\Microsoft VS Code\bin;
+;
+E:;
+软件开发\Git\cmd;
+C:\;
+rogram Files\nodejs\;
+rogram Files\nodejs\;
+C:\Program Files\TortoiseSVN\bin;
+C:\Program Files\PuTTY\;
+rogram Files\nodejs\;
+rogram Files\nodejs\;
+rogram Files\nodejs\;
+C:\Program Files\Git\cmd;
+C:\Program Files\nodejs\
+
+
+
+akhdfgksjh
+
+
+C:\;
+C:\Program Files\PuTTY\;
+C:\Program Files\Git\cmd;
+C:\Program Files\nodejs\;
+C:\Program Files\TortoiseSVN\bin;
+C:\Program Files (x86)\NetSarang\Xftp 6\;
+C:\Program Files (x86)\NetSarang\Xshell 6\;
+C:\Users\Administrator\AppData\Roaming\npm;
+%JAVA_HOME%\bin;
+%JAVA_HOME%\jre\bin;
+%SystemRoot%;
+%SystemRoot%\system32;
+%SystemRoot%\System32\Wbem;
+%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;
+E:;
+软件开发\Git\cmd;
+E:\软件开发\Microsoft VS Code\bin;

@@ -1,0 +1,87 @@
+﻿
+
+安装Docker
+
+# yum install -y yum-utils device-mapper-persistent-data lvm2 
+# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 
+# yum install -y docker-ce-18.09.6 docker-ce-cli-18.09.6 containerd.io 
+# mkdir -p /etc/docker
+
+# tee /etc/docker/daemon.json <<-'EOF' { "registry-mirrors": ["https://v16stybc.mirror.aliyuncs.com"], "exec-opts": ["native.cgroupdriver=systemd"] } EOF 
+上一条指令的第二种输入方式：
+# vi /etc/docker/daemon.json 
+# [i 键盘]
+# { 
+    "registry-mirrors": ["https://v16stybc.mirror.aliyuncs.com"], 
+    "exec-opts": ["native.cgroupdriver=systemd"] 
+  }
+# [esc 键盘]
+# [shift+: 键盘]
+# [w+q 键盘]
+
+# systemctl enable docker    开机自启动，只需要配置一次
+# systemctl daemon-reload    修改了配置文件后需要执行
+# systemctl restart docker   重启docker
+# systemctl status docker    docker 状态
+# docker --version           docker 版本信息
+
+
+
+TYPE="Ethernet"
+IPADDR=192.168.4.160
+PROXY_METHOD="none"
+BROWSER_ONLY="no"
+BOOTPROTO="dhcp"
+DEFROUTE="yes"
+IPV4_FAILURE_FATAL="no"
+IPV6INIT="yes"
+IPV6_AUTOCONF="yes"
+IPV6_DEFROUTE="yes"
+IPV6_FAILURE_FATAL="no"
+IPV6_ADDR_GEN_MODE="stable-privacy"
+NAME="ens33"
+UUID="393345eb-d09e-421b-b318-3d71690c6629"
+DEVICE="ens33"
+ONBOOT="yes"
+
+TYPE="Ethernet"
+
+BOOTPROTO="none"
+
+DEFROUTE="yes"
+
+IPV4_FAILURE_FATAL="no"
+
+IPV6INIT="yes"
+
+IPV6_AUTOCONF="yes"
+
+IPV6_DEFROUTE="yes"
+
+IPV6_FAILURE_FATAL="no"
+
+IPV6_ADDR_GEN_MODE="stable-privacy"
+
+NAME="ens33"
+
+UUID="334aa39f-cba4-4e3e-9718-aa943e4c8e6c"
+
+DEVICE="ens33"
+
+ONBOOT="yes"
+
+IPADDR="192.168.4.161"
+
+PREFIX="24"
+
+GATEWAY="192.168.4.1"
+
+DNS1="202.101.224.68"
+
+DOMAIN="fff"
+
+IPV6_PEERDNS="yes"
+
+IPV6_PEERROUTES="yes"
+
+IPV6_PRIVACY="no"

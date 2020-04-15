@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<h1>修改管理员的请求</h1>
+		<form action="/VueHandler/AdminHandler?action=update" method="post">
+			
+			<p>姓名:<input type="text" name="turename"/></p>
+			<p>手机号:<input type="text" name="phone"/></p>
+			<p>tokenId:<input type="text" name="tokenId" value="1"/></p>
+			<p>权限:<select name="powerCode" >
+				<option value="1">权限管理</option>
+				<option value="2">课程管理员</option>
+			</select></p>
+			<input type="submit" value="修改管理员" />
+		</form>
+	</body>
+</html>

@@ -1,0 +1,300 @@
+<template>
+  <view class="doctor">
+    <view class="portrait">
+      <image class="doctorimage" src="{{list.res[0].img}}">医生头像</image>
+      <view class="info">
+        <view class="name">{{list.res[0].name}}
+          <view class="job">{{list.res[0].ranks}}</view>
+        </view>
+        <view class="hospital">{{list.res[0].position}}</view>
+      </view>
+    </view>
+    <view class="yisheng">
+      <view class="title">医生擅长</view>
+      <view class="shanchang">{{list.res[0].goodat}}</view>
+    </view>
+    <view class="yisheng">
+      <view class="title">医学教育及工作背景</view>
+      <view class="shanchang" wx:for="{{list.res[0].info}}" wx:key="info">{{item}}</view>
+    </view>
+    <view class="yisheng">
+      <view class="title">学术研究</view>
+      <view class="shanchang" wx:for="{{list.res[0].honor}}" wx:key="honor">{{item}}</view>
+    </view>
+    <view class="btn">
+      <button open-type="share" plain="{{true}}">分享</button>
+    </view>
+    <view class="btn">
+      <button bindtap="erweima" plain="{{true}}">生成二维码图</button>
+    </view>
+    <view wx:if="{{mengban}}" class="mengban">
+      <view class="guanlianbg">
+        <image class="guanlianbgimg" src="{{ewm}}"></image>
+        <view class="saveerweima close" bindtap="close">取消</view>
+        <view class="saveerweima" bindtap="saveerweima">保存图片</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+export default class Doctorinfo extends wepy.page {
+  config = {
+    navigationBarTitleText: '专属私人医生'
+  };
+  data = {
+    mengban: false,
+      ewm: '',
+    id: '',
+    uid: '',
+    token: '',
+    list: {
+      res: [
+        {
+          img: '',
+          name: '',
+          ranks: '',
+          position: '',
+          goodat: '',
+          info: [],
+          honor: []
+        }
+      ]
+    }
+  };
+  props = {};
+  watch = {};
+  methods = {
+    erweima() {
+      this.mengban = true;
+    },
+    close() {
+      this.mengban = false;
+    },
+    saveerweima() {
+      let that = this;
+      wx.downloadFile({
+        url: that.ewm,
+        success: function(res) {
+          let path = res.tempFilePath;
+          wx.saveImageToPhotosAlbum({
+            filePath: path,
+            success(res) {
+              console.log('保存成功');
+              that.mengban = false;
+              that.$apply();
+            },
+            fail(res) {
+              console.log(res);
+              that.mengban = false;
+              that.$apply();
+            },
+            complete(res) {
+              console.log(res);
+            }
+          });
+        },
+        fail: function(res) {
+          console.log(res);
+          that.mengban = false;
+          that.$apply();
+        }
+      });
+    }
+  };
+  onLoad(option) {
+    let that = this;
+    that.id = option.id;
+    that.uid = wepy.getStorageSync('uid');
+    that.token = wepy.getStorageSync('token');
+    wepy
+      .request({
+        url:
+          'https://m.tdamm.com/weapp/api/hy/private_doctor_info?token=' +
+          that.token,
+        method: 'POST',
+        data: {
+          id: that.id
+        },
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.list = res.data.list;
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+    wepy
+      .request({
+        url:
+          'https://m.tdamm.com/weapp/api/preg/task_wxacode?token=' + that.token,
+        method: 'POST',
+        data: {
+          id: that.id
+        },
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.ewm = res.data.ewm;
+          console.log(that.ewm)
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+  onUnload() {}
+  onShareAppMessage() {
+    return {
+      title: '十点备孕',
+      // desc: '最具人气的小程序开发联盟!',
+      path: '/pages/togo'
+    };
+  }
+}
+</script>
+<style lang="less">
+.doctor {
+  color: #333;
+  image {
+    display: block;
+  }
+  .portrait {
+    padding: 40rpx 10rpx;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .doctorimage {
+      width: 146rpx;
+      height: 146rpx;
+      border: 2rpx solid #fff;
+      border-radius: 150rpx;
+      margin: 0 20rpx;
+    }
+    .info {
+      .name {
+        display: flex;
+        align-items: center;
+        font-size: 38rpx;
+        font-weight: 600;
+        line-height: 40rpx;
+        .job {
+          border: 1px solid #666;
+          border-radius: 6rpx;
+          padding: 0 6rpx;
+          line-height: 30rpx;
+          font-size: 20rpx;
+          margin-left: 16rpx;
+          font-weight: 400;
+        }
+      }
+      .hospital {
+        margin-top: 20rpx;
+        font-size: 24rpx;
+      }
+    }
+  }
+  .yisheng {
+    border-top: 4rpx solid #f9f5f6;
+    padding-bottom: 27rpx;
+    .title {
+      font-weight: 600;
+      margin: 34rpx 20rpx;
+      line-height: 34rpx;
+      font-size: 34rpx;
+      border-left: 10rpx solid #a87580;
+      padding-left: 20rpx;
+    }
+    .shanchang {
+      line-height: 40rpx;
+      padding-left: 40rpx;
+      font-size: 28rpx;
+    }
+  }
+  .btn {
+    width: 650rpx;
+    height: 70rpx;
+    border-radius: 70rpx;
+    margin: 20rpx auto;
+    background: #f7d2db;
+    button {
+      width: 100%;
+      height: 100%;
+      border-radius: 70rpx;
+      padding: 0;
+      color: #333;
+      font-size: 30rpx;
+      line-height: 70rpx;
+      border: 0px solid transparent;
+    }
+  }
+  .mengban {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    .guanlianbg {
+      width: 640rpx;
+      position: absolute;
+      left: 55rpx;
+      top: 40rpx;
+      border-radius: 20rpx;
+      .guanlianbgimg {
+        width: 100%;
+        height: 960rpx;
+        border-radius: 20rpx;
+        /* position: absolute; */
+        /* z-index: -1; */
+      }
+      .saomaguanlian {
+        margin-top: 50rpx;
+        text-align: center;
+        font-size: 28rpx;
+        line-height: 30rpx;
+        color: #666666;
+      }
+      .gerenerweima {
+        width: 220rpx;
+        height: 220rpx;
+        position: absolute;
+        top: 0rpx;
+        left: 0rpx;
+        bottom: 0rpx;
+        right: 0rpx;
+        margin: auto;
+      }
+      .saveerweima {
+        float: right;
+        width: 310rpx;
+        height: 60rpx;
+        margin-top:20rpx;
+        line-height: 60rpx;
+        border-radius: 60rpx;
+        text-align: center;
+        background: #f7d2db;
+        color: #333333;
+        font-size: 30rpx;
+      }
+      .close {
+        float: left;
+        background: #a87580;
+        color: #fff;
+      }
+    }
+  }
+}
+</style>

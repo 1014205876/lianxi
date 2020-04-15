@@ -1,0 +1,208 @@
+<!--  -->
+<template>
+    <view class="pay-intro">
+        <view class="card">
+            <text class="txt-l">十点备孕</text>
+            <text class="txt-xl">VIP服务</text>
+            <text wx:if="{{type == 1}}" class="tips">小贴士:体验用户只能使用一周时间，每一个家庭只能使用一次。</text>
+            <text wx:if="{{type == 2}}" class="txt-m">购买金额： 一阶段￥{{charge.one_month}}，全阶段￥{{charge.three_month}}</text>
+            <text wx:if="{{type == 1}}" class="txt-m">购买金额： ￥{{charge.experience}}</text>
+            <image wx:if="{{type == 1}}" class="experience-img" src="../images/experience.png"></image>
+            <image class="card-bg" src="../images/card-bg.png"></image>
+        </view>
+        <view class="intro">
+          
+            <view class="tit">我们为您提供：</view>
+            <view class="wrap">
+                <view class="txt">专业三合一优孕团队全程指导，</view>
+                <view class="txt">囊括线上线下渠道，为您的备孕之旅保驾护航；</view>
+            </view>
+            <view  class="wrap">
+                <view class="txt">从医疗、调养、饮食、运动、心理等全方面，</view>
+                <view class="txt">为您及配偶量身定制备孕方案；</view>
+            </view>
+            <view  class="wrap">
+                <view class="txt">私人管家全天候在线服务，</view>
+                <view class="txt">科学指导和监督备孕行为，为您解决各种备孕疑难。</view>
+            </view>
+            
+        </view>
+        <block wx:if='{{btnshow}}'>
+        <view wx:if="{{type == 2}}" class="submit" data-stage="1" data-money="{{charge.one_month}}" @tap="pay">购买一阶段 ￥{{charge.one_month}}</view>
+        <view wx:if="{{type == 2}}" class="submit" data-stage="3" data-money="{{charge.three_month}}" @tap="pay">购买全阶段 ￥{{charge.three_month}}</view>
+        <view wx:if="{{type == 1}}" class="submit" data-stage="1" data-money="{{charge.experience}}" @tap="pay">确认支付 ￥{{charge.experience}}</view>
+        </block>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import tip from '../util/tip';
+export default class payIntro extends wepy.page {
+  data = {
+    type: null,
+    btnshow:false,
+    charge: {} //续费金额
+  };
+  methods = {
+    pay(e) {
+      let token = wepy.getStorageSync('token');
+      let money = e.currentTarget.dataset.money;
+      console.log(e.currentTarget)
+      let stage = e.currentTarget.dataset.stage;
+      let data = {
+        money: money,
+        type: this.type,
+        stage: stage,
+      };
+      wepy
+        .request({
+          url: `https://m.tdamm.com/weapp/api/preg/pay?token=${token}`,
+          method: 'POST',
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data: data
+        })
+        .then(res => {
+          if (res.data.code == 200) {
+            let payInfo = res.data.pay_info;
+            wx.requestPayment({
+              timeStamp: payInfo.timeStamp,
+              nonceStr: payInfo.nonceStr,
+              package: payInfo.package,
+              signType: 'MD5',
+              paySign: payInfo.paySign,
+              success: function(res) {
+                console.log(res);
+                tip.success('支付成功！');
+                setTimeout(function() {
+                  wx.reLaunch({
+                    url: 'wait'
+                  });
+                }, 1000);
+              },
+              fail: function(res) {
+                tip.error('支付失败');
+              }
+            });
+          } else {
+            tip.confirmT(res.data.msg);
+          }
+        })
+        .catch(res => {
+          console.log(res);
+        });
+    }
+  };
+  onLoad(options) {
+    let token = wepy.getStorageSync('token');
+    let type = options.type;
+    this.type = type;
+    let that=this;
+    wepy
+      .request({
+        url: `https://m.tdamm.com/weapp/api/preg/preg_charge?token=${token}`,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then(res => {
+        console.log(res);
+        if (res.data.code == 200) {
+          that.charge=res.data.charge;
+          that.btnshow=true;
+          that.$apply();
+        }
+      })
+      .catch(data => {
+        console.log(data);
+      });
+  }
+}
+</script>
+<style lang='less' scoped>
+.card {
+  width: 690rpx;
+  background: #f7d2db;
+  border-radius: 25rpx;
+  margin: 40rpx auto 0;
+  padding: 50rpx 42rpx;
+  box-sizing: border-box;
+  position: relative;
+
+  .txt.l {
+    font-size: 35rpx;
+    color: #333;
+    display: block;
+  }
+
+  .txt-xl {
+    font-size: 72rpx;
+    color: #333;
+    display: block;
+    line-height: 1;
+    margin: 60rpx auto 16rpx;
+  }
+
+  .txt-m {
+    font-size: 30rpx;
+    color: #333;
+    display: block;
+    margin-top: 72rpx;
+    z-index: 9;
+    position: relative;
+  }
+
+  .tips {
+    display: block;
+    font-size: 22rpx;
+    color: #a87580;
+    z-index: 9;
+    position: relative;
+  }
+  .experience-img {
+    width: 114rpx;
+    height: 114rpx;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .card-bg {
+    width: 268rpx;
+    height: 286rpx;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+}
+.intro {
+  color: #a87580;
+  width: 690rpx;
+  margin: 60rpx auto 30rpx;
+  .tit {
+    font-size: 34rpx;
+    margin-bottom: 34rpx;
+  }
+
+  .wrap {
+    margin-bottom: 50rpx;
+  }
+  .txt {
+    font-size: 28rpx;
+  }
+}
+.submit {
+  width: 690rpx;
+  margin: 20rpx auto 0;
+  font-size: 34rpx;
+  color: #fff;
+  text-align: center;
+  background: #a87580;
+  border-radius: 50rpx;
+  padding: 25rpx 0;
+  line-height: 1;
+}
+</style>

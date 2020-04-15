@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>放大镜原理</title>
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	<link rel="stylesheet" href="reset.css">
+	<style>
+		body{background:#CCCCCC;}
+		#outer{
+			overflow:hidden;
+			width:1180px;
+			padding:10px;
+			background:white;
+		}
+		#minbox{
+			width:350px;
+			height:350px;
+			border:1px solid black;
+			float: left;
+			position: relative;
+			cursor:move;
+		}
+		#minbox p{
+			width:175px;
+			height:175px;
+			background:yellow;
+			opacity:0.3;
+			position:absolute;
+			left:0px;
+			top:0px;
+			display:none;
+		}
+		#maxbox{
+			width:400px;
+			height:400px;
+			border:1px solid red;
+			position:absolute;
+			left:374px;
+			top:10px;
+			overflow:hidden;
+			display:none;
+		}
+		#maxbox img{
+			position:absolute;
+			left:0px;
+			top:0px;
+		}
+		#con{
+			width:800px;
+			float:left;
+			margin:10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div id="minbox">
+			<img src="images/min.jpg" alt="">
+			<p></p>
+		</div>
+		<div id="maxbox">
+			<img src="images/max.jpg" alt="">
+		</div>
+		<div id="con">
+			<img src="images/msg.png" alt="">
+		</div>
+	</div>
+</body>
+<script>
+	var minbox=document.getElementById('minbox');
+	var maxbox=document.getElementById('maxbox');
+	var minImg=minbox.children[0];
+	var mask=minbox.children[1];
+	var maxImg=maxbox.children[0];
+	minbox.onmousemove=function(ev){
+		var e=ev||window.event;
+		maxbox.style.display='block';
+		mask.style.display='block';
+		var maskT=e.clientY-offsetTL(minbox).top-mask.offsetHeight/2;
+		var maskW=e.clientX-offsetTL(minbox).left-mask.offsetWidth/2;
+		var maW=minbox.offsetWidth-mask.offsetWidth;
+		var maH=minbox.offsetHeight-mask.offsetHeight;
+		if(maskT<=0){
+			maskT=0;
+		}else if(maskT>=maH){
+			maskT=maH;
+		}
+		if(maskW<=0){
+			maskW=0;
+		}else if(maskW>=maW){
+			maskW=maW;
+		}
+		mask.style.left=maskW+'px';
+		mask.style.top=maskT+'px';
+		var scale=maxImg.offsetWidth/minImg.offsetWidth;
+		maxImg.style.left=-scale*maskW+'px';
+		maxImg.style.top=-scale*maskT+'px';
+	}
+	minbox.onmouseout=function(){
+		maxbox.style.display='none';
+		mask.style.display='none';
+	}
+
+
+
+
+
+
+	function offsetTL(obj){
+		var l=0,t=0;
+		while(obj){
+			l+=obj.offsetLeft;
+			t+=obj.offsetTop;
+			obj=obj.offsetParent;
+		}
+		return {left:l,top:t};
+	}
+</script>
+</html>

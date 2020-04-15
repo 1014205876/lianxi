@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<!--上传文件-->
+		<div class="upload">
+			<p>
+				封面配图 :
+				<input type="button" value='选择图片' onclick="document.getElementById('fileimg').click()" class='input' />
+				<input type="file" name="file" id='fileimg' onchange="imgPreview(this)" style='display:none' />
+			</p>
+			<ul id="imgbox" class='Folder'>
+				<div class="clear"></div>
+			</ul>
+			<p>
+				上传视频 :
+				<input type="button" value='选择视频' onclick="document.getElementById('filemp4').click()" class='input' />
+				<input type="file" name="file" id='filemp4' onchange="mp4Preview(this)" style='display:none' />
+			</p>
+			<ul id="mp4box" class='Folder'>
+				<div class="clear"></div>
+			</ul>
+			<p>
+				上传文档 :
+				<input type="button" value='选择文档' onclick="document.getElementById('filetxt').click()" class='input' />
+				<input type="file" name="file" id='filetxt' onchange="txtPreview(this)" style='display:none' />
+			</p>
+			<ul id="txtbox" class='Folder'>
+				<div class="clear"></div>
+			</ul>
+		</div>
+		<script src='../js/jquery.min.js'></script>
+		<script src='../js/index.js'></script>
+	</body>
+
+</html>

@@ -1,0 +1,428 @@
+<!-- 每个阶段 -->
+<template>
+    <view class="task-stage">
+        <view class="scroll-view" @touchstart="touchstart" @touchmove="touchmove" >
+            <image class="taskstage-bg" src="../images/taskstage-bg.png"></image>
+            <view class="icon-box" @tap="restore">
+                <image class="icon-return" src="../images/icon-return.png"></image>
+            </view>
+            <view class="circle-lists" animation="{{animationData}}">
+                <block wx:for="{{stages}}" wx:for-index="idx" wx:key="{{item.id}}">
+                    <view class="circle-item {{stage === idx ? 'active' : ''}}"> 
+                        <image class="circle-bg" src="../images/circle.png"></image>
+                        <view class="item-txt">
+                            <view class="item-time">{{item.time}}</view>
+                            <view class="proress">{{item.days}}</view>
+                            <view style="font-size: 30rpx;color:#333;">{{item.stage_name}}</view>
+                        </view>
+                    </view>
+                </block>
+            </view> 
+        </view>
+        <swiper class="taskstage-swiper" current="{{stage}}" duration="600" bindchange="changeStage">
+            <block wx:for="{{plans}}" wx:key="{{item.index}}">
+                <swiper-item class="item">
+                    <view class="item-top">{{item.stage_name}}</view>
+                    <view class="intro-btn" data-txt="{{item.stage_brief}}" data-name="{{item.stage_name}}" @tap="showModal">
+                        <image style="width: 33rpx;height: 9rpx;" src="../images/icon-detail-active.png"></image>
+                    </view>
+                    <scroll-view  scroll-y class="list-swiper" scroll-into-view="{{nowList}}">
+                        <block wx:if="{{item.phase.length === 0}}">
+                            <view class="no-phase">
+                                <image class="no-task" style="width: 462rpx; height: 195rpx;" src="../images/no-task.png"></image>
+                                <view class="txt">请联系管家定制该阶段任务</view>
+                            </view>
+                        </block>
+                        <block wx:for="{{item.phase}}" wx:for-item="list" wx:key="{{list.index}}">
+                            <!-- <swiper-item class="list-item"> -->
+                                <!-- <view class="list {{list.in ? 'now' : ''}}" id="list{{list.id}}" data-id="{{list.id}}" @tap="goTo">
+                                    <image style="width: 33rpx;height: 9rpx;" src="{{list.in ? '../images/icon-detail.png' : '../images/icon-detail-active.png'}}"></image>
+                                    <view class="list-name">{{list.name}}</view>
+                                    <view class="list-txt">{{list.desc}}</view>
+                                </view> -->
+                                <view class="list2 {{list.in ? 'now' : ''}}" id="list{{list.id}}" data-id="{{list.id}}" @tap="goTo">
+                                    <image style="width: 33rpx;height: 9rpx;" src="{{list.in ? '../images/icon-detail.png' : '../images/icon-detail-active.png'}}"></image>
+                                    <view class="list-name">{{list.name}}</view>
+                                </view>
+                            <!-- </swiper-item> -->
+                        </block>
+                    </scroll-view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class TaskStage extends wepy.component {
+    data = {
+        stages: [],
+        animationData: null,
+        gesture: [],
+        slideLock: null, // 滑动时间锁
+        phase: []
+    }
+    props = {
+        stage: {
+            type: Number,
+            default: 0,
+            twoWay: true
+        },
+        plans : {
+            type: Array,
+            default: []
+        },
+        nowList: {
+            type: String,
+            default: null
+        },
+        num: {
+            type: Number,
+            default: 0
+        }
+    }
+    async onLoad() {
+        // await this.getUserScheme()
+        await this.animated(this.stage)
+        this.$apply()
+    }
+    methods = {
+        touchstart(e) {
+            const t = e.touches[0]
+            const startX = t.clientX
+            const startY = t.clientY
+            this.slideLock = true 
+            this.gesture.startX = startX
+            this.gesture.startY = startY
+        },
+        showModal(e) {
+            let txt = e.currentTarget.dataset.txt
+            let name = e.currentTarget.dataset.name
+            wx.showModal({
+                title: name,
+                content: txt,
+                showCancel: false
+            })
+        },
+        goTo(e) {
+            let id = e.currentTarget.dataset.id
+           wx.navigateTo({
+               url: `../pages/taskdeatil?p_id=${id}&s_id=${this.stage+1}`
+           })
+        },
+        touchmove(e) {
+            let that = this
+            if (this.isLeftSlide.call(this, e)) {
+                if (Math.abs(that.stage) === that.num - 1) {
+                    return
+                } else {
+                    that.stage += 1
+                    that.animated(that.stage)
+                }
+                
+            }
+            if (that.isRightSlide.call(this, e)) {
+                if (that.stage === 0) {
+                    return
+                } else {
+                    that.stage -= 1
+                    that.animated(that.stage)
+                }
+               
+            }
+        },
+        changeStage(e) {
+            if (e.detail.source == 'touch') {
+                this.stage = e.detail.current
+                this.animated(this.stage)
+            }
+        },
+        restore() {
+            this.$emit('restore', true)
+        }
+    }
+
+    //  左滑
+    isLeftSlide(e) {
+        const { startX, startY } = this.gesture
+        if (this.slideLock) {
+            const t = e.touches[ 0 ]
+            const deltaX = t.clientX - startX
+            const deltaY = t.clientY - startY
+            if (deltaX < -20 && deltaY < 20 && deltaY > -20) {
+                this.slideLock = false
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+    // 滑动
+    animated(stage) {
+       
+        const animation = wx.createAnimation({
+            duration: 500,
+            transformOrigin: '50% 50%',
+            timingFunction: "ease",
+            delay: 100
+        })
+        this.animation = animation
+        animation.left(225 - stage * 300 + 'rpx').step()
+        this.animationData = animation.export()
+    }
+    // 右滑
+    isRightSlide(e) {
+        const { startX, startY } = this.gesture;
+        if (this.slideLock) {
+            const t = e.touches[ 0 ];
+            const deltaX = t.clientX - startX;
+            const deltaY = t.clientY - startY;
+
+            if (deltaX > 20 && deltaY < 20 && deltaY > -20) {
+                this.slideLock = false;
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+}
+</script>
+
+<style lang="less">
+    .task-stage {
+        background: #fff;
+        height: 100%;
+    }
+    .scroll-view {
+        position: relative;
+        width: 100%;
+        height: 426rpx;
+        overflow: hidden;
+        margin-top: -1rpx;
+        
+        .taskstage-bg {
+            display: block;
+            position: absolute;
+            width: 750rpx;
+            height: 426rpx;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .icon-box {
+            position: absolute;
+            width: 50rpx;
+            height: 50rpx;
+            left: 20rpx;
+            top: 20rpx;
+            z-index: 9;
+        }
+        .icon-return {
+            width: 25rpx;
+            height: 42rpx;
+            display: block;
+            margin: 0 auto;
+        }
+    }
+    .circle-lists {
+        height: 400rpx;
+        width: 250%;
+        overflow-x: auto;
+        margin-top: 50rpx;
+        z-index: 9;
+        position: absolute;
+        left: 225rpx;
+        &:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+    }
+    .circle-item {
+        width: 300rpx;
+        height: 300rpx;
+        margin: 0 auto;
+        position: relative;
+        transform: scale(0.6);
+        border-radius: 50%;
+        float: left;
+        transition: all 0.7s ease;
+        &.active {
+            transform: scale(1);
+        }
+
+        .circle-bg {
+            display: block; 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 322rpx;
+            height: 325rpx; 
+            z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+        .item-txt {
+            width: 266rpx;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            z-index: 9;
+            text-align: center;
+            line-height: 1;
+
+            .item-time {
+                font-size: 30rpx;
+                color: #333333;
+            }
+            .proress {
+                font-size: 48rpx;
+                color: #333;
+                font-weight: 500;
+                margin: 12rpx 0;
+            }
+        }
+    }
+    .no-phase {
+        .txt {
+            font-size: 28rpx;
+            color: #333;
+            text-align: center;
+            margin-top: 20rpx;
+        }
+        
+    }
+    .taskstage-swiper {
+        width: 100%;
+        height: 70%;
+        box-sizing: border-box;
+
+        .intro-btn {
+            position: absolute;
+            right: 10rpx;
+            top: -10rpx;
+            width: 40rpx;
+            height: 40rpx;
+        }
+
+        .item {
+            margin-top: 15rpx;
+           
+            .item-top {
+                width: 100%;
+                padding-left: 30rpx;
+                font-size: 34rpx;
+                line-height: 40rpx;
+                color: #333;
+                font-weight: 600;
+                position: relative;
+                padding-bottom: 10rpx;
+                border-bottom: 1rpx solid #c7c6c6;
+                margin: 0 20rpx 10rpx;
+
+                &:after {
+                    content: '';
+                    display: block;
+                    width: 11rpx;
+                    height: 40rpx;
+                    background: #a87580;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+            }
+            .list {
+                width: 100%;
+                padding: 15rpx 30rpx;
+                background: #f9f5f6;
+                margin-bottom: 20rpx;
+                border-radius: 20rpx;
+                box-sizing: border-box;
+                position: relative;
+
+                &.now {
+                    background: #a87580;
+                    .list-name {
+                        color: #fff;
+                    }
+                    .list-txt {
+                        color: #fff;
+                    }
+                    
+                }
+                image {
+                    position: absolute;
+                    right: 32rpx;
+                    top: 38rpx;
+                }
+                .list-name {
+                    font-size: 28rpx;
+                    color: #333;
+                    padding-bottom: 10rpx;
+                    border-bottom: 1rpx solid #c9c9c9;
+                }
+
+                .list-txt {
+                    font-size: 24rpx;
+                    color: #666;
+                    margin-top: 13rpx;
+                    line-height: 1.5;
+                }
+            }
+            .list2 {
+                width: 220rpx;
+                height: 150rpx;
+                padding: 15rpx 30rpx;
+                background: #f9f5f6;
+                border-radius: 20rpx;
+                box-sizing: border-box;
+                position: relative;
+                float: left;
+                margin: 0 15rpx 20rpx;
+
+                &.now {
+                    background: #a87580;
+                    .list-name {
+                        color: #fff;
+                    }
+                    .list-txt {
+                        color: #fff;
+                    }
+                    
+                }
+                image {
+                    position: absolute;
+                    right: 32rpx;
+                    bottom: 30rpx;
+                }
+                .list-name {
+                    font-size: 32rpx;
+                    color: #333;
+                    padding-bottom: 10rpx;
+                    font-weight: 400;
+                }
+
+                .list-txt {
+                    font-size: 24rpx;
+                    color: #666;
+                    margin-top: 13rpx;
+                    line-height: 1.5;
+                }
+            }
+            .list-swiper {
+                width: 100%;
+                height: 580rpx;
+                padding: 0 5rpx;
+
+                swiper {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+</style>

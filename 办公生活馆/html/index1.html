@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>办公生活馆</title>
+</head>
+<style>
+	* {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		border: 0;
+	}
+
+	html {
+		font-size: 100px;
+	}
+
+	body {
+		font-family: "Microsoft YaHei", "微软雅黑", Helvetica, "黑体", 'SimSun', Arial, Tahoma;
+		color: #000;
+		font-size: 12px;
+		/*实际相当于14px*/
+	}
+
+	a,
+	a:visited {
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
+
+	em {
+		font-style: normal;
+	}
+
+	img {
+		width: 100%;
+		vertical-align: middle;
+	}
+
+	button,
+	select,
+	input,
+	textarea,
+	option,
+	optgroup {
+		font-family: inherit;
+		font-size: 100%;
+		outline: none;
+		/*把默认样式去掉*/
+		appearance: none;
+		-webkit-appearance: none;
+		-o-appearance: none;
+		-moz-appearance: none;
+		border-radius: 0;
+		/*把默认样式去掉 end*/
+		margin: 0px;
+	}
+
+	.clearfix:after {
+		content: "020";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+
+	.clearfix {
+		/* 触发 hasLayout */
+		zoom: 1;
+	}
+
+	.woffice {
+		width: 1210px;
+		margin: 0 auto;
+	}
+
+	.woffice h2 {
+		margin: 25px 0 10px;
+		line-height: 36px;
+		font-size: 22px;
+		color: #f8b600;
+		border-bottom: solid 2px #f8b600;
+	}
+
+	.woffice .banner>.left {
+		position: relative;
+		float: left;
+		width: 944px;
+	}
+
+	.woffice .banner>.left>img {
+		display: block;
+		width: 100%;
+	}
+
+	.woffice .banner>.left .absolute>li {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		border: 1px solid red;
+	}
+
+	.woffice .banner>.left .absolute>li .tips {
+		position: absolute;
+		width: 100px;
+		opacity: 0;
+		transition: all 0.3s;
+		-webkit-transition: all 0.3s;
+		/* Safari */
+	}
+
+	.woffice .banner>.left .absolute>li.active .tips {
+		opacity: 1;
+	}
+
+	.woffice .banner>.left .absolute>li .tips i,
+	.woffice .banner>.left .absolute>li .tips em,
+	.woffice .banner>.left .absolute>li .tips span {
+		float: left;
+		background: url(../image/tips.png) no-repeat;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.top i {
+		width: 28px;
+		height: 37px;
+		background-position: 0 0;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.top em {
+		min-width: 40px;
+		height: 27px;
+		line-height: 27px;
+		color: #fff;
+		text-align: center;
+		font-size: 12px;
+		background-repeat: repeat-x;
+		background-position: 0 -80px;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.top span {
+		width: 13px;
+		height: 37px;
+		background-position: -50px 0;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.bottom i {
+		width: 12px;
+		height: 47px;
+		background-position: -187px 0;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.bottom em {
+		min-width: 40px;
+		height: 27px;
+		line-height: 27px;
+		color: #fff;
+		text-align: center;
+		font-size: 12px;
+		background-repeat: repeat-x;
+		background-position: 0 -120px;
+		margin-top: 20px;
+	}
+
+	.woffice .banner>.left .absolute>li .tips.bottom span {
+		width: 22px;
+		height: 47px;
+		background-position: -100px 0;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.right {
+		float: left;
+		width: 266px;
+		background-color: #fff;
+	}
+
+	.woffice .banner>.right>li {
+		display: none;
+	}
+
+	.woffice .banner>.right>li.active {
+		display: block;
+	}
+
+	.woffice .banner>.right>li .list>li {
+		padding-left: 3px;
+		border-bottom: solid 1px #e6e6e6;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.right>li .list>li>a {
+		display: block;
+		width: 266px;
+		height: 130px;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.right>li .list>li>a>img {
+		float: left;
+		width: 130px;
+		height: 130px;
+	}
+
+	.woffice .banner>.right>li .list>li>a>p {
+		float: left;
+		padding: 30px 10px 0 6px;
+		width: 117px;
+	}
+
+	.woffice .banner>.right>li .list>li>a.active {
+		background-color: #f8b600;
+	}
+
+	.woffice .banner>.right>li .list>li>a.active>p em {
+		color: #fff;
+	}
+
+	.woffice .banner>.right>li .list>li>a>p em {
+		display: block;
+		color: #6d6d6d;
+		font-size: 14px;
+		line-height: 16px;
+		height: 48px;
+		overflow: hidden;
+	}
+
+	.woffice .banner>.right>li .list>li>a>p span {
+		color: #e23638;
+		font-size: 16px;
+		margin-top: 4px;
+		font-weight: 700;
+	}
+
+	.woffice .banner>.right>.more {
+		display: flex;
+		padding: 9px 0;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		color: #B6B6B6;
+	}
+
+	.woffice .banner>.right>.more>img {
+		width: 16px;
+		margin: 5px;
+	}
+</style>
+
+<body>
+
+	<div class="woffice_wrap">
+		<div class="woffice">
+			<h2>办公区</h2>
+			<div class="banner clearfix">
+				<div class="left">
+					<img src="../image/officeimg.jpg" alt="办公区图片">
+					<ul class='absolute'>
+						<li style='top:0px;left:0px;width:150px;height:50px;'>
+							<div class='tips top' style='top:0px;left:0px;'>
+								<i></i>
+								<em>削皮器</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top:120px;left:120px;width:110px;height:110px;'>
+							<div class='tips bottom' style='top:0px;left:0px;'>
+								<i></i>
+								<em>毛巾</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top: 230px;left: 460px;width: 60px;height: 80px;'>
+							<div class='tips bottom' style='top: 35px;left: -40px;'>
+								<i></i>
+								<em>碗柜</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top: 280px;left: 340px;width: 80px;height: 50px;'>
+							<div class='tips bottom' style='top: 20px;left: -30px;'>
+								<i></i>
+								<em>调料柜</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top:120px;left:120px;width:110px;height:110px;'>
+							<div class='tips bottom' style='top:0px;left:0px;'>
+								<i></i>
+								<em>塑料盆</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top: 230px;left: 580px;width: 80px;height: 60px;'>
+							<div class='tips bottom' style='top: 25px;left: -40px;'>
+								<i></i>
+								<em>厨房挂架</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top:120px;left:120px;width:110px;height:110px;'>
+							<div class='tips bottom' style='top:0px;left:0px;'>
+								<i></i>
+								<em>切丝器</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top: 395px;left: 95px;width: 65px;height: 50px;'>
+							<div class='tips bottom' style='top: 20px;left: -35px;'>
+								<i></i>
+								<em>垃圾篓</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top: 420px;left: 500px;width: 55px;height: 85px;'>
+							<div class='tips bottom' style='top:20px;left:-40px;'>
+								<i></i>
+								<em>垃圾桶</em>
+								<span></span>
+							</div>
+						</li>
+						<li style='top:338px;left:95px;width:170px;height:43px;'>
+							<div class='tips bottom' style='top:18px;left:20px;'>
+								<i></i>
+								<em>燃气灶</em>
+								<span></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="right">
+					<li class='active'>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削皮器削</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>削皮器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>削皮器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>削皮器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾毛巾</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>毛巾</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>毛巾</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>毛巾</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>碗柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>碗柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>碗柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>碗柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>调料柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>调料柜调料柜调料柜调料柜调料柜调料柜调料柜调料柜调料柜调料柜调料柜调调料柜调料柜调料柜调料柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>调料柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>调料柜</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆塑料盆盆塑料盆塑料盆塑料盆塑料盆</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>塑料盆</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>塑料盆</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>塑料盆</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>厨房挂架厨房挂架厨房挂架厨房挂架厨房挂架厨房挂架厨房挂架厨房挂架厨房挂房挂架厨房挂架厨房挂架</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>厨房挂架</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>厨房挂架</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>厨房挂架</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>切丝器切丝器切丝器切丝器切丝器切丝器切丝器切丝器切丝器切丝器切丝器切器切丝器切丝器切丝器切丝器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>切丝器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>切丝器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>切丝器</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓垃圾篓篓篓垃圾篓垃圾篓垃圾篓</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾篓</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾篓</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾篓</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾桶垃圾桶垃圾桶垃圾桶垃圾桶垃圾桶垃圾圾桶垃圾圾桶垃圾圾桶垃圾垃圾圾桶垃圾圾桶垃圾桶垃圾桶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾桶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾桶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>垃圾桶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<ul class="list">
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>燃气灶燃气灶燃气灶燃气灶燃气灶燃气灶燃气灶灶燃气灶燃气灶气灶灶燃气灶气灶燃灶燃气燃气灶燃气灶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>燃气灶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>燃气灶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+							<li>
+								<a href="###" class='clearfix'>
+									<img src="" alt="">
+									<p>
+										<em>燃气灶</em>
+										<span>暂无报价</span>
+									</p>
+								</a>
+							</li>
+						</ul>
+					</li>
+					<a href="###" class="more">
+						查看更多
+						<img src="../image/seemore.png" alt="">
+					</a>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		var index = 0;//定义初始下标
+		var absoluteLi = document.querySelector('.woffice .banner>.left .absolute').children//获取到有active事件的10个li
+		let rightLi = document.querySelector('.woffice .banner>.right').children//获取到需要操作class名字的10个li
+		for (var i = 0; i < absoluteLi.length; i++) {
+			absoluteLi[i]._index=i;//给li赋予一个_index保存当前下标
+			absoluteLi[i].onmouseover = function (e) {//给10个li标签赋予鼠标移入事件
+				index = this._index;//获取到当前元素的下标
+				for (var j = 0; j < absoluteLi.length; j++) {
+					absoluteLi[j].classList.remove("active");//将所有li标签的class名去除(图片定位)
+					rightLi[j].classList.remove("active");//将所有li标签的class名去除(右边显示)
+				}
+				absoluteLi[index].classList.add("active");//给对应下标的li加上class名字(图片定位)
+				rightLi[index].classList.add("active");//给对应下标的li加上class名字(右边显示)
+			}
+		}
+	</script>
+</body>
+
+</html>

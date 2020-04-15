@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+     <title>双向绑定</title>
+</head>
+
+<style>
+    #app {
+        text-align: center;
+    }
+</style>
+
+<body>
+    <!-- <div id="app">
+        <input type="text" id="txt">
+        <p id="show-txt"></p>
+    </div>
+    <script>
+        var obj = {}
+        Object.defineProperty(obj, 'txt', {
+            get: function () {
+                console.log(obj)
+                return obj
+            },
+            set: function (newValue) {
+                console.log(obj)
+                console.log(newValue)
+                document.getElementById('txt').value = newValue
+                document.getElementById('show-txt').innerHTML = newValue
+            }
+        })
+        document.addEventListener('keyup', function (e) {
+            console.log(e)
+            obj.txt = e.target.value
+        })
+    </script> -->
+    <div id="app">
+        <input type="text" class="name" v-model="name"> {{name}}
+    </div>
+    <input type="text" v-model='a.name'>
+    <script>
+        let a = { name: 1 };
+        Object.defineProperty(a, name, {
+            enumerable: true, // 可枚举
+            configurable: false, // 不能再define
+            get: function () {
+                return name;
+            },
+            set: function (newVal) {
+                console.log('哈哈哈，监听到值变化了 ', val, ' --> ', newVal);
+                val = newVal;
+            }
+        });
+        //初始化
+        Vue.prototype.init = function (options) {
+            this.data = options.data; //为实例添加data属性
+            observe(this.data); //重要：为每个数据重写一个访问器属性 必须要放前面，否则无法触发get方法
+
+            var el = document.getElementById(options.el); //获取最外层dom元素id
+            var dom = this.compile(el, this) //重要：编译dom内容
+            el.append(dom); //编译完成，添加文档片段进去
+        }
+        //编译，说白了就是渲染html中的节点内容，比如空格符，输入框的value值，div的innerHTML等等。。。
+        Vue.prototype.compile = function (el, vm) {
+            if (el) {
+                this.$frag = this.nodeToFragment(el, vm); //3.为vue实例添加$frag属性,属性值是文档片段，开始进入nodeToFragment()方法
+                return this.$frag;
+            }
+        }
+        //添加文档片段：编译完成先统一加到文档片段，是为了让dom操作在内存中完成，减少dom操作次数
+        Vue.prototype.nodeToFragment = function (el, vm) {
+            var frag = document.createDocumentFragment()
+            var child;
+
+            while (child = el.firstChild) { //只要node还有子节点，一直执行
+                this.compileElement(child, vm); //对节点解析（核心,已经详细注释）
+                frag.append(child); //将所有子节点添加到fragment中，child是指向元素首个子节点的引用。将child引用指向的对象append到父对象的末尾，原来child引用的对象就跳到了frag对象的末尾，而child就指向了本来是排在第二个的元素对象。如此循环下去，链接就逐个往后跳了
+            }
+            console.log(frag)
+            return frag; // dom操作完毕，return出文档片段
+        }
+        Vue.prototype.compileElement = function (node, vm) {
+            var reg = /\{\{(.*)\}\}/; // {{任何内容}}
+            //节点类型为元素
+            if (node.nodeType === 1) { // 遇见了dom元素 比如node=<input type="text" id="a" v-model="text">
+                var attr = node.attributes;
+                // 解析属性
+                for (var i = 0; i < attr.length; i++) { //遍历dom元素属性
+                    if (attr[i].nodeName == 'v-model') { // 如果属性名字是 v-model
+                        var name = attr[i].nodeValue; // 获取v-model绑定的属性名 text
+                        node.addEventListener('input', function (e) {
+                            vm.data[name] = e.target.value; //监听事件，将输入框内容赋值给外面data[name],这样子dom操作就改变了外部数据
+                        });
+                        //最外面Vue实例 <input type="text" id="a" v-model="text"> "text" 'value'
+                        // node.value = vm.data[name]; // 然后再把更改后的外部的数据赋值给dom内容
+                        /*
+                            但是遇到了问题，dom更改外部数据的时候，这里再也不会进来了呀，所以这里赋值不会生效！！！
+                        */
+                        //解决办法就是为每一个dom节点new一个Watcher实例,传入属性值或者文本值等数据
+                        //那这个Watcher实例干嘛用呢？emmmmm......去外面看Watcer构造函数干了些什么呗~~
+                        new Watcher(vm, node, name, 'value');
+                    }
+                };
+            }
+            //节点类型为text 主要用来直接赋值
+            if (node.nodeType === 3) { // 遇见了空格符或者文本 比如{{text}}或者空格符"" 但是只有内容格式为双花括号的节点，才会后续执行
+                if (reg.test(node.nodeValue)) {
+                    var name = RegExp.$1; // 获得文本内容字符串
+                    name = name.trim(); //清除空白空格符
+                    // node.nodeValue = vm.data[name]; // 其实上面的name只是方便为这个dom节点赋值
+                    // 找到了这个dom节点，然后拿着{{}}中的字符串,找到data相应的key,把值赋值给节点内容,就渲染结束了
+                    // 这样子外部数据就填充到了dom内容中
+                    new Watcher(vm, node, name, 'nodeValue'); // {{name}}
+                }
+            }
+        }
+        function defineReactive(obj, key, val) {
+            var dep = new Dep();
+            Object.defineProperty(obj, key, {
+                get: function () {
+                    //添加订阅者watcher到主题对象Dep
+                    if (Dep.target) {
+                        // JS的浏览器单线程特性，保证这个全局变量在同一时间内，只会有同一个监听器使用
+                        dep.addSub(Dep.target);
+                    }
+                    console.log(val)
+                    return val;
+                },
+                set: function (newVal) {
+                    if (newVal === val) return;
+                    console.log(val)
+                    val = newVal;
+                    console.log(val)
+                    // 发布者：数据一发生改变就发出通知，给我改变DOM！！！
+                    // 订阅者：就是DOM节点，收到发布者的消息就会改变DOM！！！
+                    /*
+                        但是DOM节点怎么收到消息呢？答案在外部定义一个主题对象Dep，来作为中转站。
+                    */
+                    dep.notify();
+                }
+            })
+        }
+        function observe(obj) {
+            Object.keys(obj).forEach(function (key) {
+                defineReactive(obj, key, obj[key]);
+            })
+        }
+        function Dep() {
+            this.subs = [];
+        }
+        Dep.prototype = {
+            addSub: function (sub) {
+                this.subs.push(sub);
+            },
+            notify: function () {
+                this.subs.forEach(function (sub) {
+                    sub.update();
+                })
+            }
+        }
+        function Watcher(vm, node, name, type) {
+            Dep.target = this; //第一步：把生成的实例赋值给了Dep.target
+            //然后在重写每一个data中的数据的时候,如果某一个数据有实例的话，就为那个数据添加订阅者
+            //订阅者就是这个Watcher实例
+            this.vm = vm;
+            this.node = node; //第二步：生成一堆属性
+            this.name = name;
+            this.type = type;
+            this.update(); //第三步：跟新DOM元素 this.node[this.type] = this.vm.data[this.name]
+            //看到这里你可能觉得这不就为了这个跟新DOM元素吗，DOM操作改变DOM内容的时候还是不会执行啊。。
+            //其实调用update()不是在监听事件后执行，而是在set方法中执行
+            //1.set方法中监听到数据有变化，马上发出通知给中转站 主题对象Dep
+            /*
+                2.主题对象Dep中notify方法遍历Watcher实例，为每一个Watcher实例执行update
+                this.subs.forEach(function (sub) {
+                    sub.update();
+                })
+            */
+            //3.这样就做到了数据跟新，dom也更新
+            //真的吗？别忘了刚才在set方法中定义的主题对象Dep
+            //set方法可以监听数据变化，但是拿不到dom对象，现在我们把dom对象拿出来了，他就可以用啦~
+            Dep.target = null;
+        }
+        Watcher.prototype = {
+            update: function () {
+                //this.vm.data[this.name]这句话本身获得了该属性所以会触发get方法
+                this.node[this.type] = this.vm.data[this.name]; // 订阅者执行相应操作
+            }
+        }
+
+        function Vue(options) {
+            console.log(Vue)
+            this.init(options)
+        }
+        var app = new Vue({
+            el: "app",
+            data: {
+                name: "simon",
+                sex: "男"
+            }
+        })
+    </script>
+</body>

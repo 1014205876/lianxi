@@ -1,0 +1,84 @@
+在全局下载  express-generator
+npm install express-generator -g
+
+express-genertor  用来生成项目的基本文件
+
+脚手架  vue-cli ==> 用来生成express项目的基本文件的
+
+怎么用？？？
+1.下载
+2.使用：
+     1) express 项目的名称(文件夹) ==> fcht
+        express fcht
+        //自动创建 项目 的基本文件  在fcht文件夹中
+	 2) 安装项目的依赖
+	    cd fcht 	==> 进入到项目的文件夹
+	    npm install ==> 安装package.json中依赖文件
+	 3) 启动项目路
+	    npm start ==> 启动项目  后台项目
+	 4) 在浏览器访问localhost:3000 ==> Welcome to Express
+	 
+routes/db.js ==> 操作mongodb数据库
+// 使用的数据库  统一使用   fchtdata
+
+在项目中 下载 mongodb 模块
+npm install mongodb --save
+
+--save 把这个模块  写到 package.json 的依赖里面
+
+node_modules文件太大   删了  ==> 通过 npm install
+
+浏览器
+input name="字段1" value="值1"
+input name="字段2" value="值2"
+
+get 方式    在后台  通过  req.query  
+				对象{"字段1":"值1","字段2":"值2"}
+				req.query.字段1
+//       数据：在路径(地址)上   /index?action="aaa"
+				req.query获取的是  地址上的数据
+//		   数据的大小：有限的
+//		   安全性：不安全
+//       请求：浏览器的地址栏	  标签发送的请求    form 标签  get ajax 都可发送get方式的请求
+
+
+post 方式    需要req.body来获取地址
+//		  数据：对象(看不到)
+//       数据的大小：理论上 无限的
+//       安全性：安全
+//       请求：form标签-post ajax-post
+
+
+// 演示   数据的获取
+// 请求方式		请求地址		发送的数据
+//   get		 /get		 字段userName
+//   post		 /post		 字段userName
+
+
+写项目   ==> 写路由
+1.确定请求   /VueHandler  ==> app.js
+		 ?action     ==>  req.body.action 获取  判断
+		/VueHandler 后面的地址 和 请求
+2.编写处理逻辑(处理请求的代码)
+3.发送响应(发送处理后的结果)
+
+项目使用  express
+express框架   ==> express-session
+session ==> 在后台浏览器存储信息的
+
+1.下载
+      在项目的文件中  npm install express-session --save
+2.使用
+  1)在app.js加载express-session
+  2)配置session的参数
+  3)具体的请求中使用
+	         存储   req.session.保存数据的key=保存数据的value
+	         读取   req.session.保存数据的key
+	         
+
+//在后台处理上传的文件   formidable
+
+//下载   formidable
+npm install formidable --save
+// 1.加载
+// 2.使用配置一些参数

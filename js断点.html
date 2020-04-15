@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <title>js断点</title>
+    <style>
+    </style>
+</head>
+
+
+<body>
+    
+        <iframe src="https://jinritb.oss-cn-hangzhou.aliyuncs.com/2019-09-06/insuranceBill.html"></iframe>
+        <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-0.004017949104309083%2C51.47612752641776%2C0.00030577182769775396%2C51.478569861898606&layer=mapnik"></iframe>
+</body>
+<script>
+
+    var b = 10;
+    a()
+    function a() {
+        // b=123
+    }
+    function b() {
+        // b=123
+    }
+
+    (
+        function ab() {
+            console.log(ab)
+            console.log(a)
+        }, function a() {
+            // console.log(ab)
+            console.log(a)
+            console.log(this)
+        }
+    )()
+    console.log(a)
+    console.log(b)
+    // let a=0;
+    // let b=3;
+    // if(b>a){
+    //     console.log(a,b)
+    // }
+
+
+    let arr1 = '123';
+    var arr2 = arr1.split('');
+    console.log(arr2)
+
+    let dao = [
+        [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+        [0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0],
+        [0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]
+    ]
+
+    let zuobiao = [];
+
+    dao.forEach((item, index) => {
+        item.forEach((list, i) => {
+            if (list == 1) {
+                zuobiao.push({
+                    x: index,
+                    y: i
+                })
+            }
+        })
+    })
+
+    console.log(zuobiao)
+    zuobiao.forEach((item, index) => {
+        item.brother = [];
+        for (let i = index + 1; i < zuobiao.length; i++) {
+            if (
+                (item.x == zuobiao[i].x && Math.abs(item.y - zuobiao[i].y) == 1) ||
+                (item.y == zuobiao[i].y && Math.abs(item.x - zuobiao[i].x) == 1)
+            ) {
+                item.brother.push({
+                    index: i,
+                })
+            }
+        }
+    })
+    console.log(zuobiao)
+
+    for (let i = zuobiao.length - 1; i >= 0; i--) {
+        if (zuobiao[i].brother.length > 0) {
+            if (zuobiao[i].brother.length > 1) {
+                zuobiao[i].brother = [
+                    ...zuobiao[i].brother,
+                    ...zuobiao[zuobiao[i].brother[0].index].brother,
+                    ...zuobiao[zuobiao[i].brother[1].index].brother,
+                ];
+                zuobiao[zuobiao[i].brother[0].index].brother.length = 0;
+                zuobiao[zuobiao[i].brother[1].index].brother.length = 0;
+            }else{
+                zuobiao[i].brother = [
+                    ...zuobiao[i].brother,
+                    ...zuobiao[zuobiao[i].brother[0].index].brother,
+                ];
+                zuobiao[zuobiao[i].brother[0].index].brother.length = 0;
+            }
+        }
+    }
+    console.log(zuobiao)
+
+</script>
+
+</html>
